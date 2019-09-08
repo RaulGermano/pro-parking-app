@@ -10,6 +10,10 @@ module.exports = {
 			_id: parking_id
 		});
 
+		console.log(parking.qualification);
+
+		return;
+
 		parking.qualification.push({
 			value,
 			description,

@@ -19,6 +19,10 @@ const {
 	CreateCheckInReservation
 } = require('../controllers/checkInReservation');
 
+const {
+	CreateCheckOutReservation
+} = require('../controllers/checkOutReservation');
+
 const { CreateClientVehicle } = require('../controllers/clientVehicle');
 
 const { CreateParking, SelectParking } = require('../controllers/parking');
@@ -66,5 +70,7 @@ routes.post('/create-parking-qualification', CreateParkingQualification);
 routes.post('/create-reservation', CreateReservation);
 
 routes.post('/create-checkin-reservation', CreateCheckInReservation);
+
+routes.post('/create-checkout-reservation', CreateCheckOutReservation);
 
 module.exports = routes;
