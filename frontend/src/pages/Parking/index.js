@@ -30,7 +30,7 @@ export default function Settings({ match }) {
 										</h5>
 									</div>
 								</div>
-								<div className='align-self-center'>
+								{/* <div className='align-self-center'>
 									<button
 										className='btn btn-sm bg-pro-parking text-light'
 										onClick={() => setDisabledField(false)}
@@ -41,7 +41,7 @@ export default function Settings({ match }) {
 										/>
 										Editar
 									</button>
-								</div>
+								</div> */}
 							</div>
 
 							<hr />
