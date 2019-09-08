@@ -30,9 +30,14 @@ const ReservationSchema = new mongoose.Schema(
 					type: String
 				}
 			},
-			vehicle_plate: {
-				type: String,
-				lowercase: true
+			vehicle: {
+				_id: {
+					type: mongoose.Schema.Types.ObjectId
+				},
+				plate: {
+					type: String,
+					lowercase: true
+				}
 			}
 		},
 		parking: {
