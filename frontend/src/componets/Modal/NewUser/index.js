@@ -103,8 +103,23 @@ function NewUserModal(props) {
 							/>
 						</div>
 
-						<div className='d-flex flex-column col-8'>
+						<div className='d-flex flex-column col-6'>
 							<label for-html='name-user'>E-Mail</label>
+							<input
+								type='email'
+								id='name-user'
+								className='form-control shadow-sm'
+								placeholder='Obrigatório'
+								onChange={event =>
+									setNameUser(event.target.value)
+								}
+								required={false}
+								value=''
+							/>
+						</div>
+
+						<div className='d-flex flex-column col-2'>
+							<label for-html='name-user'>Nível de acesso</label>
 							<input
 								type='email'
 								id='name-user'

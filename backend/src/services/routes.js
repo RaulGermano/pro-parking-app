@@ -23,13 +23,20 @@ const {
 	CreateCheckOutReservation
 } = require('../controllers/checkOutReservation');
 
+const {
+	CreateParkingSpace,
+	SelectParkingSpace
+} = require('../controllers/parkingSpace');
+
+const {
+	CreateReservation,
+	SelectReservation,
+	SelectCheckInPendingReservation
+} = require('../controllers/reservation');
+
 const { CreateClientVehicle } = require('../controllers/clientVehicle');
 
 const { CreateParking, SelectParking } = require('../controllers/parking');
-
-const { CreateParkingSpace } = require('../controllers/parkingSpace');
-
-const { CreateReservation } = require('../controllers/reservation');
 
 const routes = express.Router();
 
@@ -59,6 +66,8 @@ routes.post('/create-parking-user', CreateParkingUser);
 
 //////////////////////// parking space
 
+routes.get('/select-parking-spaces', SelectParkingSpace);
+
 routes.post('/create-parking-space', CreateParkingSpace);
 
 //////////////////////// parking qualification
@@ -66,6 +75,13 @@ routes.post('/create-parking-space', CreateParkingSpace);
 routes.post('/create-parking-qualification', CreateParkingQualification);
 
 //////////////////////// reservation
+
+routes.get(
+	'/select-checkin-pending-reservation',
+	SelectCheckInPendingReservation
+);
+
+routes.get('/select-reservation', SelectReservation);
 
 routes.post('/create-reservation', CreateReservation);
 

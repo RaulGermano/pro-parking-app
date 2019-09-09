@@ -249,7 +249,7 @@ export default function Main({ match }) {
 										size={27}
 										className='pr-1 text-light'
 									/>
-									Meus usuários
+									Novo usuário
 								</button>
 
 								<NewUserModal

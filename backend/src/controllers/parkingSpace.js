@@ -24,11 +24,28 @@ module.exports = {
 	///////////////////////////////////////////////  selects
 
 	async SelectParkingSpace(req, res) {
-		const {} = req.body;
+		try {
+			const { parking_id } = req.query;
 
-		const parkingSpace = await Parking.find({});
+			const registeredParkingSpaces = await Parking.aggregate([
+				{ $unwind: '$parkingSpace' },
+				{ $match: { 'parkingSpace.excluded': false } },
+				{
+					$group: {
+						_id: parking_id,
+						total: { $sum: 1 }
+					}
+				}
+			]);
 
-		return res.json(parkingSpace);
+			return res.json({
+				message: registeredParkingSpaces
+			});
+		} catch (error) {
+			return res.status(400).json({
+				error: error
+			});
+		}
 	}
 
 	///////////////////////////////////////////////  updates

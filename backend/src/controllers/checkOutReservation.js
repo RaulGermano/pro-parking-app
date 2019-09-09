@@ -14,12 +14,26 @@ module.exports = {
 				_id: reserve_id
 			});
 
+			const checkInMoment = new Date(Reserve.period.check_in.moment);
+			const now = new Date();
+
+			const hours = now.setHours(checkInMoment.getHours() + 2);
+
+			const value = hours * Reserve.parking.space.value;
+
+			console.log(hours, value);
+
+			return;
+
 			await Reservation.updateOne(
 				{
 					_id: reserve_id
 				},
 				{
 					$set: {
+						status: false,
+						hours,
+						value,
 						period: {
 							check_in: Reserve.period.check_in,
 							check_out: {
@@ -58,7 +72,7 @@ module.exports = {
 				}
 			);
 
-			return res.status(400).json({
+			return res.json({
 				message: true
 			});
 		} catch (error) {

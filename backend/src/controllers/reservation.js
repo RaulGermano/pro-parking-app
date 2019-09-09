@@ -46,6 +46,51 @@ module.exports = {
 				error: error
 			});
 		}
+	},
+
+	async SelectReservation(req, res) {
+		const { vehicle_plate, parking_id } = req.query;
+
+		const reserve = await Reservation.findOne({
+			'parking._id': parking_id,
+			'client.vehicle.plate': vehicle_plate,
+			status: true
+		});
+
+		if (!reserve) {
+			res.json({
+				message: false
+			});
+		} else {
+			res.json({
+				message: reserve.parking.space.name
+			});
+		}
+	},
+
+	async SelectCheckInPendingReservation(req, res) {
+		try {
+			const { parking_id } = req.query;
+
+			const checkInPending = await Reservation.aggregate([
+				{ $unwind: '$parkingSpace' },
+				{ $match: { 'parkingSpace.excluded': false } },
+				{
+					$group: {
+						_id: parking_id,
+						total: { $sum: 1 }
+					}
+				}
+			]);
+
+			return res.json({
+				message: checkInPending
+			});
+		} catch (error) {
+			return res.status(400).json({
+				error: error
+			});
+		}
 	}
 
 	///////////////////////////////////////////////  selects

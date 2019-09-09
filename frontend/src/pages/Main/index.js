@@ -448,7 +448,7 @@ export default function Main({ match }) {
 								className='alert alert-light shadow card border mb-0'
 								role='alert'
 							>
-								<h4 className='fs-12pt fw-400'>Vagas</h4>
+								<h4 className='fs-12pt fw-400'>Minhas vagas</h4>
 
 								<hr />
 
@@ -473,7 +473,9 @@ export default function Main({ match }) {
 								className='alert alert-light shadow card border mb-0'
 								role='alert'
 							>
-								<h4 className='fs-12pt fw-400'>Reservas</h4>
+								<h4 className='fs-12pt fw-400'>
+									Reservas do dia
+								</h4>
 
 								<hr />
 
@@ -563,7 +565,7 @@ export default function Main({ match }) {
 									<>
 										<div className='d-flex justify-content-between mb-4'>
 											<h1 className='h4 text-black-50 fw-400 mb-4'>
-												Histórico do dia
+												Histórico de reservas do dia
 											</h1>
 											<SearchBar
 												{...props.searchProps}

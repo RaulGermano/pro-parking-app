@@ -193,7 +193,7 @@ export default function Custumers({ match }) {
 									</span>
 								</button>
 
-								<button
+								{/* <button
 									type='button'
 									className='btn bg-white shadow border ml-3'
 								>
@@ -201,7 +201,7 @@ export default function Custumers({ match }) {
 									<span className='badge badge-secondary ml-2'>
 										{5}
 									</span>
-								</button>
+								</button> */}
 							</div>
 						</div>
 

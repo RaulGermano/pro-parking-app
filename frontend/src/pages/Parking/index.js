@@ -52,12 +52,12 @@ export default function Settings({ match }) {
 								</h1>
 
 								<div className='form-row ml-1'>
-									<div className='col-sm-12 col-md-6 col-lg-4 col-xl-4 p-0 pr-2 '>
+									<div className='col-lg-9 col-sm-12 col-md-6 col-xl-9  p-0 pr-2 '>
 										<label for-html='name-user'>
 											<span className='fw-600'>
 												Nome comercial
 											</span>
-											<span className='ml-1 text-black-50'>
+											<span className='ml-1 text-black-50 fs-10pt'>
 												(Visivel para o cliente)
 											</span>
 										</label>
@@ -98,6 +98,55 @@ export default function Settings({ match }) {
 							<hr />
 
 							<div className='my-5'>
+								<h1 className='h4 text-black-50 fw-400 mb-4'>
+									Telefone
+									<span className='ml-1 text-black-50 fs-10pt'>
+										(Visivel para o cliente)
+									</span>
+								</h1>
+
+								<div className='form-row ml-1'>
+									<div className='col-lg-1 col-sm-12 col-md-4 col-xl-1 p-0 pr-2 '>
+										<label for-html='name-user'>
+											<span className='fw-600'>DDD</span>
+										</label>
+										<input
+											type='text'
+											id='name-user'
+											className='form-control shadow-sm'
+											onChange={event =>
+												setNameUser(event.target.value)
+											}
+											disabled={disabledField}
+											required={disabledField}
+											value={nameUser}
+										/>
+									</div>
+
+									<div className='col-lg-3 col-sm-12 col-md-4 col-xl-3 p-0 pr-2 '>
+										<label for-html='name-user'>
+											<span className='fw-600'>
+												Número
+											</span>
+										</label>
+										<input
+											type='text'
+											id='name-user'
+											className='form-control shadow-sm'
+											onChange={event =>
+												setNameUser(event.target.value)
+											}
+											disabled={disabledField}
+											required={disabledField}
+											value=''
+										/>
+									</div>
+								</div>
+							</div>
+
+							{/* <hr />
+                                
+                            <div className='my-5'>
 								<div className='d-flex justify-content-between'>
 									<h1 className='h4 titulo-pagina text-black-50 fw-400 mb-4'>
 										Telefones
@@ -226,7 +275,7 @@ export default function Settings({ match }) {
 										/>
 									</div>
 								</div>
-							</div>
+							</div> */}
 
 							{/* <hr />
 

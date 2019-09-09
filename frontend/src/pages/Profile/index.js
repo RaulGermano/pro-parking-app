@@ -34,7 +34,7 @@ export default function Main({ match }) {
 									</div>
 								</div>
 								<div className='align-self-center'>
-									<button
+									{/* <button
 										className='btn btn-sm btn-light text-secondary border mr-2'
 										onClick={() => setDisabledField(false)}
 									>
@@ -43,7 +43,7 @@ export default function Main({ match }) {
 											className='pr-1 text-secondary'
 										/>
 										Inativar
-									</button>
+									</button> */}
 
 									<button
 										className='btn btn-sm btn-light text-secondary border mr-2'
