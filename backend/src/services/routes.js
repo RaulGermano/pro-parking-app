@@ -25,13 +25,17 @@ const {
 
 const {
 	CreateParkingSpace,
-	SelectParkingSpace
+	SelectTotalParkingSpaces,
+	SelectActiveParkingSpaces
 } = require('../controllers/parkingSpace');
 
 const {
 	CreateReservation,
 	SelectReservation,
-	SelectCheckInPendingReservation
+	SelectCheckInPendingReservation,
+	SelectTodayReservations,
+	SelectCheckOutPendingReservation,
+	SelectTodayCountReservations
 } = require('../controllers/reservation');
 
 const { CreateClientVehicle } = require('../controllers/clientVehicle');
@@ -66,7 +70,9 @@ routes.post('/create-parking-user', CreateParkingUser);
 
 //////////////////////// parking space
 
-routes.get('/select-parking-spaces', SelectParkingSpace);
+routes.get('/select-total-parking-spaces', SelectTotalParkingSpaces);
+
+routes.get('/select-active-parking-spaces', SelectActiveParkingSpaces);
 
 routes.post('/create-parking-space', CreateParkingSpace);
 
@@ -80,6 +86,15 @@ routes.get(
 	'/select-checkin-pending-reservation',
 	SelectCheckInPendingReservation
 );
+
+routes.get(
+	'/select-checkout-pending-reservation',
+	SelectCheckOutPendingReservation
+);
+
+routes.get('/select-today-count-reservations', SelectTodayCountReservations);
+
+routes.get('/select-today-reservations', SelectTodayReservations);
 
 routes.get('/select-reservation', SelectReservation);
 

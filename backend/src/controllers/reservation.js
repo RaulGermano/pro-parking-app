@@ -38,7 +38,7 @@ module.exports = {
 				}
 			);
 
-			return res.status(400).json({
+			return res.json({
 				message: true
 			});
 		} catch (error) {
@@ -48,22 +48,30 @@ module.exports = {
 		}
 	},
 
+	///////////////////////////////////////////////  selects
+
 	async SelectReservation(req, res) {
-		const { vehicle_plate, parking_id } = req.query;
+		try {
+			const { vehicle_plate, parking_id } = req.query;
 
-		const reserve = await Reservation.findOne({
-			'parking._id': parking_id,
-			'client.vehicle.plate': vehicle_plate,
-			status: true
-		});
-
-		if (!reserve) {
-			res.json({
-				message: false
+			const reserve = await Reservation.findOne({
+				'parking._id': parking_id,
+				'client.vehicle.plate': vehicle_plate,
+				status: true
 			});
-		} else {
-			res.json({
-				message: reserve.parking.space.name
+
+			if (!reserve) {
+				res.json({
+					message: false
+				});
+			} else {
+				res.json({
+					message: reserve.parking.space.name
+				});
+			}
+		} catch (error) {
+			res.status(400).json({
+				message: error
 			});
 		}
 	},
@@ -72,16 +80,11 @@ module.exports = {
 		try {
 			const { parking_id } = req.query;
 
-			const checkInPending = await Reservation.aggregate([
-				{ $unwind: '$parkingSpace' },
-				{ $match: { 'parkingSpace.excluded': false } },
-				{
-					$group: {
-						_id: parking_id,
-						total: { $sum: 1 }
-					}
-				}
-			]);
+			const checkInPending = await Reservation.countDocuments({
+				'parking._id': parking_id,
+				period: { $exists: false },
+				status: true
+			});
 
 			return res.json({
 				message: checkInPending
@@ -91,9 +94,84 @@ module.exports = {
 				error: error
 			});
 		}
-	}
+	},
 
-	///////////////////////////////////////////////  selects
+	async SelectCheckOutPendingReservation(req, res) {
+		try {
+			const { parking_id } = req.query;
+
+			const checkInPending = await Reservation.find({
+				'parking._id': parking_id,
+				'period.check_in': { $exists: true },
+				'period.check_out': { $exists: false },
+				status: true
+			});
+
+			return res.json({
+				message: checkInPending
+			});
+		} catch (error) {
+			return res.status(400).json({
+				error: error
+			});
+		}
+	},
+
+	async SelectTodayCountReservations(req, res) {
+		try {
+			const { parking_id } = req.query;
+
+			const datetime = new Date();
+
+			const today = new Date(
+				new Date().setDate(new Date().getDate() - 1)
+			);
+
+			const todayReservations = await Reservation.countDocuments({
+				'parking._id': parking_id,
+				createdAt: {
+					$lt: datetime,
+					$gte: today
+				}
+			});
+
+			return res.json({
+				message: todayReservations
+			});
+		} catch (error) {
+			return res.status(400).json({
+				error: error
+			});
+		}
+	},
+
+	async SelectTodayReservations(req, res) {
+		try {
+			const { parking_id } = req.query;
+
+			const datetime = new Date();
+
+			const today = new Date(
+				new Date().setDate(new Date().getDate() - 1)
+			);
+
+			const todayReservations = await Reservation.find({
+				'parking._id': parking_id,
+				createdAt: {
+					$lt: datetime,
+					$gte: today
+				}
+			});
+
+			return res.json({
+				message: todayReservations
+			});
+		} catch (error) {
+			return res.status(400).json({
+				error: error
+			});
+		}
+	}
 
 	///////////////////////////////////////////////  updates
 

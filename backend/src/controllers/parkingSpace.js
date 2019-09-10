@@ -23,24 +23,49 @@ module.exports = {
 
 	///////////////////////////////////////////////  selects
 
-	async SelectParkingSpace(req, res) {
+	async SelectTotalParkingSpaces(req, res) {
 		try {
 			const { parking_id } = req.query;
 
-			const registeredParkingSpaces = await Parking.aggregate([
-				{ $unwind: '$parkingSpace' },
-				{ $match: { 'parkingSpace.excluded': false } },
+			const totalParkingSpaces = await Parking.find({
+				_id: parking_id
+			});
+
+			const quantity = totalParkingSpaces[0].parkingSpace.length;
+
+			return res.json({
+				message: quantity
+			});
+		} catch (error) {
+			return res.status(400).json({
+				error: error
+			});
+		}
+	},
+
+	async SelectActiveParkingSpaces(req, res) {
+		try {
+			const { parking_id } = req.query;
+
+			const parkingSpaces = await Parking.aggregate([
 				{
-					$group: {
-						_id: parking_id,
-						total: { $sum: 1 }
+					$project: {
+						count: { $size: '$parkingSpace' }
 					}
 				}
 			]);
 
-			return res.json({
-				message: registeredParkingSpaces
+			const activeParkingSpaces = parkingSpaces.filter(item => {
+				return item._id == parking_id;
 			});
+
+			if (activeParkingSpaces[0]) {
+				return res.json({
+					message: activeParkingSpaces[0].count
+				});
+			}
+
+			return;
 		} catch (error) {
 			return res.status(400).json({
 				error: error
