@@ -26,7 +26,8 @@ const {
 const {
 	CreateParkingSpace,
 	SelectTotalParkingSpaces,
-	SelectActiveParkingSpaces
+	SelectActiveParkingSpaces,
+	SelectPendingCheckOutParkingSpaces
 } = require('../controllers/parkingSpace');
 
 const {
@@ -69,6 +70,11 @@ routes.post('/auth-parking', AuthenticateParking);
 routes.post('/create-parking-user', CreateParkingUser);
 
 //////////////////////// parking space
+
+routes.get(
+	'/select-pending-checkout-parking-spaces',
+	SelectPendingCheckOutParkingSpaces
+);
 
 routes.get('/select-total-parking-spaces', SelectTotalParkingSpaces);
 

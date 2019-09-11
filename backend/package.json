@@ -5,7 +5,8 @@
 	"author": "RaulGermano <raul.germano@icloud.com>",
 	"license": "MIT",
 	"scripts": {
-		"server": "nodemon ./src/services/index.js"
+		"server": "nodemon ./src/services/index.js",
+		"start": "nodemon ./src/services/index.js"
 	},
 	"dependencies": {
 		"axios": "^0.19.0",

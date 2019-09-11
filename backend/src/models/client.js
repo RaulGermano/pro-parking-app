@@ -9,7 +9,7 @@ const VehicleSchema = new mongoose.Schema(
 			type: Boolean,
 			default: false
 		},
-		avalible: {
+		available: {
 			type: Boolean,
 			default: true,
 			require: true

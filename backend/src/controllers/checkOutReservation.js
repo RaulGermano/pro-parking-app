@@ -55,7 +55,7 @@ module.exports = {
 				},
 				{
 					$set: {
-						'parkingSpace.$.avalible': true
+						'parkingSpace.$.available': true
 					}
 				}
 			);
@@ -67,7 +67,7 @@ module.exports = {
 				},
 				{
 					$set: {
-						'vehicle.$.avalible': true
+						'vehicle.$.available': true
 					}
 				}
 			);

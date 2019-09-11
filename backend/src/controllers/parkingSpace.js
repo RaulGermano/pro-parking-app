@@ -1,4 +1,5 @@
 const Parking = require('../models/parking');
+const { Types } = require('mongoose');
 
 module.exports = {
 	///////////////////////////////////////////////  creates
@@ -27,14 +28,34 @@ module.exports = {
 		try {
 			const { parking_id } = req.query;
 
-			const totalParkingSpaces = await Parking.find({
-				_id: parking_id
-			});
-
-			const quantity = totalParkingSpaces[0].parkingSpace.length;
+			const registeredParkingSpaces = await Parking.aggregate([
+				{
+					$match: {
+						_id: Types.ObjectId(parking_id)
+					}
+				},
+				{
+					$unwind: '$parkingSpace'
+				},
+				{
+					$match: {
+						'parkingSpace.excluded': {
+							$in: [false, true]
+						}
+					}
+				},
+				{
+					$group: {
+						_id: parking_id,
+						total: {
+							$sum: 1
+						}
+					}
+				}
+			]);
 
 			return res.json({
-				message: quantity
+				message: registeredParkingSpaces
 			});
 		} catch (error) {
 			return res.status(400).json({
@@ -47,85 +68,71 @@ module.exports = {
 		try {
 			const { parking_id } = req.query;
 
-			// const parkingSpaces = await Parking.aggregate([
-			// 	{
-			// 		$project: {
-			// 			count: { $size: '$parkingSpace' }
-			// 		}
-			// 	}
-			// ]);
-
-			// const parkingSpaces = await Parking.aggregate([
-			// 	{
-			// 		$match: {
-			// 			stock: {
-			// 				$elemMatch: {
-			// 					$and: [
-			// 						{ country: '01' },
-			// 						{ 'warehouse.code': '02' }
-			// 					]
-			// 				}
-			// 			}
-			// 		}
-			// 	},
-			// 	{
-			// 		$project: {
-			// 			article_code: 1,
-			// 			description: 1,
-			// 			stock: {
-			// 				$filter: {
-			// 					input: '$stock',
-			// 					as: 'stock',
-			// 					cond: {
-			// 						$and: [
-			// 							{ $eq: ['$$stock.country', '01'] },
-			// 							{
-			// 								$eq: [
-			// 									'$$stock.warehouse.code',
-			// 									'02'
-			// 								]
-			// 							}
-			// 						]
-			// 					}
-			// 				}
-			// 			}
-			// 		}
-			// 	}
-			// ]);
-
 			const registeredParkingSpaces = await Parking.aggregate([
-				{ $unwind: '$parkingSpace' },
-				{ $match: { 'parkingSpace.excluded': false } },
+				{
+					$match: {
+						_id: Types.ObjectId(parking_id)
+					}
+				},
+				{
+					$unwind: '$parkingSpace'
+				},
+				{
+					$match: {
+						'parkingSpace.excluded': false
+					}
+				},
 				{
 					$group: {
 						_id: parking_id,
-						total: { $sum: 1 }
+						total: {
+							$sum: 1
+						}
 					}
 				}
 			]);
 
-			// .find({
-			// 	_id: parking_id,
-			// 	'parkingSpace.excluded': false
-			// });
+			return res.json({
+				message: registeredParkingSpaces
+			});
+		} catch (error) {
+			return res.status(400).json({
+				error: error
+			});
+		}
+	},
 
-			// const activeParkingSpaces = parkingSpaces.filter(item => {
-			// 	return item._id == parking_id;
-			// });
+	async SelectPendingCheckOutParkingSpaces(req, res) {
+		try {
+			const { parking_id } = req.query;
 
-			// console.log(activeParkingSpaces);
-
-			// if (activeParkingSpaces[0]) {
-			// 	return res.json({
-			// 		message: activeParkingSpaces[0].count
-			// 	});
-			// }
+			const registeredParkingSpaces = await Parking.aggregate([
+				{
+					$match: {
+						_id: Types.ObjectId(parking_id)
+					}
+				},
+				{
+					$unwind: '$parkingSpace'
+				},
+				{
+					$match: {
+						'parkingSpace.available': false
+					}
+				},
+				{
+					$group: {
+						_id: parking_id,
+						total: {
+							$sum: 1
+						}
+					}
+				}
+			]);
 
 			return res.json({
 				message: registeredParkingSpaces
 			});
-
-			return;
 		} catch (error) {
 			return res.status(400).json({
 				error: error

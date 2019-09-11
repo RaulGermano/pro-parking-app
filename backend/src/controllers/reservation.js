@@ -21,7 +21,7 @@ module.exports = {
 				},
 				{
 					$set: {
-						'parkingSpace.$.avalible': false
+						'parkingSpace.$.available': false
 					}
 				}
 			);
@@ -33,7 +33,7 @@ module.exports = {
 				},
 				{
 					$set: {
-						'vehicle.$.avalible': false
+						'vehicle.$.available': false
 					}
 				}
 			);
