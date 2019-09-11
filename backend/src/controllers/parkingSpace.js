@@ -47,23 +47,83 @@ module.exports = {
 		try {
 			const { parking_id } = req.query;
 
-			const parkingSpaces = await Parking.aggregate([
+			// const parkingSpaces = await Parking.aggregate([
+			// 	{
+			// 		$project: {
+			// 			count: { $size: '$parkingSpace' }
+			// 		}
+			// 	}
+			// ]);
+
+			// const parkingSpaces = await Parking.aggregate([
+			// 	{
+			// 		$match: {
+			// 			stock: {
+			// 				$elemMatch: {
+			// 					$and: [
+			// 						{ country: '01' },
+			// 						{ 'warehouse.code': '02' }
+			// 					]
+			// 				}
+			// 			}
+			// 		}
+			// 	},
+			// 	{
+			// 		$project: {
+			// 			article_code: 1,
+			// 			description: 1,
+			// 			stock: {
+			// 				$filter: {
+			// 					input: '$stock',
+			// 					as: 'stock',
+			// 					cond: {
+			// 						$and: [
+			// 							{ $eq: ['$$stock.country', '01'] },
+			// 							{
+			// 								$eq: [
+			// 									'$$stock.warehouse.code',
+			// 									'02'
+			// 								]
+			// 							}
+			// 						]
+			// 					}
+			// 				}
+			// 			}
+			// 		}
+			// 	}
+			// ]);
+
+			const registeredParkingSpaces = await Parking.aggregate([
+				{ $unwind: '$parkingSpace' },
+				{ $match: { 'parkingSpace.excluded': false } },
 				{
-					$project: {
-						count: { $size: '$parkingSpace' }
+					$group: {
+						_id: parking_id,
+						total: { $sum: 1 }
 					}
 				}
 			]);
 
-			const activeParkingSpaces = parkingSpaces.filter(item => {
-				return item._id == parking_id;
-			});
+			// .find({
+			// 	_id: parking_id,
+			// 	'parkingSpace.excluded': false
+			// });
 
-			if (activeParkingSpaces[0]) {
-				return res.json({
-					message: activeParkingSpaces[0].count
-				});
-			}
+			// const activeParkingSpaces = parkingSpaces.filter(item => {
+			// 	return item._id == parking_id;
+			// });
+
+			// console.log(activeParkingSpaces);
+
+			// if (activeParkingSpaces[0]) {
+			// 	return res.json({
+			// 		message: activeParkingSpaces[0].count
+			// 	});
+			// }
+
+			return res.json({
+				message: registeredParkingSpaces
+			});
 
 			return;
 		} catch (error) {
