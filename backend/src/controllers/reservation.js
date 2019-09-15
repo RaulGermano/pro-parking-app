@@ -2,18 +2,22 @@ const Reservation = require('../models/reservation');
 const Parking = require('../models/parking');
 const Client = require('../models/client');
 const { Types } = require('mongoose');
-var moment = require('moment');
+const moment = require('moment-timezone');
 
-const dateFrom = moment()
-	.add(1, 'day')
+const dateLessADay = moment()
+	.utc()
+	.subtract(1, 'day')
 	.format('YYYY-MM-DD');
 
-const dateTo = moment().format('YYYY-MM-DD');
+const dateLessAMonth = moment()
+	.utc()
+	.subtract(1, 'month')
+	.format('YYYY-MM-DD');
 
-console.log({
-	dateFrom: dateFrom,
-	dateTo: dateTo
-});
+const dateToday = moment()
+	.utc()
+	.add(1, 'day')
+	.format('YYYY-MM-DD');
 
 module.exports = {
 	///////////////////////////////////////////////  creates
@@ -70,7 +74,7 @@ module.exports = {
 			const reserve = await Reservation.findOne({
 				'parking._id': parking_id,
 				'client.vehicle.plate': vehicle_plate,
-				status: true
+				finished: true
 			});
 
 			if (!reserve) {
@@ -96,7 +100,7 @@ module.exports = {
 			const checkInPending = await Reservation.countDocuments({
 				'parking._id': parking_id,
 				period: { $exists: false },
-				status: true
+				finished: true
 			});
 
 			return res.json({
@@ -115,9 +119,11 @@ module.exports = {
 
 			const checkInPending = await Reservation.find({
 				'parking._id': parking_id,
-				'period.check_in': { $exists: true },
-				'period.check_out': { $exists: false },
-				status: true
+				$and: [
+					{ 'period.check_in': { $exists: true } },
+					{ 'period.check_out': { $exists: false } }
+				],
+				finished: true
 			});
 
 			return res.json({
@@ -137,8 +143,8 @@ module.exports = {
 			const todayReservations = await Reservation.countDocuments({
 				'parking._id': parking_id,
 				createdAt: {
-					$gte: new Date(dateTo),
-					$lt: new Date(dateFrom)
+					$lt: dateToday,
+					$gte: dateLessADay
 				}
 			});
 
@@ -156,18 +162,38 @@ module.exports = {
 		try {
 			const { parking_id } = req.query;
 
-			console.log(parking_id);
-
 			const todayReservations = await Reservation.find({
 				'parking._id': parking_id,
 				createdAt: {
-					$gte: new Date(dateTo),
-					$lt: new Date(dateFrom)
+					$lt: dateToday,
+					$gte: dateLessADay
 				}
 			});
 
 			return res.json({
 				message: todayReservations
+			});
+		} catch (error) {
+			return res.status(400).json({
+				error: error
+			});
+		}
+	},
+
+	async SelectMonthReservations(req, res) {
+		try {
+			const { client_id } = req.query;
+
+			const monthReservations = await Reservation.find({
+				'client._id': client_id,
+				createdAt: {
+					$lt: dateToday,
+					$gte: dateLessAMonth
+				}
+			});
+
+			return res.json({
+				message: monthReservations
 			});
 		} catch (error) {
 			return res.status(400).json({
@@ -187,8 +213,8 @@ module.exports = {
 							$exists: true
 						},
 						createdAt: {
-							$gte: new Date(dateTo),
-							$lt: new Date(dateFrom)
+							$lt: dateToday,
+							$gte: dateLessADay
 						}
 					}
 				},

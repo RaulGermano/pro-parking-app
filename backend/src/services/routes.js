@@ -29,7 +29,8 @@ const {
 	SelectTotalParkingSpaces,
 	SelectActiveParkingSpaces,
 	SelectPendingCheckOutParkingSpaces,
-	SelectSpecificParkingSpace
+	SelectSpecificParkingSpace,
+	SelectAllParkingSpaces
 } = require('../controllers/parkingSpace');
 
 const {
@@ -37,6 +38,7 @@ const {
 	SelectReservation,
 	SelectCheckInPendingReservation,
 	SelectTodayReservations,
+	SelectMonthReservations,
 	SelectCheckOutPendingReservation,
 	SelectTodayCountReservations,
 	SelectTodayTicketReservations
@@ -92,6 +94,8 @@ routes.get(
 	SelectPendingCheckOutParkingSpaces
 );
 
+routes.get('/select-all-parking-spaces', SelectAllParkingSpaces);
+
 routes.get('/select-specific-parking-space', SelectSpecificParkingSpace);
 
 routes.get('/select-total-parking-spaces', SelectTotalParkingSpaces);
@@ -121,6 +125,8 @@ routes.get('/select-today-count-reservations', SelectTodayCountReservations);
 routes.get('/select-today-ticket-reservations', SelectTodayTicketReservations);
 
 routes.get('/select-today-reservations', SelectTodayReservations);
+
+routes.get('/select-month-reservations', SelectMonthReservations);
 
 routes.get('/select-reservation', SelectReservation);
 

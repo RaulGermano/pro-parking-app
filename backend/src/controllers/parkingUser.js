@@ -23,19 +23,27 @@ module.exports = {
 
 		const parkingUser = await ParkingUser.findOne({
 			login
-		});
+		}).select('+password');
 
 		if (!parkingUser) {
 			return res.status(400).send('Usuário não encontrado!');
 		}
 
 		if (!(await bcrypt.compare(password, parkingUser.password))) {
-			return res.status(400).send('Senha incorreta!');
+			return res.status(400).send('Usuário não encontrado!');
+		}
+
+		if (parkingUser.firstAccess) {
+			return res.status(400).json({
+				message: 'Trocar a senha'
+			});
 		}
 
 		parkingUser.password = undefined;
 
-		return res.json(parkingUser);
+		return res.json({
+			message: parkingUser
+		});
 	},
 
 	async SelectSpecificParkingUser(req, res) {

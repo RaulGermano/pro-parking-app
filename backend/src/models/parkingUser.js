@@ -10,35 +10,40 @@ const ParkingUserSchema = new mongoose.Schema(
 			default: false
 		},
 		login: {
+			type: String,
+			lowercase: true,
+			required: true,
 			index: {
 				unique: true
-			},
-			lowercase: true,
-			type: String
-		},
-		email: {
-			lowercase: true,
-			type: String
+			}
 		},
 		password: {
-			type: String
+			type: String,
+			select: false,
+			required: true
 		},
-		birth: {
-			type: Date
+		email: {
+			type: String,
+			lowercase: true,
+			required: true
 		},
 		sex: {
-			lowercase: true,
-			type: String
+			type: String,
+			lowercase: true
 		},
-		cpf: {
+		document: {
 			type: String
 		},
 		name: {
-			lowercase: true,
-			type: String
+			type: String,
+			lowercase: true
 		},
 		accessLevel: {
 			type: Intl
+		},
+		firstAccess: {
+			type: Boolean,
+			default: true
 		},
 		parking_id: {
 			type: mongoose.Schema.Types.ObjectId,

@@ -4,9 +4,9 @@ mongoose.set('useCreateIndex', true);
 
 const ReservationSchema = new mongoose.Schema(
 	{
-		status: {
+		finished: {
 			type: Boolean,
-			default: true
+			default: false
 		},
 		hours: {
 			type: Number
@@ -33,6 +33,10 @@ const ReservationSchema = new mongoose.Schema(
 			vehicle: {
 				_id: {
 					type: mongoose.Schema.Types.ObjectId
+				},
+				name: {
+					type: String,
+					lowercase: true
 				},
 				plate: {
 					type: String,

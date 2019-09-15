@@ -15,13 +15,13 @@ const VehicleSchema = new mongoose.Schema(
 			require: true
 		},
 		plate: {
+			type: String,
 			require: true,
-			lowercase: true,
-			type: String
+			lowercase: true
 		},
 		name: {
-			lowercase: true,
-			type: String
+			type: String,
+			lowercase: true
 		}
 	},
 	{
@@ -36,35 +36,43 @@ const ClientSchema = new mongoose.Schema(
 			default: false
 		},
 		login: {
+			type: String,
+			lowercase: true,
+			required: true,
 			index: {
 				unique: true
-			},
-			lowercase: true,
-			type: String
+			}
 		},
 		email: {
+			type: String,
 			lowercase: true,
-			type: String
+			required: true
 		},
 		password: {
-			type: String
+			type: String,
+			required: true
 		},
 		name: {
-			lowercase: true,
-			type: String
-		},
-		birth: {
-			type: Date
+			type: String,
+			lowercase: true
 		},
 		sex: {
-			type: String
+			type: String,
+			lowercase: true
 		},
 		cpf: {
-			type: String
+			type: String,
+			required: true
 		},
 		telephone: {
-			ddd: Intl,
-			number: String
+			ddd: {
+				type: Intl,
+				required: true
+			},
+			number: {
+				type: String,
+				required: true
+			}
 		},
 		vehicle: [VehicleSchema]
 	},

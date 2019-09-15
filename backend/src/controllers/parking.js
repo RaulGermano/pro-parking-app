@@ -14,7 +14,7 @@ module.exports = {
 	///////////////////////////////////////////////  selects
 
 	async SelectParkings(req, res) {
-		const { status: excluded } = req.query;
+		const { excluded } = req.query;
 
 		const parking = await Parking.find({
 			excluded

@@ -1,26 +1,39 @@
 const Reservation = require('../models/reservation');
 const Parking = require('../models/parking');
 const Client = require('../models/client');
+const moment = require('moment-timezone');
 
 module.exports = {
 	///////////////////////////////////////////////  creates
 
 	async CreateCheckOutReservation(req, res) {
 		try {
-			const { user_id, name, reserve_id } = req.body;
+			const { user_id, user_name, reserve_id } = req.body;
 
-			const Reserve = await Reservation.findOne({
-				_id: reserve_id
-			});
+			const Reserve = await Reservation.findOne(
+				{
+					_id: reserve_id
+				},
+				{
+					period: true,
+					parking: true,
+					client: true
+				}
+			);
 
-			const checkInMoment = new Date(Reserve.period.check_in.moment);
-			const now = new Date();
+			const dateNow = moment().utc();
 
-			const hours = now.setHours(checkInMoment.getHours() + 2);
+			const checkInMoment = moment(Reserve.period.check_in.moment).utc();
 
-			const value = hours * Reserve.parking.space.value;
+			const checkOutMoment = dateNow.diff(checkInMoment, 'minutes');
 
-			console.log(hours, value);
+			const minuteReserveValue = Reserve.parking.space.value / 60;
+
+			const reserveValue = parseFloat(
+				(minuteReserveValue * checkOutMoment).toFixed(2)
+			);
+
+			const reserveHours = parseFloat((checkOutMoment / 60).toFixed(2));
 
 			await Reservation.updateOne(
 				{
@@ -28,17 +41,17 @@ module.exports = {
 				},
 				{
 					$set: {
-						status: false,
-						hours,
-						value,
+						finished: true,
+						hours: reserveHours,
+						value: reserveValue,
 						period: {
 							check_in: Reserve.period.check_in,
 							check_out: {
 								user: {
 									_id: user_id,
-									name: name
+									name: user_name
 								},
-								moment: now
+								moment: dateNow
 							}
 						}
 					}

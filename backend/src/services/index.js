@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const routes = require('./routes');
 const cors = require('cors');
+const moment = require('moment-timezone');
 
 const server = express();
 
@@ -15,4 +16,10 @@ server.use(express.json());
 server.use(routes);
 server.use(cors());
 
-server.listen(3030);
+server.listen(3030, () =>
+	console.log(
+		moment()
+			.utc()
+			.format()
+	)
+);

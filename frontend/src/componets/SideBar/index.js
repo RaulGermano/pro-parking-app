@@ -37,8 +37,8 @@ export default function SideBar({ route }) {
 					/>
 					<SideBarItem
 						title='Vagas'
-						active={path === '/parkingLots' ? true : false}
-						link='/parkingLots'
+						active={path === '/parking-space' ? true : false}
+						link='/parking-space'
 						icon={<MdFlag size={22} className='mr-2 align-top' />}
 					/>
 					<SideBarItem
@@ -74,8 +74,8 @@ export default function SideBar({ route }) {
 					/>
 					<SideBarItem
 						title='Passo a passo'
-						active={path === '/getStarted' ? true : false}
-						link='/getStarted'
+						active={path === '/introdution' ? true : false}
+						link='/introdution'
 						icon={
 							<MdBookmark size={22} className='mr-2 align-top' />
 						}
@@ -89,8 +89,8 @@ export default function SideBar({ route }) {
 
 					<SideBarItem
 						title='Suporte'
-						active={path === '/about' ? true : false}
-						link='/about'
+						active={path === '/help' ? true : false}
+						link='/help'
 						icon={
 							<MdHeadsetMic
 								size={22}

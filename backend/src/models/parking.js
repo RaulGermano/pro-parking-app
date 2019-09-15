@@ -9,8 +9,8 @@ const ParkingQualificationSchema = new mongoose.Schema(
 			type: Intl
 		},
 		description: {
-			lowercase: true,
-			type: String
+			type: String,
+			lowercase: true
 		},
 		client: {
 			_id: {
@@ -18,12 +18,12 @@ const ParkingQualificationSchema = new mongoose.Schema(
 				ref: 'Parking'
 			},
 			login: {
-				lowercase: true,
-				type: String
+				type: String,
+				lowercase: true
 			},
 			email: {
-				lowercase: true,
-				type: String
+				type: String,
+				lowercase: true
 			}
 		}
 	},
@@ -46,8 +46,9 @@ const ParkingSpaceSchema = new mongoose.Schema(
 			type: Number
 		},
 		name: {
+			type: String,
 			lowercase: true,
-			type: String
+			required: true
 		},
 		description: {
 			accessibility: {
@@ -80,32 +81,32 @@ const ParkingSchema = new mongoose.Schema(
 			default: false
 		},
 		name: {
-			lowercase: true,
-			type: String
+			type: String,
+			lowercase: true
 		},
 		cnpj: {
-			lowercase: true,
-			type: String
+			type: String,
+			lowercase: true
 		},
 		telephone: {
-			ddd: Intl,
-			number: String
+			ddd: {
+				type: Intl
+			},
+			number: {
+				type: String
+			}
 		},
 		address: {
-			createdAt: {
-				type: Date,
-				default: Date.now
-			},
 			zip_code: {
 				type: String
 			},
 			state: {
-				lowercase: true,
-				type: String
+				type: String,
+				lowercase: true
 			},
 			city: {
-				lowercase: true,
-				type: String
+				type: String,
+				lowercase: true
 			},
 			neighborhood: {
 				type: String

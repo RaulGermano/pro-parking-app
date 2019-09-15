@@ -1,11 +1,13 @@
 const Reservation = require('../models/reservation');
+const moment = require('moment-timezone');
 
 module.exports = {
 	///////////////////////////////////////////////  creates
 
 	async CreateCheckInReservation(req, res) {
-		const { user_id, name, reserve_id } = req.body;
-		const now = Date.now();
+		const { user_id, user_name, reserve_id } = req.body;
+
+		const dateNow = moment().utc();
 
 		const reservation = await Reservation.updateOne(
 			{
@@ -17,16 +19,18 @@ module.exports = {
 						check_in: {
 							user: {
 								_id: user_id,
-								name: name
+								name: user_name
 							},
-							moment: now
+							moment: dateNow
 						}
 					}
 				}
 			}
 		);
 
-		return res.json(reservation);
+		return res.json({
+			reservation
+		});
 	}
 
 	///////////////////////////////////////////////  selects

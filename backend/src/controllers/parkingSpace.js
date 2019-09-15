@@ -19,7 +19,9 @@ module.exports = {
 
 		await parking.save();
 
-		return res.json(parking);
+		return res.json({
+			parking
+		});
 	},
 
 	///////////////////////////////////////////////  selects
@@ -59,7 +61,7 @@ module.exports = {
 			});
 		} catch (error) {
 			return res.status(400).json({
-				error: error
+				error
 			});
 		}
 	},
@@ -97,7 +99,7 @@ module.exports = {
 			});
 		} catch (error) {
 			return res.status(400).json({
-				error: error
+				error
 			});
 		}
 	},
@@ -135,7 +137,7 @@ module.exports = {
 			});
 		} catch (error) {
 			return res.status(400).json({
-				error: error
+				error
 			});
 		}
 	},
@@ -170,7 +172,25 @@ module.exports = {
 			});
 		} catch (error) {
 			return res.status(400).json({
-				error: error
+				error
+			});
+		}
+	},
+
+	async SelectAllParkingSpaces(req, res) {
+		try {
+			const { parking_id: _id } = req.query;
+
+			const registeredParkingSpaces = await Parking.find({
+				_id
+			});
+
+			return res.json({
+				message: registeredParkingSpaces
+			});
+		} catch (error) {
+			return res.status(400).json({
+				error
 			});
 		}
 	}
