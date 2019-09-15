@@ -28,12 +28,21 @@ module.exports = {
 
 	///////////////////////////////////////////////  selects
 
-	async SelectClientVehicle(req, res) {
-		const {} = req.body;
+	async SelectClientVehicles(req, res) {
+		const { client_id: _id } = req.query;
 
-		const clientVehicle = await Parking.find({});
+		const clientVehicles = await Client.find(
+			{
+				_id
+			},
+			{
+				vehicle: true
+			}
+		);
 
-		return res.json(clientVehicle);
+		return res.json({
+			message: clientVehicles
+		});
 	}
 
 	///////////////////////////////////////////////  updates

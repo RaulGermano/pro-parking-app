@@ -122,7 +122,7 @@ module.exports = {
 				},
 				{
 					$group: {
-						_id: parking_id,
+						_id: Types.ObjectId(parking_id),
 						total: {
 							$sum: 1
 						}
@@ -132,6 +132,41 @@ module.exports = {
 
 			return res.json({
 				message: registeredParkingSpaces
+			});
+		} catch (error) {
+			return res.status(400).json({
+				error: error
+			});
+		}
+	},
+
+	async SelectSpecificParkingSpace(req, res) {
+		try {
+			const { parking_id, parkingSpace_id } = req.query;
+
+			const specificParkingSpace = await Parking.aggregate([
+				{
+					$match: {
+						_id: Types.ObjectId(parking_id)
+					}
+				},
+				{
+					$unwind: '$parkingSpace'
+				},
+				{
+					$match: {
+						'parkingSpace._id': Types.ObjectId(parkingSpace_id)
+					}
+				},
+				{
+					$project: {
+						parkingSpace: 1
+					}
+				}
+			]);
+
+			return res.json({
+				message: specificParkingSpace
 			});
 		} catch (error) {
 			return res.status(400).json({

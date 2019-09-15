@@ -36,6 +36,18 @@ module.exports = {
 		parkingUser.password = undefined;
 
 		return res.json(parkingUser);
+	},
+
+	async SelectSpecificParkingUser(req, res) {
+		const { parkingUser_id: _id } = req.query;
+
+		const parkingUser = await ParkingUser.findOne({
+			_id
+		});
+
+		return res.json({
+			message: parkingUser
+		});
 	}
 
 	///////////////////////////////////////////////  updates

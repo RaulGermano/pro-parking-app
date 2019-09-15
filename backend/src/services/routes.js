@@ -2,8 +2,8 @@ const express = require('express');
 
 const {
 	CreateClient,
-	RemoveClient,
-	AuthenticateClient
+	AuthenticateClient,
+	SelectClientInformations
 } = require('../controllers/client');
 
 const {
@@ -12,7 +12,8 @@ const {
 
 const {
 	CreateParkingUser,
-	AuthenticateParking
+	AuthenticateParking,
+	SelectSpecificParkingUser
 } = require('../controllers/parkingUser');
 
 const {
@@ -27,7 +28,8 @@ const {
 	CreateParkingSpace,
 	SelectTotalParkingSpaces,
 	SelectActiveParkingSpaces,
-	SelectPendingCheckOutParkingSpaces
+	SelectPendingCheckOutParkingSpaces,
+	SelectSpecificParkingSpace
 } = require('../controllers/parkingSpace');
 
 const {
@@ -36,36 +38,50 @@ const {
 	SelectCheckInPendingReservation,
 	SelectTodayReservations,
 	SelectCheckOutPendingReservation,
-	SelectTodayCountReservations
+	SelectTodayCountReservations,
+	SelectTodayTicketReservations
 } = require('../controllers/reservation');
 
-const { CreateClientVehicle } = require('../controllers/clientVehicle');
+const {
+	CreateClientVehicle,
+	SelectClientVehicles
+} = require('../controllers/clientVehicle');
 
-const { CreateParking, SelectParking } = require('../controllers/parking');
+const {
+	CreateParking,
+	SelectParkings,
+	SelectSpecificParkings
+} = require('../controllers/parking');
 
 const routes = express.Router();
 
 //////////////////////// client
 
+routes.get('/select-client-informations', SelectClientInformations);
+
 routes.post('/auth-client', AuthenticateClient);
 
 routes.post('/create-client', CreateClient);
-
-routes.delete('/remove-client', RemoveClient);
 
 //////////////////////// client vehicle
 
 routes.post('/create-client-vehicle', CreateClientVehicle);
 
+routes.get('/select-client-vehicles', SelectClientVehicles);
+
 //////////////////////// parking
 
-routes.post('/select-parkings', SelectParking);
+routes.get('/select-parkings', SelectParkings);
+
+routes.get('/select-specific-parkings', SelectSpecificParkings);
 
 routes.post('/create-parking', CreateParking);
 
 //////////////////////// parking user
 
-routes.post('/auth-parking', AuthenticateParking);
+routes.get('/select-specific-parking-user', SelectSpecificParkingUser);
+
+routes.post('/auth-parking-user', AuthenticateParking);
 
 routes.post('/create-parking-user', CreateParkingUser);
 
@@ -75,6 +91,8 @@ routes.get(
 	'/select-pending-checkout-parking-spaces',
 	SelectPendingCheckOutParkingSpaces
 );
+
+routes.get('/select-specific-parking-space', SelectSpecificParkingSpace);
 
 routes.get('/select-total-parking-spaces', SelectTotalParkingSpaces);
 
@@ -99,6 +117,8 @@ routes.get(
 );
 
 routes.get('/select-today-count-reservations', SelectTodayCountReservations);
+
+routes.get('/select-today-ticket-reservations', SelectTodayTicketReservations);
 
 routes.get('/select-today-reservations', SelectTodayReservations);
 

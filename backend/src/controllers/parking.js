@@ -1,5 +1,4 @@
 const Parking = require('../models/parking');
-const bcrypt = require('bcryptjs');
 
 module.exports = {
 	///////////////////////////////////////////////  creates
@@ -14,12 +13,28 @@ module.exports = {
 
 	///////////////////////////////////////////////  selects
 
-	async SelectParking(req, res) {
-		const {} = req.body;
+	async SelectParkings(req, res) {
+		const { status: excluded } = req.query;
 
-		const parking = await Parking.find({});
+		const parking = await Parking.find({
+			excluded
+		});
 
-		return res.json(parking);
+		return res.json({
+			message: parking
+		});
+	},
+
+	async SelectSpecificParkings(req, res) {
+		const { parking_id: _id } = req.query;
+
+		const parking = await Parking.find({
+			_id
+		});
+
+		return res.json({
+			message: parking
+		});
 	}
 
 	///////////////////////////////////////////////  updates

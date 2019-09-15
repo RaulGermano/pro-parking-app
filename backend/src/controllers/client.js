@@ -43,15 +43,21 @@ module.exports = {
 		}
 	},
 
+	async SelectClientInformations(req, res) {
+		const { client_id: _id } = req.query;
+
+		try {
+			const user = await Client.findOne({
+				_id
+			});
+
+			return res.json(user);
+		} catch (error) {
+			return res.status(400).send('Usuário não encontrado!');
+		}
+	}
+
 	///////////////////////////////////////////////  updates
 
 	///////////////////////////////////////////////  removes
-
-	async RemoveClient(req, res) {
-		const { name } = req.body;
-
-		return res.json({
-			message: name
-		});
-	}
 };

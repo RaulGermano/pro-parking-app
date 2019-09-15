@@ -1,6 +1,19 @@
 const Reservation = require('../models/reservation');
 const Parking = require('../models/parking');
 const Client = require('../models/client');
+const { Types } = require('mongoose');
+var moment = require('moment');
+
+const dateFrom = moment()
+	.add(1, 'day')
+	.format('YYYY-MM-DD');
+
+const dateTo = moment().format('YYYY-MM-DD');
+
+console.log({
+	dateFrom: dateFrom,
+	dateTo: dateTo
+});
 
 module.exports = {
 	///////////////////////////////////////////////  creates
@@ -121,17 +134,11 @@ module.exports = {
 		try {
 			const { parking_id } = req.query;
 
-			const datetime = new Date();
-
-			const today = new Date(
-				new Date().setDate(new Date().getDate() - 1)
-			);
-
 			const todayReservations = await Reservation.countDocuments({
 				'parking._id': parking_id,
 				createdAt: {
-					$lt: datetime,
-					$gte: today
+					$gte: new Date(dateTo),
+					$lt: new Date(dateFrom)
 				}
 			});
 
@@ -149,19 +156,59 @@ module.exports = {
 		try {
 			const { parking_id } = req.query;
 
-			const datetime = new Date();
-
-			const today = new Date(
-				new Date().setDate(new Date().getDate() - 1)
-			);
+			console.log(parking_id);
 
 			const todayReservations = await Reservation.find({
 				'parking._id': parking_id,
 				createdAt: {
-					$lt: datetime,
-					$gte: today
+					$gte: new Date(dateTo),
+					$lt: new Date(dateFrom)
 				}
 			});
+
+			return res.json({
+				message: todayReservations
+			});
+		} catch (error) {
+			return res.status(400).json({
+				error: error
+			});
+		}
+	},
+
+	async SelectTodayTicketReservations(req, res) {
+		try {
+			const { parking_id } = req.query;
+
+			const todayReservations = await Reservation.aggregate([
+				{
+					$match: {
+						'period.check_out': {
+							$exists: true
+						},
+						createdAt: {
+							$gte: new Date(dateTo),
+							$lt: new Date(dateFrom)
+						}
+					}
+				},
+				{
+					$unwind: '$parking'
+				},
+				{
+					$match: {
+						'parking._id': Types.ObjectId(parking_id)
+					}
+				},
+				{
+					$group: {
+						_id: Types.ObjectId(parking_id),
+						total: {
+							$sum: '$value'
+						}
+					}
+				}
+			]);
 
 			return res.json({
 				message: todayReservations

@@ -6,10 +6,9 @@ module.exports = {
 	///////////////////////////////////////////////  creates
 
 	async CreateCheckOutReservation(req, res) {
-		const { user_id, name, reserve_id } = req.body;
-		const now = Date.now();
-
 		try {
+			const { user_id, name, reserve_id } = req.body;
+
 			const Reserve = await Reservation.findOne({
 				_id: reserve_id
 			});
@@ -22,8 +21,6 @@ module.exports = {
 			const value = hours * Reserve.parking.space.value;
 
 			console.log(hours, value);
-
-			return;
 
 			await Reservation.updateOne(
 				{
