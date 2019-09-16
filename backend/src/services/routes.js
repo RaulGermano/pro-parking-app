@@ -2,8 +2,8 @@ const express = require('express');
 
 const {
 	CreateClient,
-	UpdateClientInformations,
 	AuthenticateClient,
+	UpdateClientInformations,
 	SelectClientInformations
 } = require('../controllers/client');
 
@@ -13,9 +13,14 @@ const {
 
 const {
 	CreateParkingUser,
+	DesableParkingUser,
 	AuthenticateParking,
 	SelectSpecificParkingUser,
-	UpdatePasswordParkingUser
+	UpdatePasswordParkingUser,
+	SelectSpecificParkingUsers,
+	UpdateParkingUserInformations,
+	SelectCounterSpecificParkingUsers,
+	SelectCounterEnableDesableSpecificParkingUsers
 } = require('../controllers/parkingUser');
 
 const {
@@ -28,24 +33,24 @@ const {
 
 const {
 	CreateParkingSpace,
+	SelectAllParkingSpaces,
 	SelectTotalParkingSpaces,
 	SelectActiveParkingSpaces,
-	SelectPendingCheckOutParkingSpaces,
 	SelectSpecificParkingSpace,
-	SelectAllParkingSpaces
+	SelectPendingCheckOutParkingSpaces
 } = require('../controllers/parkingSpace');
 
 const {
 	CreateReservation,
 	SelectReservation,
-	SelectCheckInPendingReservation,
 	SelectTodayReservations,
 	SelectMonthReservations,
-	SelectCheckOutPendingReservation,
+	SelectClientReservations,
 	SelectTodayCountReservations,
 	SelectTodayTicketReservations,
-	SelectClientReservations,
-	SelectVehicleClientReservations
+	SelectCheckInPendingReservation,
+	SelectVehicleClientReservations,
+	SelectCheckOutPendingReservation
 } = require('../controllers/reservation');
 
 const {
@@ -87,13 +92,29 @@ routes.post('/create-parking', CreateParking);
 
 //////////////////////// parking user
 
+routes.get(
+	'/select-counter-specific-parking-users',
+	SelectCounterSpecificParkingUsers
+);
+
+routes.get(
+	'/select-counter-excluded-specific-parking-users',
+	SelectCounterEnableDesableSpecificParkingUsers
+);
+
 routes.get('/select-specific-parking-user', SelectSpecificParkingUser);
+
+routes.get('/select-specific-parking-users', SelectSpecificParkingUsers);
 
 routes.post('/auth-parking-user', AuthenticateParking);
 
 routes.post('/create-parking-user', CreateParkingUser);
 
+routes.put('/update-parking-user-informations', UpdateParkingUserInformations);
+
 routes.put('/update-password-parking-user', UpdatePasswordParkingUser);
+
+routes.put('/desable-parking-user', DesableParkingUser);
 
 //////////////////////// parking space
 

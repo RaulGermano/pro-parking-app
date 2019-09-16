@@ -58,6 +58,43 @@ module.exports = {
 		});
 	},
 
+	async SelectSpecificParkingUsers(req, res) {
+		const { parking_id } = req.query;
+
+		const parkingUsers = await ParkingUser.find({
+			parking_id
+		});
+
+		return res.json({
+			message: parkingUsers
+		});
+	},
+
+	async SelectCounterSpecificParkingUsers(req, res) {
+		const { parking_id } = req.query;
+
+		const teste = await ParkingUser.countDocuments({
+			parking_id
+		});
+
+		return res.json({
+			message: teste
+		});
+	},
+
+	async SelectCounterEnableDesableSpecificParkingUsers(req, res) {
+		const { parking_id, excluded } = req.query;
+
+		const quantity = await ParkingUser.countDocuments({
+			parking_id,
+			excluded
+		});
+
+		return res.json({
+			message: quantity
+		});
+	},
+
 	///////////////////////////////////////////////  updates
 
 	async UpdatePasswordParkingUser(req, res) {
@@ -93,6 +130,27 @@ module.exports = {
 			{
 				$set: {
 					excluded: true
+				}
+			}
+		);
+
+		return res.json({
+			message: true
+		});
+	},
+
+	async UpdateParkingUserInformations(req, res) {
+		const { parking_id, user_id: _id, name, sex } = req.body;
+
+		await ParkingUser.updateOne(
+			{
+				parking_id,
+				_id
+			},
+			{
+				$set: {
+					name,
+					sex
 				}
 			}
 		);
