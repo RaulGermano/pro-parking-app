@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const routes = require('./routes');
 const cors = require('cors');
 const moment = require('moment-timezone');
+// const bodyParser = require('body-parser');
 
 const server = express();
 
@@ -15,6 +16,12 @@ mongoose.connect(
 server.use(express.json());
 server.use(routes);
 server.use(cors());
+
+// server.use(
+// 	bodyParser.urlencoded({
+// 		extended: true
+// 	})
+// );
 
 server.listen(3030, () =>
 	console.log(

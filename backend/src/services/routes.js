@@ -2,6 +2,7 @@ const express = require('express');
 
 const {
 	CreateClient,
+	UpdateClientInformations,
 	AuthenticateClient,
 	SelectClientInformations
 } = require('../controllers/client');
@@ -13,7 +14,8 @@ const {
 const {
 	CreateParkingUser,
 	AuthenticateParking,
-	SelectSpecificParkingUser
+	SelectSpecificParkingUser,
+	UpdatePasswordParkingUser
 } = require('../controllers/parkingUser');
 
 const {
@@ -41,7 +43,9 @@ const {
 	SelectMonthReservations,
 	SelectCheckOutPendingReservation,
 	SelectTodayCountReservations,
-	SelectTodayTicketReservations
+	SelectTodayTicketReservations,
+	SelectClientReservations,
+	SelectVehicleClientReservations
 } = require('../controllers/reservation');
 
 const {
@@ -65,6 +69,8 @@ routes.post('/auth-client', AuthenticateClient);
 
 routes.post('/create-client', CreateClient);
 
+routes.put('/update-client-informations', UpdateClientInformations);
+
 //////////////////////// client vehicle
 
 routes.post('/create-client-vehicle', CreateClientVehicle);
@@ -86,6 +92,8 @@ routes.get('/select-specific-parking-user', SelectSpecificParkingUser);
 routes.post('/auth-parking-user', AuthenticateParking);
 
 routes.post('/create-parking-user', CreateParkingUser);
+
+routes.put('/update-password-parking-user', UpdatePasswordParkingUser);
 
 //////////////////////// parking space
 
@@ -119,6 +127,13 @@ routes.get(
 	'/select-checkout-pending-reservation',
 	SelectCheckOutPendingReservation
 );
+
+routes.get(
+	'/select-vehicle-client-reservations',
+	SelectVehicleClientReservations
+);
+
+routes.get('/select-client-reservations', SelectClientReservations);
 
 routes.get('/select-today-count-reservations', SelectTodayCountReservations);
 

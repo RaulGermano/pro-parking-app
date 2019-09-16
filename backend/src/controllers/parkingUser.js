@@ -56,9 +56,51 @@ module.exports = {
 		return res.json({
 			message: parkingUser
 		});
-	}
+	},
 
 	///////////////////////////////////////////////  updates
+
+	async UpdatePasswordParkingUser(req, res) {
+		const { _id, password } = req.body;
+
+		newPassword = await bcrypt.hash(password, 1);
+
+		await ParkingUser.updateOne(
+			{
+				_id
+			},
+			{
+				$set: {
+					password: newPassword,
+					firstAccess: false
+				}
+			}
+		);
+
+		return res.json({
+			message: true
+		});
+	},
+
+	async DesableParkingUser(req, res) {
+		const { parking_id, user_id: _id } = req.body;
+
+		await ParkingUser.updateOne(
+			{
+				parking_id,
+				_id
+			},
+			{
+				$set: {
+					excluded: true
+				}
+			}
+		);
+
+		return res.json({
+			message: true
+		});
+	}
 
 	///////////////////////////////////////////////  removes
 };

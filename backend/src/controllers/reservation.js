@@ -202,6 +202,43 @@ module.exports = {
 		}
 	},
 
+	async SelectClientReservations(req, res) {
+		try {
+			const { client_id } = req.query;
+
+			const reservations = await Reservation.find({
+				'client._id': client_id
+			});
+
+			return res.json({
+				message: reservations
+			});
+		} catch (error) {
+			return res.status(400).json({
+				error: error
+			});
+		}
+	},
+
+	async SelectVehicleClientReservations(req, res) {
+		try {
+			const { client_id, vehicle_id } = req.query;
+
+			const reservations = await Reservation.find({
+				'client._id': client_id,
+				'client.vehicle._id': vehicle_id
+			});
+
+			return res.json({
+				message: reservations
+			});
+		} catch (error) {
+			return res.status(400).json({
+				error: error
+			});
+		}
+	},
+
 	async SelectTodayTicketReservations(req, res) {
 		try {
 			const { parking_id } = req.query;

@@ -27,15 +27,17 @@ module.exports = {
 		try {
 			const user = await Client.findOne({
 				login
-			});
+			}).select('+password');
 
 			if (!user) {
 				return res.status(400).send('Usuário não encontrado!');
 			}
 
 			if (!(await bcrypt.compare(password, user.password))) {
-				return res.status(400).send('Senha incorreta!');
+				return res.status(400).send('Usuário não encontrado!');
 			}
+
+			user.password = undefined;
 
 			return res.json(user);
 		} catch (error) {
@@ -55,9 +57,34 @@ module.exports = {
 		} catch (error) {
 			return res.status(400).send('Usuário não encontrado!');
 		}
-	}
+	},
 
 	///////////////////////////////////////////////  updates
+
+	async UpdateClientInformations(req, res) {
+		const { _id, name, sex, telephone } = req.body;
+
+		try {
+			await Client.updateOne(
+				{
+					_id
+				},
+				{
+					$set: {
+						name,
+						sex,
+						telephone
+					}
+				}
+			);
+
+			return res.json({
+				message: true
+			});
+		} catch (error) {
+			return res.status(400).send('Usuário não encontrado!');
+		}
+	}
 
 	///////////////////////////////////////////////  removes
 };
