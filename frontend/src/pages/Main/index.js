@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import Api from '../../services/Api';
 import Header from '../../componets/Header';
 import SideBar from '../../componets/SideBar';
 import NewEntranceModal from '../../componets/Modal/NewEntrance';
@@ -16,6 +17,20 @@ import { Button, Modal } from 'react-bootstrap';
 const { SearchBar } = Search;
 
 export default function Main({ match }) {
+	const parking_id = '5d752c544f4f1c0f1c93eb23';
+
+	useEffect(() => {
+		async function getItems() {
+			const todayTicket = await Api.get(
+				`/select-today-ticket-reservations/?parking_id=${parking_id}`
+			);
+
+			console.log(todayTicket);
+		}
+
+		getItems();
+	}, []);
+
 	function openModalReleaseParked(id) {
 		console.log(id);
 	}
@@ -116,86 +131,6 @@ export default function Main({ match }) {
 			entrada: '12/08/2019 14:54h',
 			saida: '12/08/2019 14:54h',
 			opcoes: 1
-		},
-		{
-			id: 2,
-			vaga: 'ASPJ2',
-			veiculo: 'ASD-1234',
-			app: true,
-			cliente: 'Raul Germano',
-			entrada: '12/08/2019 14:54h',
-			saida: '12/08/2019 14:54h',
-			opcoes: 2
-		},
-		{
-			id: 3,
-			vaga: 'ASPJ2',
-			veiculo: 'ASD-1234',
-			app: true,
-			cliente: 'Raul Germano',
-			entrada: '12/08/2019 14:54h',
-			saida: '12/08/2019 14:54h',
-			opcoes: 2
-		},
-		{
-			id: 4,
-			vaga: 'ASPJ2',
-			veiculo: 'ASD-1234',
-			app: true,
-			cliente: 'Raul Germano',
-			entrada: '12/08/2019 14:54h',
-			saida: '12/08/2019 14:54h',
-			opcoes: 2
-		},
-		{
-			id: 5,
-			vaga: 'ASPJ2',
-			veiculo: 'ASD-1234',
-			app: false,
-			cliente: null,
-			entrada: '12/08/2019 14:54h',
-			saida: '12/08/2019 14:54h',
-			opcoes: 2
-		},
-		{
-			id: 6,
-			vaga: 'ASPJ2',
-			veiculo: 'ASD-1234',
-			app: true,
-			cliente: 'Raul Germano',
-			entrada: '12/08/2019 14:54h',
-			saida: '12/08/2019 14:54h',
-			opcoes: 2
-		},
-		{
-			id: 7,
-			vaga: 'ASPJ2',
-			veiculo: 'ASD-1234',
-			app: false,
-			cliente: null,
-			entrada: '12/08/2019 14:54h',
-			saida: '12/08/2019 14:54h',
-			opcoes: 2
-		},
-		{
-			id: 8,
-			vaga: 'ASPJ2',
-			veiculo: 'ASD-1234',
-			app: true,
-			cliente: 'Raul Germano',
-			entrada: '12/08/2019 14:54h',
-			saida: '12/08/2019 14:54h',
-			opcoes: 2
-		},
-		{
-			id: 9,
-			vaga: 'ASPJ2',
-			veiculo: 'ASD-1234',
-			app: false,
-			cliente: null,
-			entrada: '12/08/2019 14:54h',
-			saida: '12/08/2019 14:54h',
-			opcoes: 2
 		},
 		{
 			id: 10,

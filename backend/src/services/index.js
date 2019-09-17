@@ -2,31 +2,21 @@ const express = require('express');
 const mongoose = require('mongoose');
 const routes = require('./routes');
 const cors = require('cors');
-const moment = require('moment-timezone');
-// const bodyParser = require('body-parser');
 
 const server = express();
 
-mongoose.connect(
-	// 'mongodb+srv://appproparking:appproparking@cluster0-5rwc5.mongodb.net/PROParking?retryWrites=true&w=majority',
-	'mongodb://localhost:27017/PROParkings',
-	{ useNewUrlParser: true }
-);
+async function con() {
+	await mongoose.connect(
+		'mongodb+srv://appproparking:appproparking@cluster0-5rwc5.mongodb.net/PROParking?retryWrites=true&w=majority',
+		// 'mongodb://localhost:27017/PROParkings',
+		{ useNewUrlParser: true }
+	);
+}
 
+con();
+
+server.use(cors());
 server.use(express.json());
 server.use(routes);
-server.use(cors());
 
-// server.use(
-// 	bodyParser.urlencoded({
-// 		extended: true
-// 	})
-// );
-
-server.listen(3030, () =>
-	console.log(
-		moment()
-			.utc()
-			.format()
-	)
-);
+server.listen(3030);
