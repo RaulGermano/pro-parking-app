@@ -17,7 +17,7 @@ import { Button, Modal } from 'react-bootstrap';
 const { SearchBar } = Search;
 
 export default function Main({ match }) {
-	const parking_id = '5d752c544f4f1c0f1c93eb23';
+	const parking_id = '5d80450f3a6e341040fb68c4';
 
 	useEffect(() => {
 		async function getItems() {
@@ -25,7 +25,28 @@ export default function Main({ match }) {
 				`/select-today-ticket-reservations/?parking_id=${parking_id}`
 			);
 
-			console.log(todayTicket);
+			const TrueAvailableParkingSpace = await Api.get(
+				`/select-available-parking-spaces/?parking_id=${parking_id}&available=${true}`
+			);
+
+			const AllActiveParkingSpaces = await Api.get(
+				`/select-active-parking-spaces/?parking_id=${parking_id}`
+			);
+
+			const TodayReservations = await Api.get(
+				`/select-today-count-reservations/?parking_id=${parking_id}`
+			);
+
+			const trueAvailableParkingsSpace =
+				TrueAvailableParkingSpace.data.total;
+
+			const allActiveParkingsSpace = AllActiveParkingSpaces.data.total;
+
+			console.log({
+				trueAvailableParkingsSpace,
+				allActiveParkingsSpacev,
+				TodayReservations
+			});
 		}
 
 		getItems();

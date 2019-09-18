@@ -37,6 +37,7 @@ const {
 	SelectTotalParkingSpaces,
 	SelectActiveParkingSpaces,
 	SelectSpecificParkingSpace,
+	SelectAvailableParkingSpaces,
 	SelectPendingCheckOutParkingSpaces
 } = require('../controllers/parkingSpace');
 
@@ -124,6 +125,8 @@ routes.get(
 );
 
 routes.get('/select-all-parking-spaces', SelectAllParkingSpaces);
+
+routes.get('/select-available-parking-spaces', SelectAvailableParkingSpaces);
 
 routes.get('/select-specific-parking-space', SelectSpecificParkingSpace);
 

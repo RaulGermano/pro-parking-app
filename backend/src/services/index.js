@@ -5,7 +5,7 @@ const cors = require('cors');
 
 const server = express();
 
-async function con() {
+async function conn() {
 	await mongoose.connect(
 		'mongodb+srv://appproparking:appproparking@cluster0-5rwc5.mongodb.net/PROParking?retryWrites=true&w=majority',
 		// 'mongodb://localhost:27017/PROParkings',
@@ -13,7 +13,7 @@ async function con() {
 	);
 }
 
-con();
+conn();
 
 server.use(cors());
 server.use(express.json());

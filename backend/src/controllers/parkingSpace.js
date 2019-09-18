@@ -94,9 +94,43 @@ module.exports = {
 				}
 			]);
 
-			return res.json({
-				message: registeredParkingSpaces
+			return res.json(registeredParkingSpaces[0]);
+		} catch (error) {
+			return res.status(400).json({
+				error
 			});
+		}
+	},
+
+	async SelectAvailableParkingSpaces(req, res) {
+		try {
+			const { parking_id, available } = req.query;
+
+			const availableParkingSpaces = await Parking.aggregate([
+				{
+					$match: {
+						_id: Types.ObjectId(parking_id)
+					}
+				},
+				{
+					$unwind: '$parkingSpace'
+				},
+				{
+					$match: {
+						'parkingSpace.available': Boolean(available)
+					}
+				},
+				{
+					$group: {
+						_id: Types.ObjectId(parking_id),
+						total: {
+							$sum: 1
+						}
+					}
+				}
+			]);
+
+			return res.json(availableParkingSpaces[0]);
 		} catch (error) {
 			return res.status(400).json({
 				error
@@ -106,7 +140,7 @@ module.exports = {
 
 	async SelectPendingCheckOutParkingSpaces(req, res) {
 		try {
-			const { parking_id } = req.query;
+			const { parking_id, available } = req.query;
 
 			const registeredParkingSpaces = await Parking.aggregate([
 				{
