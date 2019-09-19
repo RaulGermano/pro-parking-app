@@ -69,6 +69,12 @@ const routes = express.Router();
 
 //////////////////////// client
 
+routes.get('/auth-client', (req, res) => {
+	res.json({
+		response: true
+	});
+});
+
 routes.get('/select-client-informations', SelectClientInformations);
 
 routes.post('/auth-client', AuthenticateClient);

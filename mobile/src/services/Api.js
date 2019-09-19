@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const Api = axios.create({
 	// Unifunec lab 3
-	baseURL: 'http://192.168.5.27:8888/DataBase/services/',
+	// baseURL: 'http://192.168.5.27:8888/DataBase/services/',
 
 	// Unifunec sala 30
 	// baseURL: 'http://192.168.0.103:8888/DataBase/services/',
@@ -12,6 +12,8 @@ const Api = axios.create({
 
 	// Casa
 	// baseURL: 'http://192.168.0.104:8888/DataBase/services/',
+
+	baseURL: 'http://192.168.0.104:3030',
 
 	timeout: 15000
 });

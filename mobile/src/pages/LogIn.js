@@ -70,7 +70,7 @@ class Login extends Component {
 
 	authenticationUser = async (login, password) => {
 		const res = await Api.get(
-			`/authenticationUser.php?login=${login}&password=${password}`
+			`/auth-client/?login=${login}&password=${password}`
 		);
 
 		if (res.data.response) {

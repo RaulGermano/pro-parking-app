@@ -44,7 +44,7 @@ export default function Main({ match }) {
 
 			console.log({
 				trueAvailableParkingsSpace,
-				allActiveParkingsSpacev,
+				allActiveParkingsSpace,
 				TodayReservations
 			});
 		}
