@@ -13,7 +13,9 @@ const Api = axios.create({
 	// Casa
 	// baseURL: 'http://192.168.0.104:8888/DataBase/services/',
 
-	baseURL: 'http://192.168.0.104:3030',
+	// baseURL: 'http://192.168.0.104:3030',
+
+	baseURL: 'http://172.20.10.6:3030',
 
 	timeout: 15000
 });

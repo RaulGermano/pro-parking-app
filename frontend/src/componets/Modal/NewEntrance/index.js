@@ -32,7 +32,7 @@ export default function NewEntranceModal() {
 							<MdClose />
 						</button>
 					</div>
-					<div className='modal-body pb-2 pt-3 d-flex form-row mb-4'>
+					<div className='modal-body pb-2 pt-3 d-flex form-row mb-4 m-2'>
 						<div className='col-sm-12 col-md-12 col-lg-6 col-xl-6 p-0 pr-2'>
 							<label htmlFor='input-vehicle-plate'>
 								Verificar placa
@@ -56,7 +56,13 @@ export default function NewEntranceModal() {
 							</div>
 						</div>
 
-						{1 == 1 ? (
+						<div className='col-sm-12 col-md-12 col-lg-6 col-xl-6 form-control align-self-end bg-light border-dashed-gray-light pl-2'>
+							<span className='text-black-50'>
+								Resultado de pesquisa
+							</span>
+						</div>
+
+						{/* {1 == 1 ? (
 							<div className='col-sm-12 col-md-12 col-lg-6 col-xl-6 form-control align-self-end bg-success border-success pl-2'>
 								<span className='text-light'>
 									Vaga reservada: <b>ASDF32</b>
@@ -74,7 +80,7 @@ export default function NewEntranceModal() {
 									Resultado de pesquisa
 								</span>
 							</div>
-						) : null}
+						) : null} */}
 					</div>
 
 					{1 == 12 ? (

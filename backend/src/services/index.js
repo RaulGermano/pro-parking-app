@@ -7,8 +7,8 @@ const server = express();
 
 async function conn() {
 	await mongoose.connect(
-		'mongodb+srv://appproparking:appproparking@cluster0-5rwc5.mongodb.net/PROParking?retryWrites=true&w=majority',
-		// 'mongodb://localhost:27017/PROParkings',
+		// 'mongodb+srv://appproparking:appproparking@cluster0-5rwc5.mongodb.net/PROParking?retryWrites=true&w=majority',
+		'mongodb://localhost:27017/PROParkings',
 		{ useNewUrlParser: true }
 	);
 }
