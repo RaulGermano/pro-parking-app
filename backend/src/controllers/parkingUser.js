@@ -1,5 +1,8 @@
 const ParkingUser = require('../models/parkingUser');
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+
+require('dotenv/config');
 
 module.exports = {
 	///////////////////////////////////////////////  creates
@@ -33,16 +36,26 @@ module.exports = {
 			return res.status(400).send('Usuário não encontrado!');
 		}
 
-		if (parkingUser.firstAccess) {
-			return res.status(400).json({
-				message: 'Trocar a senha'
-			});
-		}
-
 		parkingUser.password = undefined;
 
+		const token = await jwt.sign(
+			{ id: parkingUser._id },
+			process.env.JWT_SECRET,
+			{
+				expiresIn: 3600
+			}
+		);
+
+		// if (parkingUser.firstAccess) {
+		// 	return res.status(400).json({
+		// 		message: 'Trocar a senha'
+		// 	});
+		// }
+
 		return res.json({
-			message: parkingUser
+			parkingUser,
+			token,
+			firstAccess: parkingUser.firstAccess
 		});
 	},
 

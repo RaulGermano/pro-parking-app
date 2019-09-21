@@ -10,6 +10,7 @@ import BootstrapTable from 'react-bootstrap-table-next';
 import paginationFactory from 'react-bootstrap-table2-paginator';
 import filterFactory from 'react-bootstrap-table2-filter';
 import ToolkitProvider, { Search } from 'react-bootstrap-table2-toolkit';
+import useLoader from '../../componets/Loader/useLoader';
 import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
 
 import { Button, Modal } from 'react-bootstrap';
@@ -18,6 +19,8 @@ const { SearchBar } = Search;
 
 export default function Main({ match }) {
 	const parking_id = '5d80450f3a6e341040fb68c4';
+
+	const [loader, handleLoader] = useLoader();
 
 	useEffect(() => {
 		async function getItems() {
@@ -47,6 +50,8 @@ export default function Main({ match }) {
 				allActiveParkingsSpace,
 				TodayReservations
 			});
+
+			handleLoader(false);
 		}
 
 		getItems();
@@ -554,6 +559,7 @@ export default function Main({ match }) {
 					{/* <NewReleaseParkingSpaceModal /> */}
 				</div>
 			</div>
+			{loader}
 		</>
 	);
 }
