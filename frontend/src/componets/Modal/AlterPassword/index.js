@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { MdAssistantPhoto, MdSearch, MdClose } from 'react-icons/md';
+import { MdAssistantPhoto } from 'react-icons/md';
 import { Modal, Button } from 'react-bootstrap';
 import Api from '../../../services/Api';
 
 export default function AlterPasswordModel({ historic, userId: _id }) {
-	const [show, setShow] = useState(true);
+	const [show] = useState(true);
 	const [password, setPassword] = useState('');
 
 	async function AlterToNewPassword(event) {

@@ -113,6 +113,8 @@ module.exports = {
 	async UpdatePasswordParkingUser(req, res) {
 		const { _id, password } = req.body;
 
+		console.log(req.body);
+
 		newPassword = await bcrypt.hash(password, 1);
 
 		await ParkingUser.updateOne(

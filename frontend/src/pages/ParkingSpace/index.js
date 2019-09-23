@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Header from '../../componets/Header';
 import SideBar from '../../componets/SideBar';
 import BootstrapTable from 'react-bootstrap-table-next';
-import { FaCircle, FaBookOpen, FaSignOutAlt } from 'react-icons/fa';
+import { FaCircle, FaBookOpen } from 'react-icons/fa';
 import { MdAdd } from 'react-icons/md';
 import paginationFactory from 'react-bootstrap-table2-paginator';
 import filterFactory from 'react-bootstrap-table2-filter';

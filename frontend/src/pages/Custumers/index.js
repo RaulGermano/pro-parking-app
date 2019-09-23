@@ -2,9 +2,7 @@ import React from 'react';
 import Header from '../../componets/Header';
 import SideBar from '../../componets/SideBar';
 import BootstrapTable from 'react-bootstrap-table-next';
-import { FaCircle, FaBookOpen, FaSignOutAlt } from 'react-icons/fa';
-import { MdAdd } from 'react-icons/md';
-
+import { FaCircle, FaBookOpen } from 'react-icons/fa';
 import paginationFactory from 'react-bootstrap-table2-paginator';
 import filterFactory from 'react-bootstrap-table2-filter';
 import ToolkitProvider, { Search } from 'react-bootstrap-table2-toolkit';
@@ -45,13 +43,13 @@ export default function Custumers({ match }) {
 		return ++rowIndex;
 	}
 
-	function optionsUserTypeFormatter(cell) {
-		return cell ? (
-			<span className='fw-600'>Administrador</span>
-		) : (
-			<span>Colaborador</span>
-		);
-	}
+	// function optionsUserTypeFormatter(cell) {
+	// 	return cell ? (
+	// 		<span className='fw-600'>Administrador</span>
+	// 	) : (
+	// 		<span>Colaborador</span>
+	// 	);
+	// }
 
 	const parked = [
 		{

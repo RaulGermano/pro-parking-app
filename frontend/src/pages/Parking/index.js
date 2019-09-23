@@ -1,14 +1,10 @@
 import React, { useState } from 'react';
 import Header from '../../componets/Header';
 import SideBar from '../../componets/SideBar';
-import { MdLock, MdCreate, MdAdd } from 'react-icons/md';
-import { ButtonToolbar, Button } from 'react-bootstrap';
-import NewFoneModal from '../../componets/Modal/NewFone';
 
 export default function Settings({ match }) {
 	const [nameUser, setNameUser] = useState('');
-	const [disabledField, setDisabledField] = useState(true);
-	const [modalShow, setModalShow] = useState(false);
+	const [disabledField] = useState(true);
 
 	return (
 		<>
@@ -30,18 +26,6 @@ export default function Settings({ match }) {
 										</h5>
 									</div>
 								</div>
-								{/* <div className='align-self-center'>
-									<button
-										className='btn btn-sm bg-pro-parking text-light'
-										onClick={() => setDisabledField(false)}
-									>
-										<MdCreate
-											size={22}
-											className='pr-1 text-light'
-										/>
-										Editar
-									</button>
-								</div> */}
 							</div>
 
 							<hr />
@@ -143,203 +127,6 @@ export default function Settings({ match }) {
 									</div>
 								</div>
 							</div>
-
-							{/* <hr />
-                                
-                            <div className='my-5'>
-								<div className='d-flex justify-content-between'>
-									<h1 className='h4 titulo-pagina text-black-50 fw-400 mb-4'>
-										Telefones
-									</h1>
-									<div>
-										<button
-											type='button'
-											className='btn btn-light bg-white shadow-sm border mr-3'
-										>
-											Cadastros disponíveis:
-											<span className='badge text-light bg-pro-parking ml-2'>
-												1
-											</span>
-										</button>
-										<button
-											className='btn btn-sm bg-pro-parking text-light shadow-sm'
-											onClick={() => {
-												setDisabledField(false);
-												setModalShow(true);
-											}}
-										>
-											<MdAdd
-												size={27}
-												className='pr-1 text-light'
-											/>
-											Novo telefone
-										</button>
-
-										<NewFoneModal
-											show={modalShow}
-											onHide={() => setModalShow(false)}
-										/>
-									</div>
-								</div>
-
-								<div className='form-row ml-1 mt-4'>
-									<div className=' align-self-end'>
-										<button
-											className='btn bg-pro-parking text-light mr-2'
-											onClick={() =>
-												setDisabledField(false)
-											}
-										>
-											X
-										</button>
-									</div>
-
-									<div className='col-sm-12 col-md-3 col-lg-1 col-xl-1 p-0 pr-2 '>
-										<label for-html='name-user'>
-											<span className='fw-600'>DDD</span>
-										</label>
-										<input
-											type='text'
-											id='name-user'
-											className='form-control shadow-sm'
-											placeholder='Obrigatório'
-											onChange={event =>
-												setNameUser(event.target.value)
-											}
-											disabled={true}
-											required={false}
-											value=''
-										/>
-									</div>
-
-									<div className='col-sm-12 col-md-4 col-lg-3 col-xl-3 p-0 pr-2 '>
-										<label for-html='name-user'>
-											<span className='fw-600'>
-												Número
-											</span>
-										</label>
-										<input
-											type='text'
-											id='name-user'
-											className='form-control shadow-sm'
-											placeholder='Obrigatório'
-											onChange={event =>
-												setNameUser(event.target.value)
-											}
-											disabled={true}
-											required={false}
-											value=''
-										/>
-									</div>
-								</div>
-
-								<div className='form-row ml-1 mt-4'>
-									<div className=' align-self-end'>
-										<button
-											className='btn bg-pro-parking text-light mr-2'
-											onClick={() =>
-												setDisabledField(false)
-											}
-										>
-											X
-										</button>
-									</div>
-
-									<div className='col-sm-12 col-md-3 col-lg-1 col-xl-1 p-0 pr-2 '>
-										<input
-											type='text'
-											id='name-user'
-											className='form-control shadow-sm'
-											placeholder='Obrigatório'
-											onChange={event =>
-												setNameUser(event.target.value)
-											}
-											disabled={true}
-											required={false}
-											value=''
-										/>
-									</div>
-
-									<div className='col-sm-12 col-md-4 col-lg-3 col-xl-3 p-0 pr-2 '>
-										<input
-											type='text'
-											id='name-user'
-											className='form-control shadow-sm'
-											placeholder='Obrigatório'
-											onChange={event =>
-												setNameUser(event.target.value)
-											}
-											disabled={true}
-											required={false}
-											value=''
-										/>
-									</div>
-								</div>
-							</div> */}
-
-							{/* <hr />
-
-							<div className='my-5'>
-								<h1 className='h4 titulo-pagina text-black-50 fw-400 mb-4'>
-									Revisão
-								</h1>
-
-								<div className='form-row ml-1'>
-									<div className='col-sm-12 col-md-4 col-lg-3 col-xl-3 p-0 pr-2 '>
-										<label for-html='name-user'>
-											Criado em
-										</label>
-										<input
-											type='text'
-											id='name-user'
-											className='form-control shadow-sm'
-											placeholder='Obrigatório'
-											onChange={event =>
-												setNameUser(event.target.value)
-											}
-											disabled={true}
-											required={false}
-											value=''
-										/>
-									</div>
-
-									<div className='col-sm-12 col-md-4 col-lg-3 col-xl-3 p-0 pr-2 '>
-										<label for-html='name-user'>
-											Última alteração
-										</label>
-										<input
-											type='text'
-											id='name-user'
-											className='form-control shadow-sm'
-											placeholder='Obrigatório'
-											onChange={event =>
-												setNameUser(event.target.value)
-											}
-											disabled={true}
-											required={false}
-											value=''
-										/>
-									</div>
-
-									<div className='col-sm-12 col-md-4 col-lg-6 col-xl-6 p-0 pr-2 '>
-										<label for-html='name-user'>
-											Alterado por
-										</label>
-										<input
-											type='text'
-											id='name-user'
-											className='form-control shadow-sm'
-											placeholder='Obrigatório'
-											onChange={event =>
-												setNameUser(event.target.value)
-											}
-											disabled={disabledField}
-											required={disabledField}
-											value=''
-										/>
-									</div>
-								</div>
-							</div> */}
 						</div>
 					</main>
 				</div>

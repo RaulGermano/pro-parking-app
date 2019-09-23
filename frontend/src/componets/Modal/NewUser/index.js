@@ -35,7 +35,7 @@ function NewUserModal(props) {
 									setNameUser(event.target.value)
 								}
 								required={false}
-								value=''
+								value={nameUser}
 							/>
 						</div>
 

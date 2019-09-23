@@ -100,11 +100,11 @@ module.exports = {
 			const checkInPending = await Reservation.countDocuments({
 				'parking._id': parking_id,
 				period: { $exists: false },
-				finished: true
+				finished: false
 			});
 
 			return res.json({
-				message: checkInPending
+				result: checkInPending
 			});
 		} catch (error) {
 			return res.status(400).json({
@@ -123,11 +123,11 @@ module.exports = {
 					{ 'period.check_in': { $exists: true } },
 					{ 'period.check_out': { $exists: false } }
 				],
-				finished: true
+				finished: false
 			});
 
 			return res.json({
-				message: checkInPending
+				result: checkInPending
 			});
 		} catch (error) {
 			return res.status(400).json({
@@ -149,7 +149,7 @@ module.exports = {
 			});
 
 			return res.json({
-				message: todayReservations
+				result: todayReservations
 			});
 		} catch (error) {
 			return res.status(400).json({
@@ -171,7 +171,7 @@ module.exports = {
 			});
 
 			return res.json({
-				message: todayReservations
+				result: todayReservations
 			});
 		} catch (error) {
 			return res.status(400).json({
@@ -250,8 +250,8 @@ module.exports = {
 							$exists: true
 						},
 						createdAt: {
-							$lt: dateToday,
-							$gte: dateLessADay
+							$lt: new Date(dateToday),
+							$gte: new Date(dateLessADay)
 						}
 					}
 				},
@@ -273,8 +273,14 @@ module.exports = {
 				}
 			]);
 
+			if (todayReservations.length == 0) {
+				result = 0;
+			} else {
+				result = todayReservations[0].total;
+			}
+
 			return res.json({
-				message: todayReservations
+				result
 			});
 		} catch (error) {
 			return res.status(400).json({

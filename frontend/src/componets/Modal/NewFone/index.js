@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { MdCall, MdSearch, MdClose } from 'react-icons/md';
+import { MdCall } from 'react-icons/md';
 import { Modal, Button } from 'react-bootstrap';
 
 function NewFoneModal(props) {
@@ -33,7 +33,7 @@ function NewFoneModal(props) {
 							onChange={event => setNameUser(event.target.value)}
 							disabled={true}
 							required={false}
-							value=''
+							value={nameUser}
 						/>
 					</div>
 

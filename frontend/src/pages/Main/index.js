@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Api from '../../services/Api';
 import Header from '../../componets/Header';
 import SideBar from '../../componets/SideBar';
 import NewEntranceModal from '../../componets/Modal/NewEntrance';
-import NewReleaseParkingSpaceModal from '../../componets/Modal/NewReleaseParkingSpace';
 import { MdAdd } from 'react-icons/md';
 import { FaCircle, FaBookOpen, FaSignOutAlt } from 'react-icons/fa';
 import BootstrapTable from 'react-bootstrap-table-next';
@@ -12,27 +11,38 @@ import filterFactory from 'react-bootstrap-table2-filter';
 import ToolkitProvider, { Search } from 'react-bootstrap-table2-toolkit';
 import useLoader from '../../componets/Loader/useLoader';
 import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
+import moment from 'moment-timezone';
 
-import { Button, Modal } from 'react-bootstrap';
+// import NewReleaseParkingSpaceModal from '../../componets/Modal/NewReleaseParkingSpace';
+// import { Button, Modal } from 'react-bootstrap';
 
 const { SearchBar } = Search;
 
 export default function Main({ match }) {
-	const parking_id = '5d80450f3a6e341040fb68c4';
+	const parking_id = '5d87b172e44b6435d84252ea';
 
 	const [loader, handleLoader] = useLoader();
 
+	const [todayTicket, setTodayTicket] = useState('- -');
+	const [availableParkingsSpace, setAvailableParkingsSpace] = useState('- -');
+	const [activeParkingsSpace, setActiveParkingsSpace] = useState('- -');
+	const [todayReservations, setTodayReservations] = useState('- -');
+	const [checkInPending, setCheckInPending] = useState('- -');
+	const [todayTicketPorcentage, setTodayTicketPorcentage] = useState('100%');
+	const [pendingReservesList, setPendingReservesList] = useState([]);
+	const [todayReservationsList, setTodayReservationsList] = useState([]);
+
 	useEffect(() => {
 		async function getItems() {
-			const todayTicket = await Api.get(
+			const TodayTicket = await Api.get(
 				`/select-today-ticket-reservations/?parking_id=${parking_id}`
 			);
 
-			const TrueAvailableParkingSpace = await Api.get(
+			const AvailableParkingSpace = await Api.get(
 				`/select-available-parking-spaces/?parking_id=${parking_id}&available=${true}`
 			);
 
-			const AllActiveParkingSpaces = await Api.get(
+			const ActiveParkingSpaces = await Api.get(
 				`/select-active-parking-spaces/?parking_id=${parking_id}`
 			);
 
@@ -40,16 +50,94 @@ export default function Main({ match }) {
 				`/select-today-count-reservations/?parking_id=${parking_id}`
 			);
 
-			const trueAvailableParkingsSpace =
-				TrueAvailableParkingSpace.data.total;
+			const CheckInPending = await Api.get(
+				`/select-checkin-pending-reservation/?parking_id=${parking_id}`
+			);
 
-			const allActiveParkingsSpace = AllActiveParkingSpaces.data.total;
+			const TodayReservationsHistoric = await Api.get(
+				`/select-today-reservations/?parking_id=${parking_id}`
+			);
 
-			console.log({
-				trueAvailableParkingsSpace,
-				allActiveParkingsSpace,
-				TodayReservations
-			});
+			const PendingReservations = await Api.get(
+				`/select-checkout-pending-reservation/?parking_id=${parking_id}`
+			);
+
+			const availableParkingsSpace = AvailableParkingSpace.data.total;
+
+			const todayTicket = TodayTicket.data.result;
+
+			const activeParkingsSpace = ActiveParkingSpaces.data.total;
+
+			const todayReservations = TodayReservations.data.result;
+
+			const checkInPending = CheckInPending.data.result;
+
+			const todayTicketPorcentage =
+				(availableParkingsSpace / activeParkingsSpace) * 100 + '%';
+
+			console.log(PendingReservations);
+
+			const pendingReservations = PendingReservations.data.result.map(
+				item => {
+					return {
+						id: item._id,
+						options: item._id,
+						app: item.client.name ? true : false,
+						clientNumber:
+							item.client.telephone.ddd +
+							item.client.telephone.number,
+						vehiclePlate: item.client.vehicle.plate,
+						clientName: item.client.name,
+						parkingSpace: item.parking.space.name,
+						checkIn: item.period
+							? item.period.check_in
+								? moment(item.period.check_in.moment).format(
+										'DD/MM/YYYY'
+								  )
+								: null
+							: null
+					};
+				}
+			);
+
+			const todayReservationsHistoric = TodayReservationsHistoric.data.result.map(
+				item => {
+					return {
+						id: item._id,
+						options: item._id,
+						app: item.client.name ? true : false,
+						clientNumber:
+							item.client.telephone.ddd +
+							item.client.telephone.number,
+						vehiclePlate: item.client.vehicle.plate,
+						clientName: item.client.name,
+						parkingSpace: item.parking.space.name,
+						checkIn: item.period
+							? item.period.check_in
+								? moment(item.period.check_in.moment).format(
+										'DD/MM/YYYY'
+								  )
+								: null
+							: null,
+						checkOut: item.period
+							? item.period.check_out
+								? moment(item.period.check_out.moment).format(
+										'DD/MM/YYYY'
+								  )
+								: null
+							: null
+					};
+				}
+			);
+
+			setTodayTicket(todayTicket);
+			setAvailableParkingsSpace(availableParkingsSpace);
+			setActiveParkingsSpace(activeParkingsSpace);
+			setTodayReservations(todayReservations);
+			setCheckInPending(checkInPending);
+			setTodayTicketPorcentage(todayTicketPorcentage);
+			setTodayReservationsList(todayReservationsHistoric);
+			setPendingReservesList(pendingReservations);
 
 			handleLoader(false);
 		}
@@ -61,9 +149,9 @@ export default function Main({ match }) {
 		console.log(id);
 	}
 
-	function openModalDetailsParked(id) {
-		console.log(id);
-	}
+	// function openModalDetailsParked(id) {
+	// 	console.log(id);
+	// }
 
 	function optionsParkingSpaceLockedFormatter(cell) {
 		return (
@@ -126,53 +214,9 @@ export default function Main({ match }) {
 		);
 	}
 
-	const parking = [
-		{
-			id: 1,
-			vaga: 'ASPJ1',
-			veiculo: 'ASD-1234',
-			app: false,
-			cliente: null,
-			entrada: '12/08/2019 14:54h',
-			opcoes: 1
-		},
-		{
-			id: 2,
-			vaga: 'ASPJ2',
-			veiculo: 'ASD-1234',
-			app: true,
-			cliente: 'Raul Germano',
-			entrada: '12/08/2019 14:54h',
-			opcoes: 2
-		}
-	];
-
-	const parked = [
-		{
-			id: 1,
-			vaga: 'ASPJ1',
-			veiculo: 'ASD-1234',
-			app: false,
-			cliente: null,
-			entrada: '12/08/2019 14:54h',
-			saida: '12/08/2019 14:54h',
-			opcoes: 1
-		},
-		{
-			id: 10,
-			vaga: 'ASPJ2',
-			veiculo: 'ASD-1234',
-			app: true,
-			cliente: 'Raul Germano',
-			entrada: '12/08/2019 14:54h',
-			saida: '12/08/2019 14:54h',
-			opcoes: 2
-		}
-	];
-
 	const columnsParking = [
 		{
-			dataField: 'vaga',
+			dataField: 'parkingSpace',
 			text: 'Vaga',
 
 			style: (cell, row, rowIndex, colIndex) => {
@@ -187,7 +231,7 @@ export default function Main({ match }) {
 			}
 		},
 		{
-			dataField: 'veiculo',
+			dataField: 'vehiclePlate',
 			text: 'Veículo',
 
 			style: (cell, row, rowIndex, colIndex) => {
@@ -219,7 +263,7 @@ export default function Main({ match }) {
 			}
 		},
 		{
-			dataField: 'cliente',
+			dataField: 'clientName',
 			text: 'Cliente',
 
 			style: (cell, row, rowIndex, colIndex) => {
@@ -234,7 +278,7 @@ export default function Main({ match }) {
 			}
 		},
 		{
-			dataField: 'entrada',
+			dataField: 'checkIn',
 			text: 'Entrada',
 
 			style: (cell, row, rowIndex, colIndex) => {
@@ -249,7 +293,7 @@ export default function Main({ match }) {
 			}
 		},
 		{
-			dataField: 'opcoes',
+			dataField: 'options',
 			text: 'Ações',
 
 			formatter: optionsParkingSpaceLockedFormatter,
@@ -269,7 +313,7 @@ export default function Main({ match }) {
 
 	const columnsParked = [
 		{
-			dataField: 'vaga',
+			dataField: 'parkingSpace',
 			text: 'Vaga',
 
 			style: (cell, row, rowIndex, colIndex) => {
@@ -284,7 +328,7 @@ export default function Main({ match }) {
 			}
 		},
 		{
-			dataField: 'veiculo',
+			dataField: 'vehiclePlate',
 			text: 'Veículo',
 
 			style: (cell, row, rowIndex, colIndex) => {
@@ -316,7 +360,7 @@ export default function Main({ match }) {
 			}
 		},
 		{
-			dataField: 'cliente',
+			dataField: 'clientName',
 			text: 'Cliente',
 
 			style: (cell, row, rowIndex, colIndex) => {
@@ -331,7 +375,7 @@ export default function Main({ match }) {
 			}
 		},
 		{
-			dataField: 'entrada',
+			dataField: 'checkIn',
 			text: 'Entrada',
 
 			style: (cell, row, rowIndex, colIndex) => {
@@ -346,7 +390,7 @@ export default function Main({ match }) {
 			}
 		},
 		{
-			dataField: 'saida',
+			dataField: 'checkOut',
 			text: 'Saída',
 
 			style: (cell, row, rowIndex, colIndex) => {
@@ -361,7 +405,7 @@ export default function Main({ match }) {
 			}
 		},
 		{
-			dataField: 'opcoes',
+			dataField: 'options',
 			text: 'Ações',
 
 			formatter: optionsParkingSpaceHistoricFormatter,
@@ -401,7 +445,7 @@ export default function Main({ match }) {
 								<hr />
 
 								<p className='mb-0 fw-700 fs-15pt text-success'>
-									R$130
+									R$ {todayTicket}
 								</p>
 							</div>
 
@@ -415,13 +459,16 @@ export default function Main({ match }) {
 
 								<div className='d-flex justify-content-between align-items-center'>
 									<p className='mb-0 fw-700 fs-15pt parking mr-3'>
-										23 / 80
+										{availableParkingsSpace} /
+										{activeParkingsSpace}
 									</p>
 									<div className='progress flex-grow-1 height-05'>
 										<div
 											className='progress-bar bg-pro-parking'
 											role='progressbar'
-											style={{ width: '25%' }}
+											style={{
+												width: todayTicketPorcentage
+											}}
 											aria-valuenow='25'
 											aria-valuemin='0'
 											aria-valuemax='100'
@@ -441,7 +488,7 @@ export default function Main({ match }) {
 								<hr />
 
 								<p className='mb-0 fw-700 fs-15pt parking'>
-									143
+									{todayReservations}
 								</p>
 							</div>
 
@@ -456,7 +503,7 @@ export default function Main({ match }) {
 								<hr />
 
 								<p className='mb-0 fw-700 fs-15pt parking'>
-									23
+									{checkInPending}
 								</p>
 							</div>
 						</div>
@@ -478,7 +525,7 @@ export default function Main({ match }) {
 						<div className='p-3 br-5px bg-white shadow border mb-5'>
 							<ToolkitProvider
 								keyField='id'
-								data={parking}
+								data={pendingReservesList}
 								columns={columnsParking}
 								search
 								filter={filterFactory()}
@@ -517,7 +564,7 @@ export default function Main({ match }) {
 						<div className='p-3 br-5px bg-white mt-4 shadow border mb-5'>
 							<ToolkitProvider
 								keyField='id'
-								data={parked}
+								data={todayReservationsList}
 								columns={columnsParked}
 								search
 								filter={filterFactory()}
@@ -554,7 +601,6 @@ export default function Main({ match }) {
 						</div>
 					</main>
 
-					{/* <ModalTeste /> */}
 					<NewEntranceModal />
 					{/* <NewReleaseParkingSpaceModal /> */}
 				</div>
