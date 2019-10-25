@@ -71,8 +71,10 @@ const {
 const {
 	CreateParking,
 	SelectParkings,
+	SelectAllParkings,
 	SelectSpecificParkings,
-	UpdateParkingTelephone
+	UpdateParkingTelephone,
+	SelectAllParkingsCounter
 } = require('../controllers/parking');
 
 const routes = express.Router();
@@ -121,7 +123,19 @@ routes.get(
 
 //////////////////////// parking
 
-routes.get('/select-parkings', authenticateMiddleware, SelectParkings);
+routes.get(
+	'/select-parkings',
+	// authenticateMiddleware,
+	SelectParkings
+);
+
+routes.get('/select-all-parkings', authenticateMiddleware, SelectAllParkings);
+
+routes.get(
+	'/select-all-parkings-counter',
+	authenticateMiddleware,
+	SelectAllParkingsCounter
+);
 
 routes.get(
 	'/select-specific-parkings',

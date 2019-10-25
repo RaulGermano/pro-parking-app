@@ -13,6 +13,22 @@ module.exports = {
 
 	///////////////////////////////////////////////  selects
 
+	async SelectAllParkings(req, res) {
+		const parkings = await Parking.find();
+
+		return res.json({
+			result: parkings
+		});
+	},
+
+	async SelectAllParkingsCounter(req, res) {
+		const parkings = await Parking.countDocuments();
+
+		return res.json({
+			result: parkings
+		});
+	},
+
 	async SelectParkings(req, res) {
 		const { excluded } = req.query;
 
