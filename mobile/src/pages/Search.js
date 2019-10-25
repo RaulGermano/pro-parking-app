@@ -23,9 +23,9 @@ class Search extends Component {
 
 	async componentDidMount() {
 		date = new Date();
-		console.warn(date.getHours());
+		// console.warn(date.getHours());
 
-		if (date.getHours() == 1) {
+		if (date.getHours() != 1) {
 			this.setState({
 				mapTheme: {
 					theme: 'ligth',
