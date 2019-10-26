@@ -8,7 +8,7 @@ export default function AlterPasswordModel(props) {
 	const [password, setPassword] = useState('');
 	const [confirmPassword, setConfirmPassword] = useState('');
 
-	const { parking_user_id: _id, historic } = props;
+	const { administrator_user_id: _id, historic } = props;
 
 	const notifyDifferentPassword = () =>
 		toast.error('As senhas não correspondem. Tente novamente.');
@@ -25,7 +25,7 @@ export default function AlterPasswordModel(props) {
 			setConfirmPassword('');
 		} else {
 			try {
-				await Api.put('/update-password-parking-user', {
+				await Api.put('/update-password-administrator-user', {
 					_id,
 					password
 				});

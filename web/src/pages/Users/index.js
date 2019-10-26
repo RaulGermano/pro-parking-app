@@ -183,9 +183,9 @@ export default function Main(props) {
 
 	function optionsUserStatusFormatter(cell) {
 		return cell ? (
-			<FaCircle size={10} className='align-baseline ml-3 text-danger' />
+			<FaCircle size={10} className='align-baseline text-danger' />
 		) : (
-			<FaCircle size={10} className='align-baseline ml-3 text-primary' />
+			<FaCircle size={10} className='align-baseline text-primary' />
 		);
 	}
 
@@ -228,7 +228,9 @@ export default function Main(props) {
 		{
 			dataField: 'excluded',
 			text: 'Status',
+			align: 'center',
 			formatter: optionsUserStatusFormatter,
+			headerAlign: (column, colIndex) => 'center',
 			style: (cell, row, rowIndex, colIndex) => rowStyles(rowIndex)
 		},
 		{

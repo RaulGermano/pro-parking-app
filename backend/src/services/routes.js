@@ -13,8 +13,14 @@ const {
 } = require('../controllers/parkingQualification');
 
 const {
+	AuthenticateAdministrator,
+	CreateAdministratorUser,
+	UpdatePasswordAdministratorUser,
+	SendEmailAdministratorUserUpdatePassword
+} = require('../controllers/administratorUser');
+
+const {
 	CreateParkingUser,
-	DesableParkingUser,
 	AuthenticateParking,
 	NewPasswordParkingUser,
 	SendEmailUpdatePassword,
@@ -23,7 +29,7 @@ const {
 	SelectSpecificParkingUsers,
 	UpdateParkingUserInformations,
 	SelectCounterSpecificParkingUsers,
-	SelectCounterEnableDesableSpecificParkingUsers
+	SelectCounterEnableDisabledSpecificParkingUsers
 } = require('../controllers/parkingUser');
 
 const {
@@ -76,6 +82,15 @@ const {
 	UpdateParkingTelephone,
 	SelectAllParkingsCounter
 } = require('../controllers/parking');
+
+const {
+	CreateContactForm,
+	SelectAllContactFormList,
+	UpdateSpecificContactForm,
+	SelectAllContactFormCounter,
+	SelectSpecificStatusContactFormList,
+	SelectSpecificStatusContactFormCounter
+} = require('../controllers/contactForm');
 
 const routes = express.Router();
 
@@ -151,6 +166,26 @@ routes.put(
 
 routes.post('/create-parking', CreateParking);
 
+//////////////////////// parking administrator
+
+routes.post('/auth-administrator-user', AuthenticateAdministrator);
+
+routes.post(
+	'/create-administrator-user',
+	authenticateMiddleware,
+	CreateAdministratorUser
+);
+
+routes.post(
+	'/send-email-administrator-user-update-password',
+	SendEmailAdministratorUserUpdatePassword
+);
+
+routes.put(
+	'/update-password-administrator-user',
+	UpdatePasswordAdministratorUser
+);
+
 //////////////////////// parking user
 
 routes.get(
@@ -162,7 +197,7 @@ routes.get(
 routes.get(
 	'/select-counter-excluded-specific-parking-users',
 	authenticateMiddleware,
-	SelectCounterEnableDesableSpecificParkingUsers
+	SelectCounterEnableDisabledSpecificParkingUsers
 );
 
 routes.get(
@@ -183,11 +218,7 @@ routes.post('/auth-parking-user', AuthenticateParking);
 
 routes.post('/send-email-update-password', SendEmailUpdatePassword);
 
-routes.post(
-	'/create-parking-user',
-	// authenticateMiddleware,
-	CreateParkingUser
-);
+routes.post('/create-parking-user', authenticateMiddleware, CreateParkingUser);
 
 routes.put(
 	'/update-parking-user-informations',
@@ -196,8 +227,6 @@ routes.put(
 );
 
 routes.put('/update-password-parking-user', UpdatePasswordParkingUser);
-
-routes.put('/desable-parking-user', authenticateMiddleware, DesableParkingUser);
 
 //////////////////////// parking space
 
@@ -341,6 +370,40 @@ routes.post(
 	'/create-checkout-reservation',
 	authenticateMiddleware,
 	CreateCheckOutReservation
+);
+
+//////////////////////// contact form
+
+routes.post('/create-contact-form', CreateContactForm);
+
+routes.get(
+	'/select-all-contact-form',
+	authenticateMiddleware,
+	SelectAllContactFormList
+);
+
+routes.get(
+	'/select-all-contact-form-counter',
+	authenticateMiddleware,
+	SelectAllContactFormCounter
+);
+
+routes.get(
+	'/select-specific-status-contact-form-counter',
+	authenticateMiddleware,
+	SelectSpecificStatusContactFormCounter
+);
+
+routes.get(
+	'/select-specific-status-contact-form-list',
+	authenticateMiddleware,
+	SelectSpecificStatusContactFormList
+);
+
+routes.put(
+	'/update-specific-contact-form',
+	authenticateMiddleware,
+	UpdateSpecificContactForm
 );
 
 module.exports = routes;

@@ -9,7 +9,7 @@ function ForgotPasswordModal(props) {
 
 	const SendEmailInformation = () =>
 		toast.info(
-			'Enviamos um e-mail de confirmação. Em instantes, será possível contunuar o processo.'
+			'Enviamos um e-mail de confirmação. Em instantes, será possível continuar o processo.'
 		);
 
 	const SendEmailError = () =>

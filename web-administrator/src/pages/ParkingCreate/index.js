@@ -3,13 +3,11 @@ import Header from '../../componets/Header';
 import SideBar from '../../componets/SideBar';
 import BootstrapTable from 'react-bootstrap-table-next';
 import { FaCircle, FaBookOpen } from 'react-icons/fa';
-import { MdAdd, MdEdit } from 'react-icons/md';
+// import { MdAdd, MdEdit } from 'react-icons/md';
 import paginationFactory from 'react-bootstrap-table2-paginator';
 import filterFactory from 'react-bootstrap-table2-filter';
 import ToolkitProvider, { Search } from 'react-bootstrap-table2-toolkit';
-import NewParkingSpaceModal from '../../componets/Modal/NewParkingSpace';
-import EditParkingSpace from '../../componets/Modal/EditParkingSpace';
-import InformationsParkingSpace from '../../componets/Modal/InformationsParkingSpace';
+// import InformationsParkingSpace from '../../componets/Modal/InformationsParkingSpace';
 import Api from '../../services/Api';
 import useLoader from '../../componets/Loader/useLoader';
 import moment from 'moment-timezone';
@@ -23,22 +21,34 @@ export default function ParkingLots(props) {
 	const { match, history } = props;
 
 	const [loader, handleLoader] = useLoader();
-	const [parkingSpaceId, setParkingSpaceId] = useState('');
-	const [totalParkingSpaces, setTotalParkingSpaces] = useState(0);
-	const [activeParkingSpaces, setActiveParkingSpaces] = useState(0);
-	const [availableParkingSpaces, setAvailableParkingSpaces] = useState(0);
-	const [notActiveParkingSpaces, setNotActiveParkingSpaces] = useState(0);
+	const [contactFormId, setContactFormId] = useState('');
+
+	const [allContactFormCounter, setAllContactFormCounter] = useState(0);
+
 	const [
-		pendingCheckoutParkingSpaces,
-		setPendingCheckoutParkingSpaces
+		notStartedContactFormCounter,
+		setNotStartedContactFormCounter
 	] = useState(0);
-	const [modalShow, setModalShow] = useState(false);
-	const [editParkingSpace, setEditParkingSpace] = useState(false);
-	const [informationsParkingSpace, setInformationsParkingSpace] = useState(
+
+	const [startedContactFormCounter, setStartedContactFormCounter] = useState(
+		0
+	);
+
+	const [
+		finishedContactFormCounter,
+		setFinishedContactFormCounter
+	] = useState(0);
+
+	const [informationsContactForm, setInformationsContactForm] = useState(
 		false
 	);
+
 	const [sessionInformations, setSessionInformations] = useState({});
-	const [pendingReservesList, setPendingReservesList] = useState([{}]);
+
+	const [
+		notFinishedContactFormList,
+		setNotFinishedContactFormList
+	] = useState([{}]);
 
 	useEffect(() => {
 		const informations = jwt.verify(
@@ -49,21 +59,18 @@ export default function ParkingLots(props) {
 			}
 		);
 
-		const { id: parkingUser_id, name, parking: parking_id } = informations;
+		const { id: administratorUser_id, administratorName } = informations;
 
 		setSessionInformations({
-			parkingUser_id,
-			parking_id,
-			name
+			administratorUser_id,
+			administratorName
 		});
 
 		console.log(informations);
 
-		const { parking } = informations;
-
 		async function getItems() {
-			const selectAllParkingsResult = await Api.get(
-				`/select-all-parkings`,
+			const selectNotStartedContactFormListResult = await Api.get(
+				`/select-specific-status-contact-form-list/?status=${0}`,
 				{
 					headers: {
 						authenticateToken: getToken()
@@ -71,8 +78,8 @@ export default function ParkingLots(props) {
 				}
 			);
 
-			const selectAllParkingsCounterResult = await Api.get(
-				`/select-all-parkings-counter`,
+			const selectStartedContactFormListResult = await Api.get(
+				`/select-specific-status-contact-form-list/?status=${1}`,
 				{
 					headers: {
 						authenticateToken: getToken()
@@ -80,20 +87,62 @@ export default function ParkingLots(props) {
 				}
 			);
 
-			console.log({
-				selectAllParkingsResult,
-				teste: selectAllParkingsCounterResult.data.result
-			});
+			const selectAllContactFormCounterResult = await Api.get(
+				`/select-all-contact-form-counter`,
+				{
+					headers: {
+						authenticateToken: getToken()
+					}
+				}
+			);
 
-			const selectAllParkingsCounter =
-				selectAllParkingsCounterResult.data.result;
+			const selectNotStartedContactFormCounterResult = await Api.get(
+				`/select-specific-status-contact-form-counter/?status=${0}`,
+				{
+					headers: {
+						authenticateToken: getToken()
+					}
+				}
+			);
 
-			const selectAllParkings = selectAllParkingsResult.data.result.map(
+			const selectStartedContactFormCounterResult = await Api.get(
+				`/select-specific-status-contact-form-counter/?status=${1}`,
+				{
+					headers: {
+						authenticateToken: getToken()
+					}
+				}
+			);
+
+			const selectFinishedContactFormCounterResult = await Api.get(
+				`/select-specific-status-contact-form-counter/?status=${2}`,
+				{
+					headers: {
+						authenticateToken: getToken()
+					}
+				}
+			);
+
+			const selectAllContactFormCounter =
+				selectAllContactFormCounterResult.data.result;
+
+			const selectNotStartedContactFormCounter =
+				selectNotStartedContactFormCounterResult.data.result;
+
+			const selectStartedContactFormCounter =
+				selectStartedContactFormCounterResult.data.result;
+
+			const selectFinishedContactFormCounter =
+				selectFinishedContactFormCounterResult.data.result;
+
+			const selectNotStartedContactFormList = selectNotStartedContactFormListResult.data.result.map(
 				item => {
 					return {
 						id: item._id,
 						name: item.name,
-						excluded: item.excluded,
+						email: item.email,
+						status: item.status,
+						telephone: `(${item.telephone.ddd}) ${item.telephone.number}`,
 						created_at: `${moment(item.createdAt).format(
 							'DD/MM/YYYY'
 						)} às ${moment(item.createdAt).format('HH:mm')}h`
@@ -101,8 +150,31 @@ export default function ParkingLots(props) {
 				}
 			);
 
-			// setTotalParkingSpaces(selectTotalParkingSpaces);
-			// setAvailableParkingSpaces(selectAvailableParkingSpaces);
+			const selectStartedContactFormList = selectStartedContactFormListResult.data.result.map(
+				item => {
+					return {
+						id: item._id,
+						name: item.name,
+						email: item.email,
+						status: item.status,
+						telephone: `(${item.telephone.ddd}) ${item.telephone.number}`,
+						created_at: `${moment(item.createdAt).format(
+							'DD/MM/YYYY'
+						)} às ${moment(item.createdAt).format('HH:mm')}h`
+					};
+				}
+			);
+
+			const selectNotFinishedContactFormList = [
+				...selectNotStartedContactFormList,
+				...selectStartedContactFormList
+			];
+
+			setAllContactFormCounter(selectAllContactFormCounter);
+			setNotStartedContactFormCounter(selectNotStartedContactFormCounter);
+			setStartedContactFormCounter(selectStartedContactFormCounter);
+			setFinishedContactFormCounter(selectFinishedContactFormCounter);
+			setNotFinishedContactFormList(selectNotFinishedContactFormList);
 
 			handleLoader(false);
 		}
@@ -110,14 +182,9 @@ export default function ParkingLots(props) {
 		getItems();
 	}, []);
 
-	const openModalEditParkingSpace = id => {
-		setEditParkingSpace(true);
-		setParkingSpaceId(id);
-	};
-
 	const openModalInformationsParkingSpace = id => {
-		setInformationsParkingSpace(true);
-		setParkingSpaceId(id);
+		setInformationsContactForm(true);
+		setContactFormId(id);
 	};
 
 	const optionsParkingSpaceHistoricFormatter = cell => {
@@ -148,9 +215,9 @@ export default function ParkingLots(props) {
 		console.log('teste: ', cell);
 
 		return cell ? (
-			<FaCircle size={10} className='align-baseline ml-3 text-danger' />
+			<FaCircle size={10} className='align-baseline text-warning' />
 		) : (
-			<FaCircle size={10} className='align-baseline ml-3 text-primary' />
+			<FaCircle size={10} className='align-baseline text-primary' />
 		);
 	};
 
@@ -186,25 +253,26 @@ export default function ParkingLots(props) {
 			style: (cell, row, rowIndex, colIndex) => rowStyles(rowIndex)
 		},
 		{
-			dataField: 'value',
-			text: 'Valor por hora',
+			dataField: 'telephone',
+			text: 'Telefone',
 			style: (cell, row, rowIndex, colIndex) => rowStyles(rowIndex)
 		},
 		{
-			dataField: 'available',
-			text: 'Disponibilidade',
-			formatter: optionsUserTypeFormatter,
+			dataField: 'email',
+			text: 'E-Mail',
 			style: (cell, row, rowIndex, colIndex) => rowStyles(rowIndex)
 		},
 		{
-			dataField: 'excluded',
+			dataField: 'status',
 			text: 'Status',
+			align: 'center',
 			formatter: optionsUserStatusFormatter,
+			headerAlign: (column, colIndex) => 'center',
 			style: (cell, row, rowIndex, colIndex) => rowStyles(rowIndex)
 		},
 		{
 			dataField: 'created_at',
-			text: 'Criada em',
+			text: 'Criado em',
 			style: (cell, row, rowIndex, colIndex) => rowStyles(rowIndex)
 		},
 		{
@@ -218,20 +286,13 @@ export default function ParkingLots(props) {
 	return (
 		<>
 			<Header />
-
+			{/* 
 			<InformationsParkingSpace
 				show={informationsParkingSpace}
-				onHide={() => setInformationsParkingSpace(false)}
+				onHide={() => setInformationsContactForm(false)}
 				history={history}
-				parkingspaceid={parkingSpaceId}
-			/>
-
-			<EditParkingSpace
-				show={editParkingSpace}
-				onHide={() => setEditParkingSpace(false)}
-				history={history}
-				parkingspaceid={parkingSpaceId}
-			/>
+				parkingspaceid={contactFormId}
+            />*/}
 
 			<div className='container-fluid'>
 				<div className='row'>
@@ -248,7 +309,37 @@ export default function ParkingLots(props) {
 								>
 									Total:
 									<span className='badge badge-secondary ml-2'>
-										{totalParkingSpaces}
+										{allContactFormCounter}
+									</span>
+								</button>
+
+								<button
+									type='button'
+									className='btn btn-light bg-white shadow border ml-3'
+								>
+									Aguardando:
+									<span className='badge badge-danger ml-2'>
+										{notStartedContactFormCounter}
+									</span>
+								</button>
+
+								<button
+									type='button'
+									className='btn btn-light bg-white shadow border ml-3'
+								>
+									Iniciados:
+									<span className='badge badge-warning ml-2'>
+										{startedContactFormCounter}
+									</span>
+								</button>
+
+								<button
+									type='button'
+									className='btn btn-light bg-white shadow border ml-3'
+								>
+									Finalizados:
+									<span className='badge badge-success ml-2'>
+										{finishedContactFormCounter}
 									</span>
 								</button>
 							</div>
@@ -257,7 +348,7 @@ export default function ParkingLots(props) {
 						<div className='p-3 br-5px bg-white mt-4 shadow border mb-5'>
 							<ToolkitProvider
 								keyField='id'
-								data={pendingReservesList}
+								data={notFinishedContactFormList}
 								columns={columnsParked}
 								search
 								filter={filterFactory()}

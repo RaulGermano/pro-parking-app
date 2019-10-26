@@ -104,7 +104,7 @@ module.exports = {
 		});
 	},
 
-	async SelectCounterEnableDesableSpecificParkingUsers(req, res) {
+	async SelectCounterEnableDisabledSpecificParkingUsers(req, res) {
 		const { parking_id, excluded } = req.query;
 
 		const quantity = await ParkingUser.countDocuments({
@@ -250,25 +250,25 @@ module.exports = {
 		});
 	},
 
-	async DesableParkingUser(req, res) {
-		const { parking_id, user_id: _id } = req.body;
+	// async DisabledParkingUser(req, res) {
+	// 	const { parking_id, user_id: _id } = req.body;
 
-		await ParkingUser.updateOne(
-			{
-				parking_id,
-				_id
-			},
-			{
-				$set: {
-					excluded: true
-				}
-			}
-		);
+	// 	await ParkingUser.updateOne(
+	// 		{
+	// 			parking_id,
+	// 			_id
+	// 		},
+	// 		{
+	// 			$set: {
+	// 				excluded: true
+	// 			}
+	// 		}
+	// 	);
 
-		return res.json({
-			result: true
-		});
-	},
+	// 	return res.json({
+	// 		result: true
+	// 	});
+	// },
 
 	async UpdateParkingUserInformations(req, res) {
 		const {

@@ -9,7 +9,7 @@ function ForgotPasswordModal(props) {
 
 	const SendEmailInformation = () =>
 		toast.info(
-			'Enviamos um e-mail de confirmação. Em instantes, será possível contunuar o processo.'
+			'Enviamos um e-mail de confirmação. Em instantes, será possível continuar o processo.'
 		);
 
 	const SendEmailError = () =>
@@ -20,7 +20,10 @@ function ForgotPasswordModal(props) {
 
 		setEmail('');
 
-		const result = await Api.post('/send-email-update-password', { email });
+		const result = await Api.post(
+			'/send-email-administrator-user-update-password',
+			{ email }
+		);
 
 		if (result.data.response) {
 			SendEmailInformation();

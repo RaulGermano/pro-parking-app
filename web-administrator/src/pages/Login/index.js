@@ -15,38 +15,38 @@ function Login({ history: historic }) {
 		handleLoader(false);
 	});
 
-	const [forgotPassword, setForgotPassword] = useState(false);
-	const [alterPassword, setAlterPassword] = useState(false);
-
+	const [loader, handleLoader] = useLoader();
 	const [login, setLogin] = useState('');
 	const [password, setPassword] = useState('');
-	const [parking_user_id, setParkingUserId] = useState('');
+	const [administrator_user_id, setAdministratorUserId] = useState('');
+	const [alterPassword, setAlterPassword] = useState(false);
+	const [forgotPassword, setForgotPassword] = useState(false);
 
-	const [loader, handleLoader] = useLoader();
-
-	const notify = () => toast.error('Usuário ou senha, estão incorretos!');
+	const notify = () => toast.error('O usuário ou a senha, estão incorretos!');
 
 	async function tryAuthentication(event) {
 		event.preventDefault();
 
 		try {
-			const userInformations = await Api.post('/auth-parking-user', {
-				login,
-				password
-			});
+			const userInformations = await Api.post(
+				'/auth-administrator-user',
+				{
+					login,
+					password
+				}
+			);
 
-			const { token, firstAccess } = userInformations.data;
-			const { _id, parking_id } = userInformations.data.parkingUser;
+			const { token } = userInformations.data;
+			const { _id, firstAccess } = userInformations.data.result;
 
 			if (firstAccess) {
-				setParkingUserId(_id);
+				setAdministratorUserId(_id);
 				setAlterPassword(true);
 
 				return;
 			} else {
 				userLogin({
-					token,
-					parking_id
+					token
 				});
 
 				historic.push('/parking-contacts-to-create');
@@ -66,7 +66,7 @@ function Login({ history: historic }) {
 				<AlterPasswordModel
 					show={alterPassword}
 					onHide={() => setAlterPassword(false)}
-					parking_user_id={parking_user_id}
+					administrator_user_id={administrator_user_id}
 					historic={historic}
 				/>
 

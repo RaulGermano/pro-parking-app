@@ -4,39 +4,19 @@ mongoose.set('useCreateIndex', true);
 
 const ContactForm = new mongoose.Schema(
 	{
-		excluded: {
-			type: Boolean,
-			default: false
-		},
-		login: {
+		name: {
 			type: String,
 			lowercase: true,
-			required: true,
-			index: {
-				unique: true
-			}
+			required: true
 		},
 		email: {
 			type: String,
 			lowercase: true,
 			required: true
 		},
-		password: {
-			type: String,
-			select: false,
-			required: true
-		},
-		name: {
-			type: String,
-			lowercase: true
-		},
-		sex: {
-			type: String,
-			lowercase: true
-		},
-		cpf: {
-			type: String,
-			required: true
+		status: {
+			type: Intl,
+			default: 0
 		},
 		telephone: {
 			ddd: {
@@ -50,32 +30,18 @@ const ContactForm = new mongoose.Schema(
 		},
 		address: {
 			zip_code: {
-				type: String
+				type: String,
+				required: true
 			},
 			state: {
 				type: String,
-				lowercase: true
+				lowercase: true,
+				required: true
 			},
 			city: {
 				type: String,
-				lowercase: true
-			},
-			neighborhood: {
-				type: String
-			},
-			street: {
-				type: String
-			},
-			number_house: {
-				type: String
-			},
-			coordinates: {
-				latitude: {
-					type: Number
-				},
-				longitude: {
-					type: Number
-				}
+				lowercase: true,
+				required: true
 			}
 		}
 	},

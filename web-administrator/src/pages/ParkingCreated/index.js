@@ -7,9 +7,9 @@ import { MdAdd, MdEdit } from 'react-icons/md';
 import paginationFactory from 'react-bootstrap-table2-paginator';
 import filterFactory from 'react-bootstrap-table2-filter';
 import ToolkitProvider, { Search } from 'react-bootstrap-table2-toolkit';
-import NewParkingSpaceModal from '../../componets/Modal/NewParkingSpace';
-import EditParkingSpace from '../../componets/Modal/EditParkingSpace';
-import InformationsParkingSpace from '../../componets/Modal/InformationsParkingSpace';
+// import NewParkingSpaceModal from '../../componets/Modal/NewParkingSpace';
+// import EditParkingSpace from '../../componets/Modal/EditParkingSpace';
+// import InformationsParkingSpace from '../../componets/Modal/InformationsParkingSpace';
 import Api from '../../services/Api';
 import useLoader from '../../componets/Loader/useLoader';
 import moment from 'moment-timezone';
@@ -279,7 +279,7 @@ export default function ParkingLots(props) {
 	return (
 		<>
 			<Header />
-
+			{/* 
 			<InformationsParkingSpace
 				show={informationsParkingSpace}
 				onHide={() => setInformationsParkingSpace(false)}
@@ -292,7 +292,7 @@ export default function ParkingLots(props) {
 				onHide={() => setEditParkingSpace(false)}
 				history={history}
 				parkingspaceid={parkingSpaceId}
-			/>
+			/> */}
 
 			<div className='container-fluid'>
 				<div className='row'>
@@ -367,11 +367,11 @@ export default function ParkingLots(props) {
 									Nova vaga
 								</button>
 
-								<NewParkingSpaceModal
+								{/* <NewParkingSpaceModal
 									show={modalShow}
 									history={history}
 									onHide={() => setModalShow(false)}
-								/>
+								/> */}
 							</div>
 						</div>
 

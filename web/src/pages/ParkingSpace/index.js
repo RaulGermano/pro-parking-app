@@ -209,17 +209,17 @@ export default function ParkingLots(props) {
 		console.log('teste: ', cell);
 
 		return cell ? (
-			<FaCircle size={10} className='align-baseline ml-3 text-danger' />
+			<FaCircle size={10} className='align-baseline text-danger' />
 		) : (
-			<FaCircle size={10} className='align-baseline ml-3 text-primary' />
+			<FaCircle size={10} className='align-baseline text-primary' />
 		);
 	};
 
 	const optionsUserTypeFormatter = cell => {
 		return cell ? (
-			<FaCircle size={10} className='align-baseline ml-3 text-success' />
+			<FaCircle size={10} className='align-baseline text-success' />
 		) : (
-			<FaCircle size={10} className='align-baseline ml-3 text-warning' />
+			<FaCircle size={10} className='align-baseline text-warning' />
 		);
 	};
 
@@ -254,13 +254,17 @@ export default function ParkingLots(props) {
 		{
 			dataField: 'available',
 			text: 'Disponibilidade',
+			align: 'center',
 			formatter: optionsUserTypeFormatter,
+			headerAlign: (column, colIndex) => 'center',
 			style: (cell, row, rowIndex, colIndex) => rowStyles(rowIndex)
 		},
 		{
 			dataField: 'excluded',
 			text: 'Status',
+			align: 'center',
 			formatter: optionsUserStatusFormatter,
+			headerAlign: (column, colIndex) => 'center',
 			style: (cell, row, rowIndex, colIndex) => rowStyles(rowIndex)
 		},
 		{

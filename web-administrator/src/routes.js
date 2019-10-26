@@ -6,6 +6,7 @@ import ParkingCreated from './pages/ParkingCreated';
 import Introdution from './pages/Introdution';
 import Users from './pages/Users';
 import Help from './pages/Help';
+import NewPassword from './pages/NewPassword';
 import { isAuthenticated } from './services/Auth';
 
 const PrivateRoute = ({ component: Component, ...rest }) => (
@@ -27,6 +28,10 @@ function Routes() {
 	return (
 		<BrowserRouter>
 			<Route path='/' exact component={Login} />
+			<Route
+				path='/administrator-user-new-password/:administratorId'
+				component={NewPassword}
+			/>
 			<PrivateRoute
 				path='/parking-contacts-to-create'
 				component={ParkingCreate}
