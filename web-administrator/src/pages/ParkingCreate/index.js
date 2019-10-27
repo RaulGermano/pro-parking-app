@@ -3,11 +3,10 @@ import Header from '../../componets/Header';
 import SideBar from '../../componets/SideBar';
 import BootstrapTable from 'react-bootstrap-table-next';
 import { FaCircle, FaBookOpen } from 'react-icons/fa';
-// import { MdAdd, MdEdit } from 'react-icons/md';
 import paginationFactory from 'react-bootstrap-table2-paginator';
 import filterFactory from 'react-bootstrap-table2-filter';
 import ToolkitProvider, { Search } from 'react-bootstrap-table2-toolkit';
-// import InformationsParkingSpace from '../../componets/Modal/InformationsParkingSpace';
+import InformationsContactForm from '../../componets/Modal/InformationsContactForm';
 import Api from '../../services/Api';
 import useLoader from '../../componets/Loader/useLoader';
 import moment from 'moment-timezone';
@@ -182,7 +181,7 @@ export default function ParkingLots(props) {
 		getItems();
 	}, []);
 
-	const openModalInformationsParkingSpace = id => {
+	const openModalInformationsContactForm = id => {
 		setInformationsContactForm(true);
 		setContactFormId(id);
 	};
@@ -199,7 +198,7 @@ export default function ParkingLots(props) {
 						color='#777777'
 						className='cursor-pointer'
 						onClick={event =>
-							openModalInformationsParkingSpace(cell)
+							openModalInformationsContactForm(cell)
 						}
 					/>
 				</button>
@@ -212,20 +211,10 @@ export default function ParkingLots(props) {
 	};
 
 	const optionsUserStatusFormatter = cell => {
-		console.log('teste: ', cell);
-
 		return cell ? (
 			<FaCircle size={10} className='align-baseline text-warning' />
 		) : (
 			<FaCircle size={10} className='align-baseline text-primary' />
-		);
-	};
-
-	const optionsUserTypeFormatter = cell => {
-		return cell ? (
-			<FaCircle size={10} className='align-baseline ml-3 text-success' />
-		) : (
-			<FaCircle size={10} className='align-baseline ml-3 text-warning' />
 		);
 	};
 
@@ -286,13 +275,13 @@ export default function ParkingLots(props) {
 	return (
 		<>
 			<Header />
-			{/* 
-			<InformationsParkingSpace
-				show={informationsParkingSpace}
+
+			<InformationsContactForm
+				show={informationsContactForm}
 				onHide={() => setInformationsContactForm(false)}
 				history={history}
-				parkingspaceid={contactFormId}
-            />*/}
+				contactformid={contactFormId}
+			/>
 
 			<div className='container-fluid'>
 				<div className='row'>

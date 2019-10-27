@@ -88,6 +88,9 @@ const {
 	SelectAllContactFormList,
 	UpdateSpecificContactForm,
 	SelectAllContactFormCounter,
+	SelectSpecificContactFormItem,
+	UpdateSpecificContactFormStart,
+	UpdateSpecificContactFormFinish,
 	SelectSpecificStatusContactFormList,
 	SelectSpecificStatusContactFormCounter
 } = require('../controllers/contactForm');
@@ -400,10 +403,28 @@ routes.get(
 	SelectSpecificStatusContactFormList
 );
 
+routes.get(
+	'/select-specific-contact-form-item',
+	authenticateMiddleware,
+	SelectSpecificContactFormItem
+);
+
 routes.put(
 	'/update-specific-contact-form',
 	authenticateMiddleware,
 	UpdateSpecificContactForm
+);
+
+routes.put(
+	'/update-specific-contact-form-start',
+	authenticateMiddleware,
+	UpdateSpecificContactFormStart
+);
+
+routes.put(
+	'/update-specific-contact-form-finish',
+	authenticateMiddleware,
+	UpdateSpecificContactFormFinish
 );
 
 module.exports = routes;

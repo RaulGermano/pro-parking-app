@@ -4,10 +4,10 @@ import SideBar from '../../componets/SideBar';
 import BootstrapTable from 'react-bootstrap-table-next';
 import { FaCircle } from 'react-icons/fa';
 import { MdAdd, MdEdit, MdMail } from 'react-icons/md';
-import NewParkingUserModal from '../../componets/Modal/NewParkingUser';
-import InformationsParkingUserModal from '../../componets/Modal/InformationsParkingUser';
-import EditParkingUserModal from '../../componets/Modal/EditParkingUser';
-import ConfirmNewParkingUserPasswordModal from '../../componets/Modal/ConfirmNewParkingUserPassword';
+// import NewParkingUserModal from '../../componets/Modal/NewParkingUser';
+// import InformationsParkingUserModal from '../../componets/Modal/InformationsParkingUser';
+// import EditParkingUserModal from '../../componets/Modal/EditAdministratorUser';
+// import ConfirmNewParkingUserPasswordModal from '../../componets/Modal/ConfirmNewParkingUserPassword';
 import paginationFactory from 'react-bootstrap-table2-paginator';
 import filterFactory from 'react-bootstrap-table2-filter';
 import ToolkitProvider, { Search } from 'react-bootstrap-table2-toolkit';
@@ -249,7 +249,7 @@ export default function Main(props) {
 
 			<ToastContainer />
 
-			<NewParkingUserModal
+			{/* <NewParkingUserModal
 				show={modalParkingUserCreate}
 				onHide={() => setModalParkingUserCreate(false)}
 				history={history}
@@ -274,7 +274,7 @@ export default function Main(props) {
 				show={modalConfirmate}
 				onHide={() => setModalConfirmate(false)}
 				parkinguserid={parkingUserId}
-			/>
+			/> */}
 
 			<div className='container-fluid'>
 				<div className='row'>

@@ -13,7 +13,7 @@ function InformationsParkingSpace(props) {
 	const { show, parkingspaceid } = props;
 
 	useEffect(() => {
-		setTypeInformations(1);
+		setTypeInformations(0);
 
 		const informations = jwt.verify(
 			getToken(),

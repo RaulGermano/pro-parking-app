@@ -11043,12 +11043,43 @@ body {
 }
 
 .dangerStatus{
-    background-color: #dc354587 !important;
+    background-color: #ff748187 !important;
     color: #d20000 !important;
 }
 
+.warningStatus{
+    background-color: #f5e49e !important;
+    color: #d26b00 !important;
+}
+
+/* body > div[role="dialog"]:first-child,
+body > div[role="dialog"]:not(.modal):first-child {
+    position: relative;
+    z-index: -1 !important;
+    height: 0;
+    overflow: visible;
+}
+
+body > div[role="dialog"]:last-child,
+body > div[role="dialog"]:not(.modal):last-child {
+    position: relative;
+    z-index: -3 !important;
+    height: 0;
+    overflow: visible;
+    background-color: #002752 !important;
+} */
+
+
 .bg-pro-parking-secondary {
 	background-color: #e6e6e6 ;
+}
+
+.bg-pro-parking-secondary-low {
+	background-color: #f2f2f2 ;
+}
+
+.text-light > input[type='checkbox'].is-valid + label{
+    color: #fff !important;
 }
 
 button.bg-pro-parking:hover {

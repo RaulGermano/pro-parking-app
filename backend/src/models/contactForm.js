@@ -2,6 +2,34 @@ const mongoose = require('mongoose');
 
 mongoose.set('useCreateIndex', true);
 
+const StartContactForm = new mongoose.Schema(
+	{
+		startedBy: {
+			name: {
+				type: String,
+				lowercase: true
+			}
+		}
+	},
+	{
+		timestamps: true
+	}
+);
+
+const FinishContactForm = new mongoose.Schema(
+	{
+		finishedBy: {
+			name: {
+				type: String,
+				lowercase: true
+			}
+		}
+	},
+	{
+		timestamps: true
+	}
+);
+
 const ContactForm = new mongoose.Schema(
 	{
 		name: {
@@ -13,6 +41,10 @@ const ContactForm = new mongoose.Schema(
 			type: String,
 			lowercase: true,
 			required: true
+		},
+		description: {
+			type: String,
+			lowercase: true
 		},
 		status: {
 			type: Intl,
@@ -43,7 +75,9 @@ const ContactForm = new mongoose.Schema(
 				lowercase: true,
 				required: true
 			}
-		}
+		},
+		start: StartContactForm,
+		finish: FinishContactForm
 	},
 	{
 		timestamps: true

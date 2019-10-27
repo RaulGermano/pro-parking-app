@@ -7,7 +7,7 @@ module.exports = {
 		const response = await ContactForm.create(req.body);
 
 		return res.json({
-			result: response[0]
+			result: response
 		});
 	},
 
@@ -55,6 +55,18 @@ module.exports = {
 		});
 	},
 
+	async SelectSpecificContactFormItem(req, res) {
+		const { contactForm_id: _id } = req.query;
+
+		const specificContactFormItemResult = await ContactForm.findOne({
+			_id
+		});
+
+		return res.json({
+			result: specificContactFormItemResult
+		});
+	},
+
 	///////////////////////////////////////////////  updates
 
 	async UpdateSpecificContactForm(req, res) {
@@ -66,6 +78,54 @@ module.exports = {
 			},
 			{
 				$set: { telephone }
+			}
+		);
+
+		return res.json({
+			result: true
+		});
+	},
+
+	async UpdateSpecificContactFormStart(req, res) {
+		const { contactForm_id: _id, administratorUser } = req.body;
+
+		await ContactForm.updateOne(
+			{
+				_id
+			},
+			{
+				$set: {
+					status: 1,
+					start: {
+						startedBy: {
+							name: administratorUser.name
+						}
+					}
+				}
+			}
+		);
+
+		return res.json({
+			result: true
+		});
+	},
+
+	async UpdateSpecificContactFormFinish(req, res) {
+		const { contactForm_id: _id, administratorUser } = req.body;
+
+		await ContactForm.updateOne(
+			{
+				_id
+			},
+			{
+				$set: {
+					status: 2,
+					finish: {
+						finishedBy: {
+							name: administratorUser.name
+						}
+					}
+				}
 			}
 		);
 

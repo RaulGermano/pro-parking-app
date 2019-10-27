@@ -199,10 +199,11 @@
             "hideMethod": "fadeOut"
         }
 
-        const createParking=async(zip_code, state, city, name, email, ddd, number)=>{
+        const createParking=async(zip_code, state, city, name, email, ddd, number, description)=>{
             const result=await axios.post('http://localhost:3030/create-contact-form', {
                     name,
                     email,
+                    description,
                     telephone:{
                         ddd,
                         number
@@ -225,6 +226,9 @@
             $('#input-text-email').val('')
             $('#input-text-telephone-ddd').val('')
             $('#input-text-telephone-number').val('')
+            $('#input-text-description').val('')
+
+            $("#button-submit-send-form").prop('disabled', true)
 
             toastr.info('Em breve, nós entraremos em contato. Obrigado.', `Olá, ${name}`,)
 
@@ -273,10 +277,11 @@
             const email=$('#input-text-email').val()
             const ddd=$('#input-text-telephone-ddd').val()
             const number=$('#input-text-telephone-number').val()
+            const description=$('#input-text-description').val()
 
             const newDdd=Number(ddd)
 
-            createParking(zip_code, state, city, name, email, newDdd, number)
+            createParking(zip_code, state, city, name, email, newDdd, number, description)
         })
 
     </script>
