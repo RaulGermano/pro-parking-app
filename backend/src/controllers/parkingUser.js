@@ -49,12 +49,6 @@ module.exports = {
 			}
 		);
 
-		// if (parkingUser.firstAccess) {
-		// 	return res.status(400).json({
-		// 		result: 'Trocar a senha'
-		// 	});
-		// }
-
 		return res.json({
 			parkingUser,
 			token,
@@ -211,20 +205,20 @@ module.exports = {
 		}
 	},
 
-	async NewPasswordParkingUser(req, res) {
-		const { parking_id, password } = req.params;
+	// async NewPasswordParkingUser(req, res) {
+	// 	const { parking_id, password } = req.params;
 
-		const teste = await ParkingUser.updateOne(
-			{
-				parking_id
-			},
-			{ $set: { password } }
-		);
+	// 	const teste = await ParkingUser.updateOne(
+	// 		{
+	// 			parking_id
+	// 		},
+	// 		{ $set: { password } }
+	// 	);
 
-		return res.json({
-			teste
-		});
-	},
+	// 	return res.json({
+	// 		teste
+	// 	});
+	// },
 
 	///////////////////////////////////////////////  updates
 

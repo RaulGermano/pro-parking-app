@@ -60,38 +60,51 @@ module.exports = {
 		});
 	},
 
-	// async SelectSpecificAdministratorUser(req, res) {
-	// 	const { parkingUser_id: _id } = req.query;
+	async SelectAllAdministratorUsersList(req, res) {
+		const administratorUsers = await administratorUser.find();
 
-	// 	const administratorUser = await administratorUser.findOne({
-	// 		_id
-	// 	});
+		if (!administratorUsers) {
+			return res.json({
+				result: false
+			});
+		}
 
-	// 	return res.json({
-	// 		result: parkingUser
-	// 	});
-	// },
+		return res.json({
+			result: administratorUsers
+		});
+	},
 
-	// async SelectCounterSpecificAdministratorUsers(req, res) {
-	// 	const administratorUserResult = await administratorUser.countDocuments();
+	async SelectSpecificAdministratorUser(req, res) {
+		const { administratorUser_id: _id } = req.query;
 
-	// 	return res.json({
-	// 		result: administratorUserResult
-	// 	});
-	// },
+		const administratorUserInformatins = await administratorUser.findOne({
+			_id
+		});
 
-	// async SelectCounterEnableDesableSpecificAdministratorUsers(req, res) {
-	// 	const { parking_id, excluded } = req.query;
+		return res.json({
+			result: administratorUserInformatins
+		});
+	},
 
-	// 	const quantity = await administratorUser.countDocuments({
-	// 		parking_id,
-	// 		excluded
-	// 	});
+	async SelectAllAdministratorUsersCounter(req, res) {
+		const administratorUserResult = await administratorUser.countDocuments();
 
-	// 	return res.json({
-	// 		result: quantity
-	// 	});
-	// },
+		return res.json({
+			result: administratorUserResult
+		});
+	},
+
+	async SelectSpecificExcludedAdministratorUsersCounter(req, res) {
+		const { excluded } = req.query;
+
+		const quantity = await administratorUser.countDocuments({
+			excluded
+		});
+
+		return res.json({
+			result: quantity
+		});
+	},
 
 	async SendEmailAdministratorUserUpdatePassword(req, res) {
 		const { email } = req.body;
@@ -187,21 +200,6 @@ module.exports = {
 		}
 	},
 
-	// async NewPasswordAdministratorUser(req, res) {
-	// 	const { parking_id, password } = req.params;
-
-	// 	const teste = await administratorUser.updateOne(
-	// 		{
-	// 			parking_id
-	// 		},
-	// 		{ $set: { password } }
-	// 	);
-
-	// 	return res.json({
-	// 		teste
-	// 	});
-	// },
-
 	///////////////////////////////////////////////  updates
 
 	async UpdatePasswordAdministratorUser(req, res) {
@@ -224,29 +222,28 @@ module.exports = {
 		return res.json({
 			result: true
 		});
+	},
+
+	async UpdateAdministratorUser(req, res) {
+		const { user_id: _id, name, sex, excluded } = req.body;
+
+		await administratorUser.updateOne(
+			{
+				_id
+			},
+			{
+				$set: {
+					name,
+					sex,
+					excluded
+				}
+			}
+		);
+
+		return res.json({
+			result: true
+		});
 	}
-
-	// async UpdateAdministratorUserInformations(req, res) {
-	// 	const { user_id: _id, name, sex, excluded } = req.body;
-
-	// 	await administratorUser.updateOne(
-	// 		{
-	// 			parking_id,
-	// 			_id
-	// 		},
-	// 		{
-	// 			$set: {
-	// 				name,
-	// 				sex,
-	// 				excluded
-	// 			}
-	// 		}
-	// 	);
-
-	// 	return res.json({
-	// 		result: true
-	// 	});
-	// }
 
 	///////////////////////////////////////////////  removes
 };

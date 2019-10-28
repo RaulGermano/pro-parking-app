@@ -12,19 +12,27 @@ import {
 	ToggleButtonGroup
 } from 'react-bootstrap';
 
-function EditParkingSpace(props) {
-	const [parkingUserName, setParkingUserName] = useState('');
-	const [parkingUserEmail, setParkingUserEmail] = useState('');
-	const [parkingUserLogin, setParkingUserLogin] = useState('');
-	const [parkingUserCreatedAt, setParkingUserCreatedAt] = useState('');
-	const [parkingUserAccessLevel, setParkingUserAccessLevel] = useState('');
-	const [parkingUserSex, setParkingUserSex] = useState(0);
+function EditAdministratorUserModal(props) {
+	const [administratorUserName, setAdministratorUserName] = useState('');
+	const [administratorUserEmail, setAdministratorUserEmail] = useState('');
+	const [administratorUserLogin, setAdministratorUserLogin] = useState('');
+	const [
+		administratorUserCreatedAt,
+		setAdministratorUserCreatedAt
+	] = useState('');
+	const [
+		administratorUserAccessLevel,
+		setAdministratorUserAccessLevel
+	] = useState('');
+	const [administratorUserSex, setAdministratorUserSex] = useState(0);
 	const [typeReservation, setTypeReservation] = useState(0);
-	const [parkingUserExcluded, setParkingUserExcluded] = useState(false);
+	const [administratorUserExcluded, setAdministratorUserExcluded] = useState(
+		false
+	);
 	const [disabledButtonConfirm, setDisabledsetButtonConfirm] = useState(true);
 	const [sessionInformations, setSessionInformations] = useState({});
 
-	const { show, history, parkinguserid } = props;
+	const { show, history, administratoruserid } = props;
 
 	useEffect(() => {
 		setTypeReservation(0);
@@ -40,10 +48,10 @@ function EditParkingSpace(props) {
 
 		setSessionInformations(informations);
 
-		if (parkinguserid) {
+		if (administratoruserid) {
 			const selectParkingUserInformations = async () => {
 				const result = await Api.get(
-					`/select-specific-parking-user/?parkingUser_id=${parkinguserid}`,
+					`/select-specific-administrator-user-informations/?administratorUser_id=${administratoruserid}`,
 					{
 						headers: {
 							authenticateToken: getToken()
@@ -53,7 +61,7 @@ function EditParkingSpace(props) {
 
 				console.log(result);
 
-				const parkingInformations = result.data.result;
+				const administratorInformations = result.data.result;
 
 				const {
 					accessLevel,
@@ -63,35 +71,33 @@ function EditParkingSpace(props) {
 					login,
 					name,
 					sex
-				} = parkingInformations;
-
-				console.log(accessLevel);
+				} = administratorInformations;
 
 				const created_at = `${moment(createdAt).format(
 					'DD/MM/YYYY'
 				)} às ${moment(createdAt).format('HH:mm')}h`;
 
-				setParkingUserSex(sex);
-				setParkingUserName(name);
-				setParkingUserEmail(email);
-				setParkingUserLogin(login);
-				setParkingUserExcluded(excluded);
-				setParkingUserCreatedAt(created_at);
-				setParkingUserAccessLevel(accessLevel);
+				setAdministratorUserSex(sex);
+				setAdministratorUserName(name);
+				setAdministratorUserEmail(email);
+				setAdministratorUserLogin(login);
+				setAdministratorUserExcluded(excluded);
+				setAdministratorUserCreatedAt(created_at);
+				setAdministratorUserAccessLevel(accessLevel);
 
 				setTypeReservation(1);
 			};
 
 			selectParkingUserInformations();
 		}
-	}, [show, parkinguserid]);
+	}, [show, administratoruserid]);
 
-	const changeParkingUserAccessLevel = value => {
-		setParkingUserAccessLevel(String(value));
+	const changeAdministratorUserExcluded = value => {
+		setAdministratorUserExcluded(value);
 
 		if (
-			parkingUserSex !== 0 &&
-			parkingUserName.length !== 0 &&
+			administratorUserSex !== 0 &&
+			administratorUserName.length !== 0 &&
 			value !== 0
 		) {
 			setDisabledsetButtonConfirm(false);
@@ -100,60 +106,36 @@ function EditParkingSpace(props) {
 		}
 	};
 
-	const changeParkingUserExcluded = value => {
-		setParkingUserExcluded(value);
+	const changeAdministratorUserName = value => {
+		setAdministratorUserName(value);
 
-		if (
-			parkingUserSex !== 0 &&
-			parkingUserName.length !== 0 &&
-			value !== 0 &&
-			parkingUserAccessLevel !== 0
-		) {
+		if (administratorUserSex !== 0 && value.length !== 0) {
 			setDisabledsetButtonConfirm(false);
 		} else {
 			setDisabledsetButtonConfirm(true);
 		}
 	};
 
-	const changeParkingUserName = value => {
-		setParkingUserName(value);
+	const changeAdministratorUserSex = value => {
+		setAdministratorUserSex(Number(value));
 
-		if (
-			parkingUserSex !== 0 &&
-			value.length !== 0 &&
-			parkingUserAccessLevel !== 0
-		) {
+		if (Number(value) !== 0 && administratorUserName.length !== 0) {
 			setDisabledsetButtonConfirm(false);
 		} else {
 			setDisabledsetButtonConfirm(true);
 		}
 	};
 
-	const changeParkingUserSex = value => {
-		setParkingUserSex(Number(value));
-		if (
-			value !== 0 &&
-			parkingUserName.length !== 0 &&
-			parkingUserAccessLevel !== 0
-		) {
-			setDisabledsetButtonConfirm(false);
-		} else {
-			setDisabledsetButtonConfirm(true);
-		}
-	};
-
-	const tryAlterParkingSpace = async event => {
+	const tryAlterAdministratorSpace = async event => {
 		event.preventDefault();
 
-		const teste = await Api.put(
-			'/update-parking-user-informations',
+		await Api.put(
+			'/update-administrator-user-informations',
 			{
-				name: parkingUserName,
-				sex: Number(parkingUserSex),
-				accessLevel: Number(parkingUserAccessLevel),
-				excluded: parkingUserExcluded,
-				user_id: parkinguserid,
-				parking_id: sessionInformations.parking
+				name: administratorUserName,
+				sex: Number(administratorUserSex),
+				excluded: administratorUserExcluded,
+				user_id: administratoruserid
 			},
 			{
 				headers: {
@@ -162,14 +144,12 @@ function EditParkingSpace(props) {
 			}
 		);
 
-		console.log(teste);
-
 		history.go('/users');
 	};
 
 	return (
 		<Modal {...props} size='lg'>
-			<form onSubmit={tryAlterParkingSpace}>
+			<form onSubmit={tryAlterAdministratorSpace}>
 				<Modal.Header closeButton>
 					<Modal.Title id='contained-modal-title-vcenter'>
 						<MdEdit
@@ -185,8 +165,7 @@ function EditParkingSpace(props) {
 						<div className='container'>
 							<div className='col-12 form-control align-self-end bg-light border-dashed-gray-light pl-2 d-flex justify-content-lg-around height-75 align-items-center'>
 								<p className='text-black-50 m-0'>
-									Informações da vaga de estacionamento
-									selecionada.
+									Informações do usuário selecionado.
 								</p>
 							</div>
 						</div>
@@ -202,10 +181,10 @@ function EditParkingSpace(props) {
 										id='name-user'
 										className='form-control shadow-sm'
 										placeholder='Obrigatório'
-										value={parkingUserName}
+										value={administratorUserName}
 										required={false}
 										onChange={event =>
-											changeParkingUserName(
+											changeAdministratorUserName(
 												event.target.value
 											)
 										}
@@ -216,7 +195,7 @@ function EditParkingSpace(props) {
 									<Form.Group
 										controlId='Sexo'
 										onChange={event =>
-											changeParkingUserSex(
+											changeAdministratorUserSex(
 												event.target.value
 											)
 										}
@@ -224,7 +203,7 @@ function EditParkingSpace(props) {
 										<Form.Label>Sexo</Form.Label>
 										<Form.Control
 											as='select'
-											defaultValue={parkingUserSex}
+											defaultValue={administratorUserSex}
 										>
 											<option value={0}>
 												- Selecione -
@@ -245,7 +224,7 @@ function EditParkingSpace(props) {
 										className='form-control shadow-sm'
 										placeholder='Obrigatório'
 										required={false}
-										value={parkingUserLogin}
+										value={administratorUserLogin}
 										disabled={true}
 									/>
 								</div>
@@ -258,39 +237,13 @@ function EditParkingSpace(props) {
 										className='form-control shadow-sm'
 										placeholder='Obrigatório'
 										required={false}
-										value={parkingUserEmail}
+										value={administratorUserEmail}
 										disabled={true}
 									/>
 								</div>
 							</div>
 
 							<div className='d-flex justify-content-between mt-5'>
-								<div className='col-6 p-0 mr-1'>
-									<span>Nível de acesso</span>
-									<ToggleButtonGroup
-										type='radio'
-										name='options-access-level'
-										className='input-group'
-										onChange={changeParkingUserAccessLevel}
-										defaultValue={parkingUserAccessLevel}
-									>
-										<ToggleButton
-											value={2}
-											variant='secondary'
-											className='btn btn-sm btn-block font-weight-bold mt-2 gb-gray-light-2 parking-lot-not-reserved shadow-sm col-6'
-										>
-											Comum
-										</ToggleButton>
-										<ToggleButton
-											value={1}
-											variant='primary'
-											className='btn btn-sm btn-block font-weight-bold mt-2 gb-gray-light-2 parking-lot-not-reserved shadow-sm col-6'
-										>
-											Administrador
-										</ToggleButton>
-									</ToggleButtonGroup>
-								</div>
-
 								<div className='col-6 p-0  ml-1'>
 									<span>Disponibilidade</span>
 
@@ -298,8 +251,10 @@ function EditParkingSpace(props) {
 										type='radio'
 										name='options-'
 										className='input-group mb-4'
-										onChange={changeParkingUserExcluded}
-										defaultValue={parkingUserExcluded}
+										onChange={
+											changeAdministratorUserExcluded
+										}
+										defaultValue={administratorUserExcluded}
 									>
 										<ToggleButton
 											value={true}
@@ -344,4 +299,4 @@ function EditParkingSpace(props) {
 	);
 }
 
-export default EditParkingSpace;
+export default EditAdministratorUserModal;

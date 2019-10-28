@@ -31,10 +31,6 @@ const AdministratorUserSchema = new mongoose.Schema(
 			type: Intl,
 			required: true
 		},
-		document: {
-			type: String,
-			required: true
-		},
 		name: {
 			type: String,
 			lowercase: true

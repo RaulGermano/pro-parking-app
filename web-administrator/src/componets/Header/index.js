@@ -7,7 +7,7 @@ function Header() {
 		<div>
 			<nav className='navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow'>
 				<Link
-					to='./main'
+					to='./parking-contacts-to-create'
 					className='navbar-brand col-sm-3 col-md-2 mr-0 pro-parking p-2'
 				>
 					<span className='pro mr-1'>PRO</span>

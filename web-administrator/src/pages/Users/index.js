@@ -4,10 +4,9 @@ import SideBar from '../../componets/SideBar';
 import BootstrapTable from 'react-bootstrap-table-next';
 import { FaCircle } from 'react-icons/fa';
 import { MdAdd, MdEdit, MdMail } from 'react-icons/md';
-// import NewParkingUserModal from '../../componets/Modal/NewParkingUser';
-// import InformationsParkingUserModal from '../../componets/Modal/InformationsParkingUser';
-// import EditParkingUserModal from '../../componets/Modal/EditAdministratorUser';
-// import ConfirmNewParkingUserPasswordModal from '../../componets/Modal/ConfirmNewParkingUserPassword';
+import ConfirmNewAdministratorUserPasswordModal from '../../componets/Modal/ConfirmNewAdministratorUserPassword';
+import EditAdministratorUserModal from '../../componets/Modal/EditAdministratorUser';
+import NewAdministratorUserModal from '../../componets/Modal/NewAdministratorUser';
 import paginationFactory from 'react-bootstrap-table2-paginator';
 import filterFactory from 'react-bootstrap-table2-filter';
 import ToolkitProvider, { Search } from 'react-bootstrap-table2-toolkit';
@@ -25,26 +24,38 @@ export default function Main(props) {
 	const { match, history } = props;
 
 	const [loader, handleLoader] = useLoader();
-	const [parkingUserId, setPakingUserId] = useState('');
+	const [administratorUserId, setAdministratorUserId] = useState('');
+	const [administratorUsersList, setAdministratorUsersList] = useState([{}]);
 
-	const [totalParkingUsers, setTotalParkingUsers] = useState(0);
-	const [totalExcludedParkingUsers, setTotalExcludedParkingUsers] = useState(
-		0
-	);
 	const [
-		totalNotExcludedParkingUsers,
-		setTotalNotExcludedParkingUsers
+		allAdministratorUsersCounter,
+		setAllAdministratorUsersCounter
 	] = useState(0);
 
-	const [modalConfirmate, setModalConfirmate] = useState(false);
-	const [modalParkingUserEdit, setModalParkingUserEdit] = useState(false);
-	const [modalParkingUserCreate, setModalParkingUserCreate] = useState(false);
 	const [
-		modalParkingUserInformations,
-		setModalParkingUserInformations
+		excludedAdministratorUsersCounter,
+		setExcludedAdministratorUsersCounter
+	] = useState(0);
+
+	const [
+		notExcludedAdministratorUsersCounter,
+		setNotExcludedAdministratorUsersCounter
+	] = useState(0);
+
+	const [
+		modalConfirmChangePassword,
+		setModalConfirmChangePassword
 	] = useState(false);
 
-	const [parkingUsersList, setParkingUsersList] = useState([{}]);
+	const [
+		modalAdministratorUserEdit,
+		setModalAdministratorUserEdit
+	] = useState(false);
+
+	const [
+		modalAdministratorUserCreate,
+		setModalAdministratorUserCreate
+	] = useState(false);
 
 	useEffect(() => {
 		const informations = jwt.verify(
@@ -58,8 +69,8 @@ export default function Main(props) {
 		const { parking } = informations;
 
 		async function getItems() {
-			const totalParkingUsersResult = await Api.get(
-				`/select-counter-specific-parking-users/?parking_id=${parking}`,
+			const allAdministratorUsersListResult = await Api.get(
+				`/select-all-administrator-users-list`,
 				{
 					headers: {
 						authenticateToken: getToken()
@@ -67,8 +78,8 @@ export default function Main(props) {
 				}
 			);
 
-			const totalExcludedParkingUsersResult = await Api.get(
-				`/select-counter-excluded-specific-parking-users/?parking_id=${parking}&excluded=${true}`,
+			const allAdministratorUsersCounterResult = await Api.get(
+				`/select-all-administrator-users-counter`,
 				{
 					headers: {
 						authenticateToken: getToken()
@@ -76,8 +87,8 @@ export default function Main(props) {
 				}
 			);
 
-			const totalNotExcludedParkingUsersResult = await Api.get(
-				`/select-counter-excluded-specific-parking-users/?parking_id=${parking}&excluded=${false}`,
+			const specificNotExcludedAdministratorUsersCounterResult = await Api.get(
+				`/select-specific-excluded-administrator-users-counter/?excluded=${false}`,
 				{
 					headers: {
 						authenticateToken: getToken()
@@ -85,8 +96,8 @@ export default function Main(props) {
 				}
 			);
 
-			const parkingUsersListResult = await Api.get(
-				`/select-specific-parking-users/?parking_id=${parking}`,
+			const specificExcludedAdministratorUsersCounterResult = await Api.get(
+				`/select-specific-excluded-administrator-users-counter/?excluded=${true}`,
 				{
 					headers: {
 						authenticateToken: getToken()
@@ -94,15 +105,16 @@ export default function Main(props) {
 				}
 			);
 
-			const parkingUsers = totalParkingUsersResult.data.result;
+			const allAdministratorUsersCounter =
+				allAdministratorUsersCounterResult.data.result;
 
-			const excludedParkingUsers =
-				totalExcludedParkingUsersResult.data.result;
+			const specificNotExcludedAdministratorUsersCounter =
+				specificNotExcludedAdministratorUsersCounterResult.data.result;
 
-			const notExcludedParkingUsers =
-				totalNotExcludedParkingUsersResult.data.result;
+			const specificExcludedAdministratorUsersCounter =
+				specificExcludedAdministratorUsersCounterResult.data.result;
 
-			const parkingUsersList = parkingUsersListResult.data.result.map(
+			const allAdministratorUsersList = allAdministratorUsersListResult.data.result.map(
 				item => {
 					return {
 						id: item._id,
@@ -117,10 +129,16 @@ export default function Main(props) {
 				}
 			);
 
-			setTotalParkingUsers(parkingUsers);
-			setTotalExcludedParkingUsers(excludedParkingUsers);
-			setTotalNotExcludedParkingUsers(notExcludedParkingUsers);
-			setParkingUsersList(parkingUsersList);
+			setAdministratorUsersList(allAdministratorUsersList);
+			setAllAdministratorUsersCounter(allAdministratorUsersCounter);
+
+			setNotExcludedAdministratorUsersCounter(
+				specificNotExcludedAdministratorUsersCounter
+			);
+
+			setExcludedAdministratorUsersCounter(
+				specificExcludedAdministratorUsersCounter
+			);
 
 			handleLoader(false);
 		}
@@ -140,13 +158,13 @@ export default function Main(props) {
 	};
 
 	function openModalParkingUserInformations(id) {
-		setPakingUserId(id);
-		setModalConfirmate(true);
+		setAdministratorUserId(id);
+		setModalConfirmChangePassword(true);
 	}
 
 	function openModalParkingUserCreate(id) {
-		setPakingUserId(id);
-		setModalParkingUserEdit(true);
+		setAdministratorUserId(id);
+		setModalAdministratorUserEdit(true);
 	}
 
 	function optionsParkingSpaceHistoricFormatter(cell) {
@@ -185,7 +203,7 @@ export default function Main(props) {
 		return cell ? (
 			<FaCircle size={10} className='align-baseline ml-3 text-danger' />
 		) : (
-			<FaCircle size={10} className='align-baseline ml-3 text-primary' />
+			<FaCircle size={10} className='align-baseline ml-3 text-success' />
 		);
 	}
 
@@ -239,42 +257,31 @@ export default function Main(props) {
 		}
 	];
 
-	const testess = () => {
-		console.log(123);
-	};
-
 	return (
 		<>
 			<Header />
 
 			<ToastContainer />
 
-			{/* <NewParkingUserModal
-				show={modalParkingUserCreate}
-				onHide={() => setModalParkingUserCreate(false)}
+			<ConfirmNewAdministratorUserPasswordModal
+				show={modalConfirmChangePassword}
+				onHide={() => setModalConfirmChangePassword(false)}
 				history={history}
-				parkinguserid={parkingUserId}
+				administratoruserid={administratorUserId}
 			/>
 
-			<InformationsParkingUserModal
-				show={modalParkingUserInformations}
-				onHide={() => setModalParkingUserInformations(false)}
+			<EditAdministratorUserModal
+				show={modalAdministratorUserEdit}
+				onHide={() => setModalAdministratorUserEdit(false)}
 				history={history}
-				parkinguserid={parkingUserId}
+				administratoruserid={administratorUserId}
 			/>
 
-			<EditParkingUserModal
-				show={modalParkingUserEdit}
-				onHide={() => setModalParkingUserEdit(false)}
+			<NewAdministratorUserModal
+				show={modalAdministratorUserCreate}
+				onHide={() => setModalAdministratorUserCreate(false)}
 				history={history}
-				parkinguserid={parkingUserId}
 			/>
-
-			<ConfirmNewParkingUserPasswordModal
-				show={modalConfirmate}
-				onHide={() => setModalConfirmate(false)}
-				parkinguserid={parkingUserId}
-			/> */}
 
 			<div className='container-fluid'>
 				<div className='row'>
@@ -291,7 +298,7 @@ export default function Main(props) {
 								>
 									Total:
 									<span className='badge badge-secondary ml-2'>
-										{totalParkingUsers}
+										{allAdministratorUsersCounter}
 									</span>
 								</button>
 
@@ -300,8 +307,8 @@ export default function Main(props) {
 									className='btn btn-light bg-white shadow border ml-3'
 								>
 									Ativos:
-									<span className='badge text-light bg-pro-parking ml-2'>
-										{totalNotExcludedParkingUsers}
+									<span className='badge text-light bg-success ml-2'>
+										{notExcludedAdministratorUsersCounter}
 									</span>
 								</button>
 
@@ -311,7 +318,7 @@ export default function Main(props) {
 								>
 									Inativos:
 									<span className='badge badge-danger ml-2'>
-										{totalExcludedParkingUsers}
+										{excludedAdministratorUsersCounter}
 									</span>
 								</button>
 							</div>
@@ -319,7 +326,7 @@ export default function Main(props) {
 								<button
 									className='btn btn-sm bg-pro-parking text-light shadow-sm'
 									onClick={() => {
-										setModalParkingUserCreate(true);
+										setModalAdministratorUserCreate(true);
 									}}
 								>
 									<MdAdd
@@ -334,7 +341,7 @@ export default function Main(props) {
 						<div className='p-3 br-5px bg-white mt-4 shadow border mb-5'>
 							<ToolkitProvider
 								keyField='id'
-								data={parkingUsersList}
+								data={administratorUsersList}
 								columns={columnsParked}
 								search
 								filter={filterFactory()}

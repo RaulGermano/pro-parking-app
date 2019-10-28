@@ -13,10 +13,15 @@ const {
 } = require('../controllers/parkingQualification');
 
 const {
-	AuthenticateAdministrator,
+	UpdateAdministratorUser,
 	CreateAdministratorUser,
+	AuthenticateAdministrator,
 	UpdatePasswordAdministratorUser,
-	SendEmailAdministratorUserUpdatePassword
+	SelectAllAdministratorUsersList,
+	SelectSpecificAdministratorUser,
+	SelectAllAdministratorUsersCounter,
+	SendEmailAdministratorUserUpdatePassword,
+	SelectSpecificExcludedAdministratorUsersCounter
 } = require('../controllers/administratorUser');
 
 const {
@@ -80,7 +85,8 @@ const {
 	SelectAllParkings,
 	SelectSpecificParkings,
 	UpdateParkingTelephone,
-	SelectAllParkingsCounter
+	SelectAllParkingsCounter,
+	SelectSpecificExcludedParkingsCounter
 } = require('../controllers/parking');
 
 const {
@@ -156,6 +162,12 @@ routes.get(
 );
 
 routes.get(
+	'/select-specific-excluded-parkings-counter',
+	authenticateMiddleware,
+	SelectSpecificExcludedParkingsCounter
+);
+
+routes.get(
 	'/select-specific-parkings',
 	authenticateMiddleware,
 	SelectSpecificParkings
@@ -170,6 +182,30 @@ routes.put(
 routes.post('/create-parking', CreateParking);
 
 //////////////////////// parking administrator
+
+routes.get(
+	'/select-all-administrator-users-list',
+	SelectAllAdministratorUsersList,
+	AuthenticateAdministrator
+);
+
+routes.get(
+	'/select-all-administrator-users-counter',
+	SelectAllAdministratorUsersCounter,
+	AuthenticateAdministrator
+);
+
+routes.get(
+	'/select-specific-administrator-user-informations',
+	SelectSpecificAdministratorUser,
+	AuthenticateAdministrator
+);
+
+routes.get(
+	'/select-specific-excluded-administrator-users-counter',
+	SelectSpecificExcludedAdministratorUsersCounter,
+	AuthenticateAdministrator
+);
 
 routes.post('/auth-administrator-user', AuthenticateAdministrator);
 
@@ -187,6 +223,12 @@ routes.post(
 routes.put(
 	'/update-password-administrator-user',
 	UpdatePasswordAdministratorUser
+);
+
+routes.put(
+	'/update-administrator-user-informations',
+	authenticateMiddleware,
+	UpdateAdministratorUser
 );
 
 //////////////////////// parking user
@@ -215,7 +257,7 @@ routes.get(
 	SelectSpecificParkingUsers
 );
 
-routes.put('/new-password-parking-user', NewPasswordParkingUser);
+// routes.put('/new-password-parking-user', NewPasswordParkingUser);
 
 routes.post('/auth-parking-user', AuthenticateParking);
 

@@ -5,20 +5,15 @@ import { toast } from 'react-toastify';
 import { Modal, Button, Form } from 'react-bootstrap';
 import { getToken } from '../../../services/Auth';
 
-function ConfirmNewParkingUserPasswordModal(props) {
-	const [parkingUserIdValue, setParkingUserIdValue] = useState('');
+function ConfirmNewAdministratorUserPasswordModal(props) {
 	const [disableButtonComplete, setDisableButtonComplete] = useState(true);
 
-	const { show, parkinguserid } = props;
+	const { show, administratoruserid } = props;
 
 	const textInput = React.createRef();
 
 	useEffect(() => {
 		setDisableButtonComplete(true);
-
-		if (parkinguserid) {
-			setParkingUserIdValue(parkinguserid);
-		}
 	}, [show]);
 
 	const SendEmailInformation = () =>
@@ -32,8 +27,8 @@ function ConfirmNewParkingUserPasswordModal(props) {
 	const sendEmail = async event => {
 		event.preventDefault();
 
-		const parkingUserInformations = await Api.get(
-			`/select-specific-parking-user/?parkingUser_id=${parkingUserIdValue}`,
+		const administratorUserInformations = await Api.get(
+			`/select-specific-administrator-user-informations/?administratorUser_id=${administratoruserid}`,
 			{
 				headers: {
 					authenticateToken: getToken()
@@ -41,9 +36,12 @@ function ConfirmNewParkingUserPasswordModal(props) {
 			}
 		);
 
-		const { email } = parkingUserInformations.data.result;
+		const { email } = administratorUserInformations.data.result;
 
-		const result = await Api.post('/send-email-update-password', { email });
+		const result = await Api.post(
+			'/send-email-administrator-user-update-password',
+			{ email }
+		);
 
 		if (result.data.response) {
 			SendEmailInformation();
@@ -121,4 +119,4 @@ function ConfirmNewParkingUserPasswordModal(props) {
 	);
 }
 
-export default ConfirmNewParkingUserPasswordModal;
+export default ConfirmNewAdministratorUserPasswordModal;

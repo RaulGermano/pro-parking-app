@@ -7,9 +7,11 @@ import { MdAdd, MdEdit } from 'react-icons/md';
 import paginationFactory from 'react-bootstrap-table2-paginator';
 import filterFactory from 'react-bootstrap-table2-filter';
 import ToolkitProvider, { Search } from 'react-bootstrap-table2-toolkit';
-// import NewParkingSpaceModal from '../../componets/Modal/NewParkingSpace';
+import NewParkingModal from '../../componets/Modal/NewParking';
+
 // import EditParkingSpace from '../../componets/Modal/EditParkingSpace';
 // import InformationsParkingSpace from '../../componets/Modal/InformationsParkingSpace';
+
 import Api from '../../services/Api';
 import useLoader from '../../componets/Loader/useLoader';
 import moment from 'moment-timezone';
@@ -23,22 +25,23 @@ export default function ParkingLots(props) {
 	const { match, history } = props;
 
 	const [loader, handleLoader] = useLoader();
-	const [parkingSpaceId, setParkingSpaceId] = useState('');
-	const [totalParkingSpaces, setTotalParkingSpaces] = useState(0);
-	const [activeParkingSpaces, setActiveParkingSpaces] = useState(0);
-	const [availableParkingSpaces, setAvailableParkingSpaces] = useState(0);
-	const [notActiveParkingSpaces, setNotActiveParkingSpaces] = useState(0);
-	const [
-		pendingCheckoutParkingSpaces,
-		setPendingCheckoutParkingSpaces
-	] = useState(0);
-	const [modalShow, setModalShow] = useState(false);
-	const [editParkingSpace, setEditParkingSpace] = useState(false);
-	const [informationsParkingSpace, setInformationsParkingSpace] = useState(
+
+	const [parkingId, setParkingId] = useState('');
+	const [allParkingsCounter, setAllParkingsCounter] = useState(0);
+	const [exludedParkingsCounter, setExcludedParkingsCounter] = useState(0);
+	const [allParkingsList, setAllParkingsList] = useState([{}]);
+	const [sessionInformations, setSessionInformations] = useState({});
+	const [newParkingModal, setNewParkingModal] = useState(false);
+	const [editParkingModal, setEditParkingModal] = useState(false);
+
+	const [parkingInformationsModal, setParkingInformationsModal] = useState(
 		false
 	);
-	const [sessionInformations, setSessionInformations] = useState({});
-	const [pendingReservesList, setPendingReservesList] = useState([{}]);
+
+	const [
+		notExcludedParkingsCounter,
+		setNotExcludedParkingsCounter
+	] = useState(0);
 
 	useEffect(() => {
 		const informations = jwt.verify(
@@ -49,21 +52,11 @@ export default function ParkingLots(props) {
 			}
 		);
 
-		const { id: parkingUser_id, name, parking: parking_id } = informations;
-
-		setSessionInformations({
-			parkingUser_id,
-			parking_id,
-			name
-		});
-
-		console.log(informations);
-
-		const { parking } = informations;
+		setSessionInformations(informations);
 
 		async function getItems() {
-			const selectTotalParkingSpacesResult = await Api.get(
-				`/select-total-parking-spaces/?parking_id=${parking}`,
+			const selectAllParkingsListResult = await Api.get(
+				`/select-all-parkings`,
 				{
 					headers: {
 						authenticateToken: getToken()
@@ -71,8 +64,8 @@ export default function ParkingLots(props) {
 				}
 			);
 
-			const selectAvailableParkingSpacesResult = await Api.get(
-				`/select-available-parking-spaces/?parking_id=${parking}&available=${true}`,
+			const selectAllParkingsCounterResult = await Api.get(
+				`/select-all-parkings-counter`,
 				{
 					headers: {
 						authenticateToken: getToken()
@@ -80,8 +73,8 @@ export default function ParkingLots(props) {
 				}
 			);
 
-			const selectActiveParkingSpacesResult = await Api.get(
-				`/select-active-parking-spaces/?parking_id=${parking}&excluded=${true}`,
+			const selectExcludedParkingsCounterResult = await Api.get(
+				`/select-specific-excluded-parkings-counter/?excluded=${true}`,
 				{
 					headers: {
 						authenticateToken: getToken()
@@ -89,8 +82,8 @@ export default function ParkingLots(props) {
 				}
 			);
 
-			const selectNotActiveParkingSpacesResult = await Api.get(
-				`/select-active-parking-spaces/?parking_id=${parking}&excluded=${false}`,
+			const selectNotExcludedParkingsCounterResult = await Api.get(
+				`/select-specific-excluded-parkings-counter/?excluded=${false}`,
 				{
 					headers: {
 						authenticateToken: getToken()
@@ -98,47 +91,21 @@ export default function ParkingLots(props) {
 				}
 			);
 
-			const selectPendingCheckoutParkingSpacesResult = await Api.get(
-				`/select-pending-checkout-parking-spaces/?parking_id=${parking}`,
-				{
-					headers: {
-						authenticateToken: getToken()
-					}
-				}
-			);
+			const selectAllParkingsCounter =
+				selectAllParkingsCounterResult.data.result;
 
-			const selectAllParkingSpacesResult = await Api.get(
-				`/select-all-parking-spaces/?parking_id=${parking}`,
-				{
-					headers: {
-						authenticateToken: getToken()
-					}
-				}
-			);
+			const selectExcludedParkingsCounter =
+				selectExcludedParkingsCounterResult.data.result;
 
-			const selectTotalParkingSpaces =
-				selectTotalParkingSpacesResult.data.total;
+			const selectNotExcludedParkingsCounter =
+				selectNotExcludedParkingsCounterResult.data.result;
 
-			const selectAvailableParkingSpaces =
-				selectAvailableParkingSpacesResult.data.total;
-
-			const selectActiveParkingSpaces =
-				selectActiveParkingSpacesResult.data.total;
-
-			const selectNotActiveParkingSpaces =
-				selectNotActiveParkingSpacesResult.data.total;
-
-			const selectPendingCheckoutParkingSpaces =
-				selectPendingCheckoutParkingSpacesResult.data.total;
-
-			const selectAllParkingSpaces = selectAllParkingSpacesResult.data.result.map(
+			const selectAllParkingsList = selectAllParkingsListResult.data.result.map(
 				item => {
 					return {
 						id: item._id,
 						name: item.name,
-						value: item.value,
 						excluded: item.excluded,
-						available: item.available,
 						created_at: `${moment(item.createdAt).format(
 							'DD/MM/YYYY'
 						)} às ${moment(item.createdAt).format('HH:mm')}h`
@@ -146,12 +113,10 @@ export default function ParkingLots(props) {
 				}
 			);
 
-			setTotalParkingSpaces(selectTotalParkingSpaces);
-			setAvailableParkingSpaces(selectAvailableParkingSpaces);
-			setActiveParkingSpaces(selectActiveParkingSpaces);
-			setNotActiveParkingSpaces(selectNotActiveParkingSpaces);
-			setPendingCheckoutParkingSpaces(selectPendingCheckoutParkingSpaces);
-			setPendingReservesList(selectAllParkingSpaces);
+			setAllParkingsList(selectAllParkingsList);
+			setAllParkingsCounter(selectAllParkingsCounter);
+			setExcludedParkingsCounter(selectExcludedParkingsCounter);
+			setNotExcludedParkingsCounter(selectNotExcludedParkingsCounter);
 
 			handleLoader(false);
 		}
@@ -160,13 +125,13 @@ export default function ParkingLots(props) {
 	}, []);
 
 	const openModalEditParkingSpace = id => {
-		setEditParkingSpace(true);
-		setParkingSpaceId(id);
+		setEditParkingModal(true);
+		setParkingId(id);
 	};
 
 	const openModalInformationsParkingSpace = id => {
-		setInformationsParkingSpace(true);
-		setParkingSpaceId(id);
+		setParkingInformationsModal(true);
+		setParkingId(id);
 	};
 
 	const optionsParkingSpaceHistoricFormatter = cell => {
@@ -292,7 +257,14 @@ export default function ParkingLots(props) {
 				onHide={() => setEditParkingSpace(false)}
 				history={history}
 				parkingspaceid={parkingSpaceId}
-			/> */}
+            />
+              */}
+
+			<NewParkingModal
+				show={newParkingModal}
+				history={history}
+				onHide={() => setNewParkingModal(false)}
+			/>
 
 			<div className='container-fluid'>
 				<div className='row'>
@@ -309,7 +281,7 @@ export default function ParkingLots(props) {
 								>
 									Total:
 									<span className='badge badge-secondary ml-2'>
-										{totalParkingSpaces}
+										{allParkingsCounter}
 									</span>
 								</button>
 
@@ -319,7 +291,7 @@ export default function ParkingLots(props) {
 								>
 									Ativos:
 									<span className='badge text-light bg-pro-parking ml-2'>
-										{notActiveParkingSpaces}
+										{notExcludedParkingsCounter}
 									</span>
 								</button>
 
@@ -329,27 +301,7 @@ export default function ParkingLots(props) {
 								>
 									Inativos:
 									<span className='badge badge-danger ml-2'>
-										{activeParkingSpaces}
-									</span>
-								</button>
-
-								<button
-									type='button'
-									className='btn bg-white shadow border ml-3'
-								>
-									Reservadas:
-									<span className='badge badge-warning ml-2'>
-										{pendingCheckoutParkingSpaces}
-									</span>
-								</button>
-
-								<button
-									type='button'
-									className='btn bg-white shadow border ml-3'
-								>
-									Livres:
-									<span className='badge badge-success ml-2'>
-										{availableParkingSpaces}
+										{exludedParkingsCounter}
 									</span>
 								</button>
 							</div>
@@ -357,7 +309,7 @@ export default function ParkingLots(props) {
 								<button
 									type='button'
 									className='btn btn-sm bg-pro-parking text-light shadow-sm'
-									onClick={() => setModalShow(true)}
+									onClick={() => setNewParkingModal(true)}
 								>
 									<MdAdd
 										size={22}
@@ -366,19 +318,13 @@ export default function ParkingLots(props) {
 									/>
 									Nova vaga
 								</button>
-
-								{/* <NewParkingSpaceModal
-									show={modalShow}
-									history={history}
-									onHide={() => setModalShow(false)}
-								/> */}
 							</div>
 						</div>
 
 						<div className='p-3 br-5px bg-white mt-4 shadow border mb-5'>
 							<ToolkitProvider
 								keyField='id'
-								data={pendingReservesList}
+								data={allParkingsList}
 								columns={columnsParked}
 								search
 								filter={filterFactory()}

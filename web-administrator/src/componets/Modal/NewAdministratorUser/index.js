@@ -3,29 +3,26 @@ import { MdPerson } from 'react-icons/md';
 import { getToken } from '../../../services/Auth';
 import jwt from 'jsonwebtoken';
 import Api from '../../../services/Api';
-import {
-	Modal,
-	Button,
-	Form,
-	ToggleButton,
-	ToggleButtonGroup
-} from 'react-bootstrap';
+import { Modal, Button, Form } from 'react-bootstrap';
 
-function NewParkingUserModal(props) {
-	const [parkingUserName, setParkingUserName] = useState('');
-	const [parkingUserEmail, setParkingUserEmail] = useState('');
-	const [parkingUserLogin, setParkingUserLogin] = useState('');
-	const [parkingUserPassword, setParkingUserPassword] = useState('');
-	const [parkingUserSex, setParkingUserSex] = useState(0);
-	const [parkingUserAccessLevel, setParkingUserAccessLevel] = useState(0);
-	const [
-		parkingUserPasswordConfirm,
-		setParkingUserPasswordConfirm
-	] = useState('');
+function NewAdministratorUserModal(props) {
+	const [administratorUserName, setAdministratorUserName] = useState('');
+	const [administratorUserEmail, setAdministratorUserEmail] = useState('');
+	const [administratorUserLogin, setAdministratorUserLogin] = useState('');
+	const [administratorUserSex, setAdministratorUserSex] = useState(0);
 	const [disabledButtonConfirm, setDisabledsetButtonConfirm] = useState(true);
 	const [sessionInformations, setSessionInformations] = useState({});
 
-	const { show, reservationid, history } = props;
+	const [administratorUserPassword, setAdministratorUserPassword] = useState(
+		''
+	);
+
+	const [
+		administratorUserPasswordConfirm,
+		setAdministratorUserPasswordConfirm
+	] = useState('');
+
+	const { show, history } = props;
 
 	useEffect(() => {
 		const informations = jwt.verify(
@@ -39,35 +36,16 @@ function NewParkingUserModal(props) {
 		setSessionInformations(informations);
 	}, [show]);
 
-	const changeParkingUserAccessLevel = value => {
-		setParkingUserAccessLevel(value);
+	const changeAdministratorUserName = value => {
+		setAdministratorUserName(value);
 
 		if (
-			parkingUserSex !== 0 &&
-			parkingUserName.length !== 0 &&
-			parkingUserEmail.length !== 0 &&
-			parkingUserLogin.length !== 0 &&
-			parkingUserPassword.length !== 0 &&
-			value !== 0 &&
-			parkingUserPasswordConfirm.length !== 0
-		) {
-			setDisabledsetButtonConfirm(false);
-		} else {
-			setDisabledsetButtonConfirm(true);
-		}
-	};
-
-	const changeParkingUserName = value => {
-		setParkingUserName(value);
-
-		if (
-			parkingUserSex !== 0 &&
+			administratorUserSex !== 0 &&
 			value.length !== 0 &&
-			parkingUserEmail.length !== 0 &&
-			parkingUserLogin.length !== 0 &&
-			parkingUserPassword.length !== 0 &&
-			parkingUserAccessLevel !== 0 &&
-			parkingUserPasswordConfirm.length !== 0
+			administratorUserEmail.length !== 0 &&
+			administratorUserLogin.length !== 0 &&
+			administratorUserPassword.length !== 0 &&
+			administratorUserPasswordConfirm.length !== 0
 		) {
 			setDisabledsetButtonConfirm(false);
 		} else {
@@ -75,16 +53,16 @@ function NewParkingUserModal(props) {
 		}
 	};
 
-	const changeParkingUserSex = value => {
-		setParkingUserSex(Number(value));
+	const changeAdministratorUserSex = value => {
+		setAdministratorUserSex(Number(value));
+
 		if (
-			value !== 0 &&
-			parkingUserName.length !== 0 &&
-			parkingUserEmail.length !== 0 &&
-			parkingUserLogin.length !== 0 &&
-			parkingUserPassword.length !== 0 &&
-			parkingUserAccessLevel !== 0 &&
-			parkingUserPasswordConfirm.length !== 0
+			Number(value) !== 0 &&
+			administratorUserName.length !== 0 &&
+			administratorUserEmail.length !== 0 &&
+			administratorUserLogin.length !== 0 &&
+			administratorUserPassword.length !== 0 &&
+			administratorUserPasswordConfirm.length !== 0
 		) {
 			setDisabledsetButtonConfirm(false);
 		} else {
@@ -92,17 +70,16 @@ function NewParkingUserModal(props) {
 		}
 	};
 
-	const changeParkingUserLogin = value => {
-		setParkingUserLogin(value);
+	const changeAdministratorUserLogin = value => {
+		setAdministratorUserLogin(value);
 
 		if (
-			parkingUserSex !== 0 &&
-			parkingUserName.length !== 0 &&
-			parkingUserEmail.length !== 0 &&
+			administratorUserSex !== 0 &&
+			administratorUserName.length !== 0 &&
+			administratorUserEmail.length !== 0 &&
 			value.length !== 0 &&
-			parkingUserPassword.length !== 0 &&
-			parkingUserAccessLevel !== 0 &&
-			parkingUserPasswordConfirm.length !== 0
+			administratorUserPassword.length !== 0 &&
+			administratorUserPasswordConfirm.length !== 0
 		) {
 			setDisabledsetButtonConfirm(false);
 		} else {
@@ -110,17 +87,16 @@ function NewParkingUserModal(props) {
 		}
 	};
 
-	const changeParkingUserEmail = value => {
-		setParkingUserEmail(value);
+	const changeAdministratorUserEmail = value => {
+		setAdministratorUserEmail(value);
 
 		if (
-			parkingUserSex !== 0 &&
-			parkingUserName.length !== 0 &&
+			administratorUserSex !== 0 &&
+			administratorUserName.length !== 0 &&
 			value.length !== 0 &&
-			parkingUserLogin.length !== 0 &&
-			parkingUserPassword.length !== 0 &&
-			parkingUserAccessLevel !== 0 &&
-			parkingUserPasswordConfirm.length !== 0
+			administratorUserLogin.length !== 0 &&
+			administratorUserPassword.length !== 0 &&
+			administratorUserPasswordConfirm.length !== 0
 		) {
 			setDisabledsetButtonConfirm(false);
 		} else {
@@ -128,17 +104,16 @@ function NewParkingUserModal(props) {
 		}
 	};
 
-	const changeParkingUserPassword = value => {
-		setParkingUserPassword(value);
+	const changeAdministratorUserPassword = value => {
+		setAdministratorUserPassword(value);
 
 		if (
-			parkingUserSex !== 0 &&
-			parkingUserName.length !== 0 &&
-			parkingUserEmail.length !== 0 &&
-			parkingUserLogin.length !== 0 &&
+			administratorUserSex !== 0 &&
+			administratorUserName.length !== 0 &&
+			administratorUserEmail.length !== 0 &&
+			administratorUserLogin.length !== 0 &&
 			value.length !== 0 &&
-			parkingUserAccessLevel !== 0 &&
-			parkingUserPasswordConfirm.length !== 0
+			administratorUserPasswordConfirm.length !== 0
 		) {
 			setDisabledsetButtonConfirm(false);
 		} else {
@@ -146,16 +121,15 @@ function NewParkingUserModal(props) {
 		}
 	};
 
-	const changeParkingUserPasswordConfirm = value => {
-		setParkingUserPasswordConfirm(value);
+	const changeAdministratorUserPasswordConfirm = value => {
+		setAdministratorUserPasswordConfirm(value);
 
 		if (
-			parkingUserSex !== 0 &&
-			parkingUserName.length !== 0 &&
-			parkingUserEmail.length !== 0 &&
-			parkingUserLogin.length !== 0 &&
-			parkingUserPassword.length !== 0 &&
-			parkingUserAccessLevel !== 0 &&
+			administratorUserSex !== 0 &&
+			administratorUserName.length !== 0 &&
+			administratorUserEmail.length !== 0 &&
+			administratorUserLogin.length !== 0 &&
+			administratorUserPassword.length !== 0 &&
 			value.length !== 0
 		) {
 			setDisabledsetButtonConfirm(false);
@@ -164,19 +138,17 @@ function NewParkingUserModal(props) {
 		}
 	};
 
-	const tryCreateParkingUser = async event => {
+	const tryCreateAdministratorUser = async event => {
 		event.preventDefault();
 
 		await Api.post(
-			'/create-parking-user',
+			'/create-administrator-user',
 			{
-				login: parkingUserLogin,
-				password: parkingUserPassword,
-				email: parkingUserEmail,
-				name: parkingUserName,
-				accessLevel: parkingUserAccessLevel,
-				sex: parkingUserSex,
-				parking_id: sessionInformations.parking
+				login: administratorUserLogin,
+				password: administratorUserPassword,
+				email: administratorUserEmail,
+				name: administratorUserName,
+				sex: administratorUserSex
 			},
 			{
 				headers: {
@@ -190,7 +162,7 @@ function NewParkingUserModal(props) {
 
 	return (
 		<Modal {...props} size='lg'>
-			<form onSubmit={tryCreateParkingUser}>
+			<form onSubmit={tryCreateAdministratorUser}>
 				<Modal.Header closeButton>
 					<Modal.Title id='contained-modal-title-vcenter'>
 						<MdPerson
@@ -213,10 +185,10 @@ function NewParkingUserModal(props) {
 									id='name-user'
 									className='form-control shadow-sm'
 									placeholder='Obrigatório'
-									value={parkingUserName}
+									value={administratorUserName}
 									required={false}
 									onChange={event =>
-										changeParkingUserName(
+										changeAdministratorUserName(
 											event.target.value
 										)
 									}
@@ -227,7 +199,9 @@ function NewParkingUserModal(props) {
 								<Form.Group
 									controlId='Sexo'
 									onChange={event =>
-										changeParkingUserSex(event.target.value)
+										changeAdministratorUserSex(
+											event.target.value
+										)
 									}
 								>
 									<Form.Label>Sexo</Form.Label>
@@ -249,9 +223,9 @@ function NewParkingUserModal(props) {
 									className='form-control shadow-sm'
 									placeholder='Obrigatório'
 									required={false}
-									value={parkingUserLogin}
+									value={administratorUserLogin}
 									onChange={event =>
-										changeParkingUserLogin(
+										changeAdministratorUserLogin(
 											event.target.value
 										)
 									}
@@ -266,9 +240,9 @@ function NewParkingUserModal(props) {
 									className='form-control shadow-sm'
 									placeholder='Obrigatório'
 									required={false}
-									value={parkingUserEmail}
+									value={administratorUserEmail}
 									onChange={event =>
-										changeParkingUserEmail(
+										changeAdministratorUserEmail(
 											event.target.value
 										)
 									}
@@ -285,9 +259,9 @@ function NewParkingUserModal(props) {
 									className='form-control shadow-sm'
 									placeholder='Obrigatório'
 									required={false}
-									value={parkingUserPassword}
+									value={administratorUserPassword}
 									onChange={event =>
-										changeParkingUserPassword(
+										changeAdministratorUserPassword(
 											event.target.value
 										)
 									}
@@ -304,40 +278,14 @@ function NewParkingUserModal(props) {
 									className='form-control shadow-sm'
 									placeholder='Obrigatório'
 									required={false}
-									value={parkingUserPasswordConfirm}
+									value={administratorUserPasswordConfirm}
 									onChange={event =>
-										changeParkingUserPasswordConfirm(
+										changeAdministratorUserPasswordConfirm(
 											event.target.value
 										)
 									}
 								/>
 							</div>
-						</div>
-
-						<div className='form-row mt-5'>
-							<span>Nível de acesso</span>
-
-							<ToggleButtonGroup
-								type='radio'
-								name='options'
-								className='input-group mb-4'
-								onChange={changeParkingUserAccessLevel}
-							>
-								<ToggleButton
-									value={2}
-									variant='secondary'
-									className='btn btn-sm btn-block font-weight-bold mt-2 gb-gray-light-2 parking-lot-not-reserved shadow-sm col-3 mr-2'
-								>
-									Comum
-								</ToggleButton>
-								<ToggleButton
-									value={1}
-									variant='primary'
-									className='btn btn-sm btn-block font-weight-bold mt-2 gb-gray-light-2 parking-lot-not-reserved shadow-sm col-3'
-								>
-									Administrador
-								</ToggleButton>
-							</ToggleButtonGroup>
 						</div>
 					</div>
 				</Modal.Body>
@@ -366,4 +314,4 @@ function NewParkingUserModal(props) {
 	);
 }
 
-export default NewParkingUserModal;
+export default NewAdministratorUserModal;

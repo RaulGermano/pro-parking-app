@@ -29,6 +29,18 @@ module.exports = {
 		});
 	},
 
+	async SelectSpecificExcludedParkingsCounter(req, res) {
+		const { excluded } = req.query;
+
+		const parkings = await Parking.countDocuments({
+			excluded
+		});
+
+		return res.json({
+			result: parkings
+		});
+	},
+
 	async SelectParkings(req, res) {
 		const { excluded } = req.query;
 
