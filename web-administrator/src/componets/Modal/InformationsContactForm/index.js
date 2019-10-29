@@ -5,15 +5,19 @@ import { Modal, Button, Row, Col, Table, Alert, Form } from 'react-bootstrap';
 import { getToken } from '../../../services/Auth';
 import jwt from 'jsonwebtoken';
 import moment from 'moment-timezone';
+import useLoader from '../../../componets/Loader/useLoader';
 
 function InformationsContactForm(props) {
+	const [loader, handleLoader] = useLoader();
 	const [typeInformations, setTypeInformations] = useState(0);
 	const [contactFormInformations, setContactFormInformations] = useState({});
 	const [sessionInformations, setSessionInformations] = useState({});
+
 	const [
 		disableButtonStartAttendance,
 		setDisableButtonStartAttendance
 	] = useState(true);
+
 	const [
 		disableButtonFinishAttendance,
 		setDisableButtonFinishAttendance
@@ -60,15 +64,8 @@ function InformationsContactForm(props) {
 
 			selectSpecificContactFormInformations();
 		}
+		handleLoader(false);
 	}, [show, contactformid]);
-
-	const changeIconStatusDescription = value => {
-		if (value) {
-			return <MdDone size={25} color='#3566c6' />;
-		} else {
-			return <MdClose size={25} color='#ff014c' />;
-		}
-	};
 
 	const changeButtonStartAttendance = value => {
 		if (value) {
@@ -263,7 +260,7 @@ function InformationsContactForm(props) {
 											ref={checkBoxStart}
 											type='checkbox'
 											id='custom-checkbox'
-											label='Deseja realmente preceguir?'
+											label='Deseja realmente prosseguir?'
 											defaultChecked={false}
 											onChange={() =>
 												changeButtonStartAttendance(
@@ -312,7 +309,7 @@ function InformationsContactForm(props) {
 												type='checkbox'
 												className='text-light'
 												id='custom-checkbox'
-												label='Deseja realmente preceguir?'
+												label='Deseja realmente prosseguir?'
 												isValid={true}
 												defaultChecked={false}
 												onChange={() =>
@@ -352,6 +349,7 @@ function InformationsContactForm(props) {
 						Fechar
 					</Button>
 				</Modal.Footer>
+				{loader}
 			</Modal>
 		</>
 	);

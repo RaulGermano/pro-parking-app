@@ -6,8 +6,10 @@ import { Col, Image } from 'react-bootstrap';
 import awaitingImage from '../../images/awaiting.png';
 import { getToken } from '../../services/Auth';
 import jwt from 'jsonwebtoken';
+import useLoader from '../../componets/Loader/useLoader';
 
 export default function Main({ match }) {
+	const [loader, handleLoader] = useLoader();
 	const [userSessionInformations, setUserSessionInformations] = useState({});
 
 	useEffect(() => {
@@ -20,6 +22,7 @@ export default function Main({ match }) {
 		);
 
 		setUserSessionInformations(informations);
+		handleLoader(false);
 	}, []);
 
 	return (
@@ -55,6 +58,7 @@ export default function Main({ match }) {
 					</main>
 				</div>
 			</div>
+			{loader}
 		</>
 	);
 }

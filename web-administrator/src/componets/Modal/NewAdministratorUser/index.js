@@ -4,8 +4,10 @@ import { getToken } from '../../../services/Auth';
 import jwt from 'jsonwebtoken';
 import Api from '../../../services/Api';
 import { Modal, Button, Form } from 'react-bootstrap';
+import useLoader from '../../../componets/Loader/useLoader';
 
 function NewAdministratorUserModal(props) {
+	const [loader, handleLoader] = useLoader();
 	const [administratorUserName, setAdministratorUserName] = useState('');
 	const [administratorUserEmail, setAdministratorUserEmail] = useState('');
 	const [administratorUserLogin, setAdministratorUserLogin] = useState('');
@@ -34,6 +36,7 @@ function NewAdministratorUserModal(props) {
 		);
 
 		setSessionInformations(informations);
+		handleLoader(false);
 	}, [show]);
 
 	const changeAdministratorUserName = value => {
@@ -309,7 +312,8 @@ function NewAdministratorUserModal(props) {
 						Cadastrar
 					</Button>
 				</Modal.Footer>
-			</form>
+			</form>{' '}
+			{loader}
 		</Modal>
 	);
 }

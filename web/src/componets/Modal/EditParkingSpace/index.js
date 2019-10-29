@@ -12,18 +12,18 @@ import { getToken } from '../../../services/Auth';
 import jwt from 'jsonwebtoken';
 
 function EditParkingSpace(props) {
-	const [typeReservation, setTypeReservation] = useState(0);
 	const [parkingSpaceName, setParkingSpaceName] = useState('');
 	const [parkingSpaceValue, setParkingSpaceValue] = useState('');
-
-	const [accessibilityDescription, setAccessibilityDescription] = useState(
-		false
-	);
 	const [coveredDescription, setCoveredDescription] = useState(false);
 	const [servicesDescription, setServicesDescription] = useState(false);
 	const [parkingSpaceExcluded, setParkingSpaceExcluded] = useState(false);
 	const [disableButtonComplete, setDisableButtonComplete] = useState(true);
+	const [typeReservation, setTypeReservation] = useState(0);
 	const [sessionInformations, setSessionInformations] = useState({});
+
+	const [accessibilityDescription, setAccessibilityDescription] = useState(
+		false
+	);
 
 	const { show, history, parkingspaceid } = props;
 

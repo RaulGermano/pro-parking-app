@@ -3,8 +3,10 @@ import { MdLock } from 'react-icons/md';
 import Api from '../../../services/Api';
 import { toast } from 'react-toastify';
 import { Modal, Button } from 'react-bootstrap';
+import useLoader from '../../../componets/Loader/useLoader';
 
 function ForgotPasswordModal(props) {
+	const [loader, handleLoader] = useLoader();
 	const [email, setEmail] = useState('');
 
 	const SendEmailInformation = () =>
@@ -16,6 +18,7 @@ function ForgotPasswordModal(props) {
 		toast.error('O E-Mail digitado, não encontrado. Tente novamente.');
 
 	const sendEmail = async event => {
+		handleLoader(true);
 		event.preventDefault();
 
 		setEmail('');
@@ -24,6 +27,8 @@ function ForgotPasswordModal(props) {
 			'/send-email-administrator-user-update-password',
 			{ email }
 		);
+
+		handleLoader(false);
 
 		if (result.data.response) {
 			SendEmailInformation();
@@ -43,7 +48,6 @@ function ForgotPasswordModal(props) {
 					<span>Alteração de senha</span>
 				</Modal.Title>
 			</Modal.Header>
-
 			<form onSubmit={sendEmail}>
 				<Modal.Body>
 					<div className='col'>
@@ -79,7 +83,8 @@ function ForgotPasswordModal(props) {
 						Enviar e-mail
 					</Button>
 				</Modal.Footer>
-			</form>
+			</form>{' '}
+			{loader}
 		</Modal>
 	);
 }

@@ -90,7 +90,7 @@ function ConfirmNewParkingUserPasswordModal(props) {
 							ref={textInput}
 							type='checkbox'
 							id='custom-checkbox'
-							label='Deseja realmente preceguir?'
+							label='Deseja realmente prosseguir?'
 							defaultChecked={false}
 							onChange={() =>
 								changeButtonComplete(textInput.current.checked)

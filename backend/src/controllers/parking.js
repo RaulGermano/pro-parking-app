@@ -82,6 +82,38 @@ module.exports = {
 		return res.json({
 			result: true
 		});
+	},
+
+	async UpdateParkingInformations(req, res) {
+		const {
+			_id,
+			name,
+			cnpj,
+			address,
+			excluded,
+			telephone,
+			coordinates
+		} = req.body;
+
+		await Parking.updateOne(
+			{
+				_id
+			},
+			{
+				$set: {
+					name,
+					cnpj,
+					address,
+					excluded,
+					telephone,
+					coordinates
+				}
+			}
+		);
+
+		return res.json({
+			result: true
+		});
 	}
 
 	///////////////////////////////////////////////  removes

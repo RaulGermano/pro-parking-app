@@ -105,10 +105,12 @@ const ParkingSchema = new mongoose.Schema(
 				lowercase: true
 			},
 			neighborhood: {
-				type: String
+				type: String,
+				lowercase: true
 			},
 			street: {
-				type: String
+				type: String,
+				lowercase: true
 			},
 			number_house: {
 				type: String

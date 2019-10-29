@@ -27,7 +27,6 @@ const {
 const {
 	CreateParkingUser,
 	AuthenticateParking,
-	NewPasswordParkingUser,
 	SendEmailUpdatePassword,
 	SelectSpecificParkingUser,
 	UpdatePasswordParkingUser,
@@ -86,6 +85,7 @@ const {
 	SelectSpecificParkings,
 	UpdateParkingTelephone,
 	SelectAllParkingsCounter,
+	UpdateParkingInformations,
 	SelectSpecificExcludedParkingsCounter
 } = require('../controllers/parking');
 
@@ -177,6 +177,12 @@ routes.put(
 	'/update-parking-telephone',
 	authenticateMiddleware,
 	UpdateParkingTelephone
+);
+
+routes.put(
+	'/update-parking-informations',
+	authenticateMiddleware,
+	UpdateParkingInformations
 );
 
 routes.post('/create-parking', CreateParking);

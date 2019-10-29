@@ -1,7 +1,7 @@
 import React from 'react';
 import './Marker.css';
 
-const Marker = props => {
+const MarkerIcon = props => {
 	const { color, name, id } = props;
 	return (
 		<div
@@ -12,4 +12,4 @@ const Marker = props => {
 	);
 };
 
-export default Marker;
+export default MarkerIcon;

@@ -4,9 +4,17 @@ import { getToken } from '../../../services/Auth';
 import { markerImage } from '../../../images/marker.png';
 import jwt from 'jsonwebtoken';
 import Api from '../../../services/Api';
-import { Modal, Button } from 'react-bootstrap';
 import { compose, withStateHandlers } from 'recompose';
 import useLoader from '../../../componets/Loader/useLoader';
+import moment from 'moment-timezone';
+
+import {
+	Modal,
+	Button,
+	ToggleButton,
+	ToggleButtonGroup
+} from 'react-bootstrap';
+
 import {
 	withGoogleMap,
 	withScriptjs,
@@ -14,7 +22,7 @@ import {
 	Marker
 } from 'react-google-maps';
 
-function NewParkingModal(props) {
+function EditParkingModal(props) {
 	const [loader, handleLoader] = useLoader();
 	const [parkingName, setParkingName] = useState('');
 	const [parkingCity, setParkingCity] = useState('');
@@ -22,10 +30,12 @@ function NewParkingModal(props) {
 	const [parkingStreet, setParkingStreet] = useState('');
 	const [parkingZipCode, setParkingZipCode] = useState('');
 	const [parkingDocument, setParkingDocument] = useState('');
+	const [parkingCreatedAt, setParkingCreatedAt] = useState('');
 	const [parkingHouseNumber, setParkingHouseNumber] = useState('');
 	const [parkingNeighborhood, setParkingNeighborhood] = useState('');
 	const [parkingTelephoneDdd, setParkingTelephoneDdd] = useState('');
 	const [parkingTelephoneNumber, setParkingTelephoneNumber] = useState('');
+	const [parkingExcluded, setParkingExcluded] = useState(false);
 	const [disabledButtonConfirm, setDisabledsetButtonConfirm] = useState(true);
 	const [sessionInformations, setSessionInformations] = useState({});
 
@@ -39,7 +49,7 @@ function NewParkingModal(props) {
 		setParkingCoordinatesLongitude
 	] = useState(0);
 
-	const { show, history } = props;
+	const { show, history, parkingid } = props;
 
 	const Map = compose(
 		withStateHandlers(
@@ -91,6 +101,49 @@ function NewParkingModal(props) {
 			}
 		);
 
+		if (parkingid) {
+			const selectParkingInformations = async () => {
+				const result = await Api.get(
+					`/select-specific-parkings/?parking_id=${parkingid}`,
+					{
+						headers: {
+							authenticateToken: getToken()
+						}
+					}
+				);
+
+				const parkingInformations = result.data.result;
+
+				const {
+					createdAt,
+					excluded,
+					name,
+					cnpj,
+					address,
+					telephone
+				} = parkingInformations;
+
+				const created_at = `${moment(createdAt).format(
+					'DD/MM/YYYY'
+				)} às ${moment(createdAt).format('HH:mm')}h`;
+
+				setParkingName(name);
+				setParkingDocument(cnpj);
+				setParkingExcluded(excluded);
+				setParkingCreatedAt(created_at);
+				setParkingCity(address.city);
+				setParkingState(address.state);
+				setParkingStreet(address.street);
+				setParkingZipCode(address.zip_code);
+				setParkingHouseNumber(address.number_house);
+				setParkingNeighborhood(address.neighborhood);
+				setParkingTelephoneDdd(telephone.ddd);
+				setParkingTelephoneNumber(telephone.number);
+			};
+
+			selectParkingInformations();
+		}
+
 		navigator.geolocation.getCurrentPosition(async pos => {
 			const lat = pos.coords.latitude;
 			const lon = pos.coords.longitude;
@@ -116,7 +169,8 @@ function NewParkingModal(props) {
 			parkingStreet.length !== 0 &&
 			parkingNeighborhood.length !== 0 &&
 			parkingZipCode.length !== 0 &&
-			parkingHouseNumber.length !== 0
+			parkingHouseNumber.length !== 0 &&
+			parkingExcluded.length !== 0
 		) {
 			setDisabledsetButtonConfirm(false);
 		} else {
@@ -137,7 +191,8 @@ function NewParkingModal(props) {
 			parkingStreet.length !== 0 &&
 			parkingNeighborhood.length !== 0 &&
 			parkingZipCode.length !== 0 &&
-			parkingHouseNumber.length !== 0
+			parkingHouseNumber.length !== 0 &&
+			parkingExcluded.length !== 0
 		) {
 			setDisabledsetButtonConfirm(false);
 		} else {
@@ -158,7 +213,8 @@ function NewParkingModal(props) {
 			parkingStreet.length !== 0 &&
 			parkingNeighborhood.length !== 0 &&
 			parkingZipCode.length !== 0 &&
-			parkingHouseNumber.length !== 0
+			parkingHouseNumber.length !== 0 &&
+			parkingExcluded.length !== 0
 		) {
 			setDisabledsetButtonConfirm(false);
 		} else {
@@ -179,7 +235,8 @@ function NewParkingModal(props) {
 			parkingStreet.length !== 0 &&
 			parkingNeighborhood.length !== 0 &&
 			parkingZipCode.length !== 0 &&
-			parkingHouseNumber.length !== 0
+			parkingHouseNumber.length !== 0 &&
+			parkingExcluded.length !== 0
 		) {
 			setDisabledsetButtonConfirm(false);
 		} else {
@@ -200,7 +257,8 @@ function NewParkingModal(props) {
 			parkingStreet.length !== 0 &&
 			parkingNeighborhood.length !== 0 &&
 			parkingZipCode.length !== 0 &&
-			parkingHouseNumber.length !== 0
+			parkingHouseNumber.length !== 0 &&
+			parkingExcluded.length !== 0
 		) {
 			setDisabledsetButtonConfirm(false);
 		} else {
@@ -221,7 +279,7 @@ function NewParkingModal(props) {
 			parkingStreet.length !== 0 &&
 			parkingNeighborhood.length !== 0 &&
 			value.length !== 0 &&
-			parkingHouseNumber.length !== 0
+			parkingExcluded.length !== 0
 		) {
 			setDisabledsetButtonConfirm(false);
 		} else {
@@ -242,7 +300,8 @@ function NewParkingModal(props) {
 			parkingStreet.length !== 0 &&
 			parkingNeighborhood.length !== 0 &&
 			parkingZipCode.length !== 0 &&
-			parkingHouseNumber.length !== 0
+			parkingHouseNumber.length !== 0 &&
+			parkingExcluded.length !== 0
 		) {
 			setDisabledsetButtonConfirm(false);
 		} else {
@@ -263,7 +322,8 @@ function NewParkingModal(props) {
 			parkingStreet.length !== 0 &&
 			value.length !== 0 &&
 			parkingZipCode.length !== 0 &&
-			parkingHouseNumber.length !== 0
+			parkingHouseNumber.length !== 0 &&
+			parkingExcluded.length !== 0
 		) {
 			setDisabledsetButtonConfirm(false);
 		} else {
@@ -284,7 +344,8 @@ function NewParkingModal(props) {
 			value.length !== 0 &&
 			parkingNeighborhood.length !== 0 &&
 			parkingZipCode.length !== 0 &&
-			parkingHouseNumber.length !== 0
+			parkingHouseNumber.length !== 0 &&
+			parkingExcluded.length !== 0
 		) {
 			setDisabledsetButtonConfirm(false);
 		} else {
@@ -305,6 +366,29 @@ function NewParkingModal(props) {
 			parkingStreet.length !== 0 &&
 			parkingNeighborhood.length !== 0 &&
 			parkingZipCode.length !== 0 &&
+			value.length !== 0 &&
+			parkingExcluded.length !== 0
+		) {
+			setDisabledsetButtonConfirm(false);
+		} else {
+			setDisabledsetButtonConfirm(true);
+		}
+	};
+
+	const changeParkingExcluded = value => {
+		setParkingExcluded(value);
+
+		if (
+			parkingName.length !== 0 &&
+			parkingDocument.length !== 0 &&
+			parkingTelephoneDdd.length !== 0 &&
+			parkingTelephoneNumber.length !== 0 &&
+			parkingCity.length !== 0 &&
+			parkingState.length !== 0 &&
+			parkingStreet.length !== 0 &&
+			parkingNeighborhood.length !== 0 &&
+			parkingZipCode.length !== 0 &&
+			parkingHouseNumber.length !== 0 &&
 			value.length !== 0
 		) {
 			setDisabledsetButtonConfirm(false);
@@ -316,11 +400,13 @@ function NewParkingModal(props) {
 	const tryCreateParking = async event => {
 		event.preventDefault();
 
-		await Api.post(
-			'/create-parking',
+		const teste = await Api.put(
+			'/update-parking-informations',
 			{
+				_id: parkingid,
 				name: parkingName,
 				cnpj: parkingDocument,
+				excluded: parkingExcluded,
 				telephone: {
 					ddd: parkingTelephoneDdd,
 					number: parkingTelephoneNumber
@@ -357,7 +443,7 @@ function NewParkingModal(props) {
 							size={30}
 							className='bg-primary rounded-circle p-lg-1 text-light'
 						/>
-						<span>Novo Estacionamento</span>
+						<span>Editar Estacionamento</span>
 					</Modal.Title>
 				</Modal.Header>
 
@@ -367,7 +453,7 @@ function NewParkingModal(props) {
 							Dados cadastrais
 						</h1>
 						<div className='form-row mb-5'>
-							<div className='d-flex flex-column col-8'>
+							<div className='d-flex flex-column col-4'>
 								<div>
 									<label for-html='name-user'>
 										Nome fantasia
@@ -379,7 +465,7 @@ function NewParkingModal(props) {
 								<input
 									type='text'
 									id='name-user'
-									className='form-control shadow-sm'
+									className='form-control shadow-sm text-capitalize'
 									placeholder='Obrigatório'
 									value={parkingName}
 									required={false}
@@ -403,6 +489,18 @@ function NewParkingModal(props) {
 											event.target.value
 										)
 									}
+								/>
+							</div>
+
+							<div className='d-flex flex-column col-4'>
+								<label for-html='name-user'>Criado em</label>
+								<input
+									type='text'
+									id='name-user'
+									className='form-control shadow-sm'
+									value={parkingCreatedAt}
+									disabled={true}
+									onChange={() => {}}
 								/>
 							</div>
 						</div>
@@ -626,7 +724,7 @@ function NewParkingModal(props) {
 								</div>
 							</div>
 
-							<div style={{ height: '60vh', width: '100%' }}>
+							<div style={{ width: '100%' }}>
 								<Map
 									googleMapURL='https://maps.googleapis.com/maps/api/js?key=AIzaSyDqcTeikQQy45rsSbFGwxC1so1-M7X7Ax0'
 									loadingElement={
@@ -639,6 +737,35 @@ function NewParkingModal(props) {
 										<div style={{ height: `100%` }} />
 									}
 								/>
+							</div>
+
+							<div className='d-flex justify-content-between mt-5'>
+								<div className='col-12 p-0  ml-1'>
+									<span>Disponibilidade</span>
+
+									<ToggleButtonGroup
+										type='radio'
+										name='options-parking-excluded'
+										className='input-group mb-4'
+										defaultValue={parkingExcluded}
+										onChange={changeParkingExcluded}
+									>
+										<ToggleButton
+											value={true}
+											variant='secondary'
+											className='btn btn-sm btn-block font-weight-bold mt-2 gb-gray-light-2 parking-lot-not-reserved shadow-sm col-6'
+										>
+											Inativo
+										</ToggleButton>
+										<ToggleButton
+											value={false}
+											variant='primary'
+											className='btn btn-sm btn-block font-weight-bold mt-2 gb-gray-light-2 parking-lot-not-reserved shadow-sm col-6'
+										>
+											Ativo
+										</ToggleButton>
+									</ToggleButtonGroup>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -663,10 +790,10 @@ function NewParkingModal(props) {
 						Cadastrar
 					</Button>
 				</Modal.Footer>
-			</form>{' '}
+			</form>
 			{loader}
 		</Modal>
 	);
 }
 
-export default NewParkingModal;
+export default EditParkingModal;

@@ -8,10 +8,7 @@ import paginationFactory from 'react-bootstrap-table2-paginator';
 import filterFactory from 'react-bootstrap-table2-filter';
 import ToolkitProvider, { Search } from 'react-bootstrap-table2-toolkit';
 import NewParkingModal from '../../componets/Modal/NewParking';
-
-// import EditParkingSpace from '../../componets/Modal/EditParkingSpace';
-// import InformationsParkingSpace from '../../componets/Modal/InformationsParkingSpace';
-
+import EditParkingModal from '../../componets/Modal/EditParking';
 import Api from '../../services/Api';
 import useLoader from '../../componets/Loader/useLoader';
 import moment from 'moment-timezone';
@@ -33,10 +30,7 @@ export default function ParkingLots(props) {
 	const [sessionInformations, setSessionInformations] = useState({});
 	const [newParkingModal, setNewParkingModal] = useState(false);
 	const [editParkingModal, setEditParkingModal] = useState(false);
-
-	const [parkingInformationsModal, setParkingInformationsModal] = useState(
-		false
-	);
+	const [excludeParkingModal, setExcludeParkingModal] = useState(false);
 
 	const [
 		notExcludedParkingsCounter,
@@ -124,13 +118,13 @@ export default function ParkingLots(props) {
 		getItems();
 	}, []);
 
-	const openModalEditParkingSpace = id => {
+	const openExcludeParkingModal = id => {
 		setEditParkingModal(true);
 		setParkingId(id);
 	};
 
-	const openModalInformationsParkingSpace = id => {
-		setParkingInformationsModal(true);
+	const openParkingModalInformations = id => {
+		setExcludeParkingModal(true);
 		setParkingId(id);
 	};
 
@@ -141,25 +135,11 @@ export default function ParkingLots(props) {
 					type='button'
 					className='btn shadow-none mr-2 cursor-context-menu p-0'
 				>
-					<FaBookOpen
-						size={17.5}
-						color='#777777'
-						className='cursor-pointer'
-						onClick={event =>
-							openModalInformationsParkingSpace(cell)
-						}
-					/>
-				</button>
-
-				<button
-					type='button'
-					className='btn shadow-none mr-2 cursor-context-menu p-0'
-				>
 					<MdEdit
 						size={22.5}
 						color='#777777'
 						className='cursor-pointer'
-						onClick={event => openModalEditParkingSpace(cell)}
+						onClick={event => openExcludeParkingModal(cell)}
 					/>
 				</button>
 			</>
@@ -244,21 +224,13 @@ export default function ParkingLots(props) {
 	return (
 		<>
 			<Header />
-			{/* 
-			<InformationsParkingSpace
-				show={informationsParkingSpace}
-				onHide={() => setInformationsParkingSpace(false)}
-				history={history}
-				parkingspaceid={parkingSpaceId}
-			/>
 
-			<EditParkingSpace
-				show={editParkingSpace}
-				onHide={() => setEditParkingSpace(false)}
+			<EditParkingModal
+				show={editParkingModal}
+				onHide={() => setEditParkingModal(false)}
 				history={history}
-				parkingspaceid={parkingSpaceId}
-            />
-              */}
+				parkingid={parkingId}
+			/>
 
 			<NewParkingModal
 				show={newParkingModal}
@@ -316,7 +288,7 @@ export default function ParkingLots(props) {
 										color='#fff'
 										className='pr-1'
 									/>
-									Nova vaga
+									Novo estacionamento
 								</button>
 							</div>
 						</div>

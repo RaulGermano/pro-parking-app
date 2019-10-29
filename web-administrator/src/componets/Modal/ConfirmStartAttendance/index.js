@@ -4,8 +4,10 @@ import Api from '../../../services/Api';
 import { toast } from 'react-toastify';
 import { Modal, Button, Form } from 'react-bootstrap';
 import { getToken } from '../../../services/Auth';
+import useLoader from '../../../componets/Loader/useLoader';
 
 function ConfirmStartAttendanceModal(props) {
+	const [loader, handleLoader] = useLoader();
 	const [parkingUserIdValue, setParkingUserIdValue] = useState('');
 	const [disableButtonComplete, setDisableButtonComplete] = useState(true);
 
@@ -19,6 +21,8 @@ function ConfirmStartAttendanceModal(props) {
 		if (parkinguserid) {
 			setParkingUserIdValue(parkinguserid);
 		}
+
+		handleLoader(false);
 	}, [show]);
 
 	const SendEmailInformation = () =>
@@ -76,7 +80,6 @@ function ConfirmStartAttendanceModal(props) {
 					</div>
 				</Modal.Title>
 			</Modal.Header>
-
 			<form onSubmit={sendEmail}>
 				<Modal.Body>
 					<div className='container'>
@@ -90,7 +93,7 @@ function ConfirmStartAttendanceModal(props) {
 							ref={textInput}
 							type='checkbox'
 							id='custom-checkbox'
-							label='Deseja realmente preceguir?'
+							label='Deseja realmente prosseguir?'
 							defaultChecked={false}
 							onChange={() =>
 								changeButtonComplete(textInput.current.checked)
@@ -117,6 +120,7 @@ function ConfirmStartAttendanceModal(props) {
 					</Button>
 				</Modal.Footer>
 			</form>
+			{loader}
 		</Modal>
 	);
 }

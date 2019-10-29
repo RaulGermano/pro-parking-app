@@ -4,8 +4,10 @@ import Api from '../../../services/Api';
 import { toast } from 'react-toastify';
 import { Modal, Button, Form } from 'react-bootstrap';
 import { getToken } from '../../../services/Auth';
+import useLoader from '../../../componets/Loader/useLoader';
 
 function ConfirmNewAdministratorUserPasswordModal(props) {
+	const [loader, handleLoader] = useLoader();
 	const [disableButtonComplete, setDisableButtonComplete] = useState(true);
 
 	const { show, administratoruserid } = props;
@@ -14,6 +16,8 @@ function ConfirmNewAdministratorUserPasswordModal(props) {
 
 	useEffect(() => {
 		setDisableButtonComplete(true);
+
+		handleLoader(false);
 	}, [show]);
 
 	const SendEmailInformation = () =>
@@ -25,6 +29,8 @@ function ConfirmNewAdministratorUserPasswordModal(props) {
 		toast.error('O E-Mail digitado, não encontrado. Tente novamente.');
 
 	const sendEmail = async event => {
+		handleLoader(true);
+
 		event.preventDefault();
 
 		const administratorUserInformations = await Api.get(
@@ -42,6 +48,8 @@ function ConfirmNewAdministratorUserPasswordModal(props) {
 			'/send-email-administrator-user-update-password',
 			{ email }
 		);
+
+		handleLoader(false);
 
 		if (result.data.response) {
 			SendEmailInformation();
@@ -74,7 +82,6 @@ function ConfirmNewAdministratorUserPasswordModal(props) {
 					</div>
 				</Modal.Title>
 			</Modal.Header>
-
 			<form onSubmit={sendEmail}>
 				<Modal.Body>
 					<div className='container'>
@@ -88,7 +95,7 @@ function ConfirmNewAdministratorUserPasswordModal(props) {
 							ref={textInput}
 							type='checkbox'
 							id='custom-checkbox'
-							label='Deseja realmente preceguir?'
+							label='Deseja realmente prosseguir?'
 							defaultChecked={false}
 							onChange={() =>
 								changeButtonComplete(textInput.current.checked)
@@ -115,6 +122,7 @@ function ConfirmNewAdministratorUserPasswordModal(props) {
 					</Button>
 				</Modal.Footer>
 			</form>
+			{loader}
 		</Modal>
 	);
 }
