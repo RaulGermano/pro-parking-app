@@ -49,7 +49,7 @@ module.exports = {
 		});
 
 		return res.json({
-			message: parking
+			result: parking
 		});
 	},
 

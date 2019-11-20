@@ -32,7 +32,7 @@ module.exports = {
 		const { _id: parking_id } = req.body.parking;
 		const { _id: parkingSpace_id } = req.body.parking.space;
 		const { _id: client_id } = req.body.client;
-		const { _id: vehicle_id } = req.body.client.vehicle;
+        const { _id: vehicle_id } = req.body.client.vehicle;
 
 		try {
 			await Reservation.create(req.body);
@@ -264,7 +264,10 @@ module.exports = {
 			const { client_id } = req.query;
 
 			const monthReservations = await Reservation.find({
-				'client._id': client_id,
+                'client._id': client_id,
+                'period.check_out': {
+                    $exists: true 
+                },
 				createdAt: {
 					$lt: dateToday,
 					$gte: dateLessAMonth
@@ -272,14 +275,36 @@ module.exports = {
 			});
 
 			return res.json({
-				message: monthReservations
+				result: monthReservations
 			});
 		} catch (error) {
 			return res.status(400).json({
 				error: error
 			});
 		}
-	},
+    },
+
+    async SelectActiveReservations(req, res) {
+		try {
+			const { client_id } = req.query;
+
+			const monthReservations = await Reservation.find({
+                'client._id': client_id,
+                finished: false
+            });
+            
+            const monthReservationsCounter=monthReservations.length
+
+			return res.json({
+                result: monthReservations,
+                count: monthReservationsCounter
+			});
+		} catch (error) {
+			return res.status(400).json({
+				error: error
+			});
+		}
+    },
 
 	async SelectClientReservations(req, res) {
 		try {
@@ -310,10 +335,6 @@ module.exports = {
 				'period.check_out': { $exists: false },
 				finished: false
 			});
-
-			console.log(123);
-
-			console.log(reservations);
 
 			if (reservations) {
 				const {

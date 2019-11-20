@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import {
-	Text,
 	StyleSheet,
-	View,
+    View,
+    Text,
 	SafeAreaView,
 	ScrollView,
 	Dimensions,
@@ -13,21 +13,54 @@ import LastParked from '../components/LastParked';
 import TitlePage from '../components/TitlePage';
 import SearchBox from '../components/SearchBox';
 import * as Animatable from 'react-native-animatable';
+import Api from "../services/Api";
+import Loader from "../components/Modal/Loader";
+import Icon from 'react-native-vector-icons/Ionicons';
 
 const { width } = Dimensions.get('screen');
 
 class Search extends Component {
 	state = {
-		refreshScreen: false
+        activeReservations:{
+            count: 0
+        },
+        isModalVisible: false,
+        refreshScreen: false,
+        lastReservationsList:[]
 	};
 
 	componentDidMount() {
-		this.verifyLog();
-	}
+        this.verifyLog();
+
+        this.setState({
+            modalLoaderVisible: false
+        });
+    }
+    
+    componentWillMount(){
+        this.setState({
+            modalLoaderVisible: true
+        });
+    }
 
 	verifyLog = async () => {
 		try {
-			const userToken = await AsyncStorage.getItem('userId');
+            const userToken = await AsyncStorage.getItem('userId');
+
+            const userInformations=JSON.parse(userToken)
+
+            const lastReservations=await Api.get(`/select-month-reservations/?client_id=${userInformations._id}`)
+
+            const activeReservations=await Api.get(`/select-active-reservations/?client_id=${userInformations._id}`)
+
+            this.setState({
+                activeReservations: activeReservations.data
+            })
+
+            this.setState({
+                lastReservationsList: lastReservations.data.result
+            })
+
 			this.props.navigation.navigate(userToken ? '' : 'Welcome');
 		} catch (error) {
 			console.log('erro: ', error);
@@ -43,67 +76,45 @@ class Search extends Component {
 
 		return (
 			<ScrollView showsVerticalScrollIndicator={false}>
+                <Loader isModalVisible={state.modalLoaderVisible} cover={true} />
+
 				<SafeAreaView>
 					<View style={styles.container}>
 						<TitlePage titleText='Últimas paradas' />
 
 						<ScrollView
 							showsVerticalScrollIndicator={false}
-							refreshControl={
-								<RefreshControl
-									refreshing={state.refreshScreen}
-									onRefresh={() =>
-										console.log('Recarregar tela')
-									}
-								/>
-							}
 							horizontal={true}
 							showsHorizontalScrollIndicator={false}
+                            refreshControl={
+                                <RefreshControl
+                                    refreshing={state.refreshScreen}
+                                    onRefresh={() =>
+                                        console.log('Recarregar tela')
+                                    }
+                                />
+                            }
 						>
 							<View style={styles.containerBlockParked}>
-								<Animatable.View
-									animation='fadeInLeft'
-									duration={500}
-								>
-									<LastParked
-										name='Outro Estacionamento'
-										payValue={8.5}
-										hours={5.6}
-									/>
-								</Animatable.View>
-
-								<Animatable.View
-									animation='fadeInLeft'
-									duration={650}
-								>
-									<LastParked
-										name='Outro Estacionamento'
-										payValue={8.5}
-										hours={5.6}
-									/>
-								</Animatable.View>
-
-								<Animatable.View
-									animation='fadeInLeft'
-									duration={800}
-								>
-									<LastParked
-										name='Outro Estacionamento'
-										payValue={8.5}
-										hours={5.6}
-									/>
-								</Animatable.View>
-
-								<Animatable.View
-									animation='fadeInLeft'
-									duration={950}
-								>
-									<LastParked
-										name='Outro Estacionamento'
-										payValue={8.5}
-										hours={5.6}
-									/>
-								</Animatable.View>
+                                {
+                                    state.lastReservationsList.map(item=>{
+                                        return (
+                                            <Animatable.View
+                                                key={item._id}
+                                                animation='fadeInLeft'
+                                                duration={500}
+                                            >
+                                                <LastParked
+                                                    name={item.parking.name}
+                                                    payValue={item.value}
+                                                    status={item.value?1:0}
+                                                    hours={item.hours}
+                                                />
+                                            </Animatable.View>
+                                        )
+                                    })
+                                }
+								
 							</View>
 						</ScrollView>
 
@@ -116,6 +127,27 @@ class Search extends Component {
 								onPress={props.navigation}
 							/>
 						</View>
+
+                        {
+                            state.activeReservations.count>0?(
+                                <View style={[styles.containerStyle, {flex: 1, backgroundColor: '#fff', marginHorizontal: 20, paddingHorizontal: 15, paddingVertical: 15, width: width - 40, marginBottom: 20}]}>
+                                    <View style={{flex: 1, flexDirection: 'row'}}>
+                                        <Icon
+                                            name='md-bookmark'
+                                            size={24}
+                                            color='#3769cc'
+                                            style={{marginRight: 10}}
+                                        />
+                                        <Text style={{fontSize: 17.5, color: '#333', fontWeight: '700', marginBottom: 10}}>
+                                            Atenção!
+                                        </Text>
+                                    </View>
+                                    <Text style={{fontSize: 20}}>Há reservas em andamento</Text>
+                                </View>
+                            ):(
+                                <View />
+                            )
+                        }
 					</View>
 				</SafeAreaView>
 			</ScrollView>

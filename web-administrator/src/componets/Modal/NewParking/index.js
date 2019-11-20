@@ -314,7 +314,9 @@ function NewParkingModal(props) {
 	};
 
 	const tryCreateParking = async event => {
-		event.preventDefault();
+        event.preventDefault();
+        
+        console.log(parkingCoordinatesLatitude)
 
 		await Api.post(
 			'/create-parking',
@@ -331,12 +333,12 @@ function NewParkingModal(props) {
 					city: parkingCity,
 					neighborhood: parkingNeighborhood,
 					street: parkingStreet,
-					number_house: parkingHouseNumber
+					number_house: parkingHouseNumber,
+                    coordinates: {
+                        latitude: parkingCoordinatesLatitude,
+                        longitude: parkingCoordinatesLongitude
+                    }
 				},
-				coordinates: {
-					latitude: parkingCoordinatesLatitude,
-					longitude: parkingCoordinatesLongitude
-				}
 			},
 			{
 				headers: {

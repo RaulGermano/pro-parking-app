@@ -31,20 +31,48 @@ module.exports = {
 	///////////////////////////////////////////////  selects
 
 	async SelectClientVehicles(req, res) {
-		const { client_id: _id } = req.query;
+        try{
+            const { client_id: _id } = req.query;
 
-		const clientVehicles = await Client.find(
-			{
-				_id
-			},
-			{
-				vehicle: true
-			}
-		);
-
-		return res.json({
-			message: clientVehicles
-		});
+            const clientVehicles = await Client.find(
+                {
+                    _id,
+                    excluded: false
+                },
+                {
+                    vehicle: true
+                }
+            )
+    
+            return res.json({
+                result: clientVehicles[0]
+            });
+        } catch (error) {
+			return res.status(400).json({
+				error
+			});
+		}
+    },
+    
+    async SelectClientVehicleByPlate(req, res) {
+        try{
+            const { client_id, vehiclePlate } = req.query;
+    
+            const clientVehicles = await Client.find(
+                {
+                    _id: client_id,
+                    // 'vehicle.plate': vehiclePlate
+                }
+            );
+    
+            return res.json({
+                result: clientVehicles[0]
+            });
+        } catch (error) {
+			return res.status(400).json({
+				error
+			});
+		}
 	},
 
 	async SelectClientsCounter(req, res) {

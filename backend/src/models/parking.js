@@ -117,10 +117,10 @@ const ParkingSchema = new mongoose.Schema(
 			},
 			coordinates: {
 				latitude: {
-					type: Number
+					type: Intl
 				},
 				longitude: {
-					type: Number
+					type: Intl
 				}
 			}
 		},

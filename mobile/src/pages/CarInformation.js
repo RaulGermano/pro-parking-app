@@ -10,7 +10,7 @@ class CarInformation extends Component {
 		header: null
 	};
 
-	openDeatailsCarModal = carInformation => {
+	openDetailsCarModal = carInformation => {
 		const name = carInformation.name;
 
 		this.refs.modalCarEdit.toggleModal();
@@ -38,7 +38,7 @@ class CarInformation extends Component {
 						title={carInformation.name}
 						onBackPress={() => props.navigation.navigate('Car')}
 						onEditPress={() =>
-							this.openDeatailsCarModal(carInformation)
+							this.openDetailsCarModal(carInformation)
 						}
 						onExcludePress={() =>
 							this.openConfirmationExcludeCarModal(carInformation)

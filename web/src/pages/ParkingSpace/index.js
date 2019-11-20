@@ -114,7 +114,9 @@ export default function ParkingLots(props) {
 						authenticateToken: getToken()
 					}
 				}
-			);
+            );
+            
+            console.log(selectAllParkingSpacesResult)
 
 			const selectTotalParkingSpaces =
 				selectTotalParkingSpacesResult.data.total;

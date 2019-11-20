@@ -22,7 +22,9 @@ module.exports = {
 	///////////////////////////////////////////////  selects
 
 	async AuthenticateClient(req, res) {
-		const { login, password } = req.body;
+        const { login, password } = req.body;
+        
+        console.log({ login, password })
 
 		try {
 			const user = await Client.findOne({
@@ -46,10 +48,12 @@ module.exports = {
 	},
 
 	async SelectClientInformations(req, res) {
-		const { client_id: _id } = req.query;
+        const { client_id: _id } = req.query;
+        
+        console.log(_id)
 
 		try {
-			const user = await Client.findOne({
+			const user = await Client.find({
 				_id
 			});
 
