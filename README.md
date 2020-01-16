@@ -15,4 +15,4 @@ O software agiliza a procura por estacionamentos através de integrações com A
 
 Basta ter acesso à um smartphone e a internet para utilizar o aplicvativo. Assim que uma vaga for reservada pelo usuário, o mesmo poderá se direcionar até o estacionamento e estacionar o veículo pois a vaga estará disponível para ele.
 
-![Alt text](relative/mobile/img/car-icon/car-free/car-free.png?raw=true "Title")
+![Alt text](relative/path/to/mobile/img/car-icon/car-free/car-free.png?raw=true "Title")
