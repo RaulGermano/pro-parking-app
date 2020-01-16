@@ -11,8 +11,12 @@ import Modal from 'react-native-modal';
 const { height } = Dimensions.get('screen');
 
 class Loader extends Component {
+    static defaultProps = {
+        cover: false
+    }
+
 	render() {
-		const { state, props } = this;
+        const { state, props } = this;
 
 		return (
 			<Modal
@@ -23,7 +27,9 @@ class Loader extends Component {
 				animationInTiming={500}
 				animationOutTiming={500}
 				backdropTransitionInTiming={500}
-				backdropTransitionOutTiming={500}
+                backdropTransitionOutTiming={500}
+                coverScreen={props.cover}
+                
 			>
 				<View>
 					<View style={styles.container}>

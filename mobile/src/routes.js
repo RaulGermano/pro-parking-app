@@ -2,26 +2,26 @@ import React from 'react';
 import {
 	createAppContainer,
 	createStackNavigator,
-	createDrawerNavigator,
 	createBottomTabNavigator,
 	createSwitchNavigator
 } from 'react-navigation';
-import Welcome from './pages/Welcome';
+import Car from './pages/Car';
+import Home from './pages/Home';
 import About from './pages/About';
 import Login from './pages/LogIn';
 import Signup from './pages/SignUp';
-import Home from './pages/Home';
-import Profile from './pages/Profile';
-import Settings from './pages/Settings';
 import Search from './pages/Search';
 import Doubts from './pages/Doubts';
-import Auth from './pages/Authentication';
 import LogOut from './pages/LogOut';
 import Parked from './pages/Parked';
-import Car from './pages/Car';
+import Welcome from './pages/Welcome';
+import Profile from './pages/Profile';
+import Settings from './pages/Settings';
+import Auth from './pages/Authentication';
 import CarInformation from './pages/CarInformation';
-import MarkerInformations from './pages/MarkerInformations';
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import MarkerInformations from './pages/MarkerInformations';
+import ParkingSpaceInformations from './pages/ParkingSpaceInformations';
 
 const configBottomTabNavigator = createBottomTabNavigator(
 	{
@@ -161,11 +161,14 @@ const configCarInformationStackNavigator = createStackNavigator({
 	}
 });
 
+
 const configCreateSwitchNavigator = createSwitchNavigator(
 	{
 		InformacoesCarro: {
 			screen: configCarInformationStackNavigator
-		},
+        },
+        
+        ParkingSpaceInformations,
 
 		CarInformation,
 
@@ -193,16 +196,18 @@ const configCreateSwitchNavigator = createSwitchNavigator(
 
 		Teste: {
 			screen: configBottomTabNavigator
-		},
+        },
+
 		Doubts: {
 			screen: configDoubtsStackNavigator
-		},
+        },
+
 		LogOut: {
 			screen: LogOut
 		}
 	},
 	{
-		// initialRouteName: 'Welcome'
+		// initialRouteName: 'Home'
 		initialRouteName: 'AuthLoading'
 	}
 );

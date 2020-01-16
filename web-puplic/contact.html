@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="zxx" class="no-js">
+
+<head>
+    <title>PRO Parking</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="author" content="codepixer" />
+    <meta name="description" content="" />
+    <meta name="keywords" content="" />
+    <meta charset="UTF-8" />
+
+    <link rel="shortcut icon" href="img/favicon.ico" />
+    <link href="https://fonts.googleapis.com/css?family=Poppins:400,600|Roboto:400,400i,500" rel="stylesheet" />
+    <link rel="stylesheet" href="css/linearicons.css" />
+    <link rel="stylesheet" href="css/font-awesome.min.css" />
+    <link rel="stylesheet" href="css/bootstrap.css" />
+    <link rel="stylesheet" href="css/magnific-popup.css" />
+    <link rel="stylesheet" href="css/nice-select.css" />
+    <link rel="stylesheet" href="css/hexagons.min.css" />
+    <link rel="stylesheet" href="css/owl.carousel.css" />
+    <link rel="stylesheet" href="css/main.css" />
+    <link href="toastr/build/toastr.css" rel="stylesheet"/>
+</head>
+
+<body>
+    <header id="header">
+        <div class="container main-menu">
+            <div class="row align-items-center justify-content-between d-flex">
+                <div id="logo">
+                    <a href="index.html"><img src="img/logo.png" alt="" title="" width="45"/></a>
+                </div>
+                <nav id="nav-menu-container">
+                    <ul class="nav-menu">
+                        <li class="menu-active">
+                            <a href="index.html">Início</a>
+                        </li>
+                        <li><a href="contact.html">Contato</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <section class="banner-area">
+        <div class="container">
+            <div class="row banner-content">
+                <div class="col-lg-12 d-flex align-items-center justify-content-between">
+                    <div class="left-part">
+                        <h1>
+                            Contate-nos
+                        </h1>
+                        <p>
+                            Imagina centenas de clientes olhando suas vagas de estacionamento todo momento, isso seria incrível. Venha para o PRO Parking!
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+    </section>
+
+    <div class="container contact-form-container">
+        <div class="shadow-lg p-4 rounded border-dark contact-form">
+            <div class="d-flex form-group m-0">	
+                <div class="col-2 p-0">
+                    <label for="input-text-zip-code">CEP</label>
+                    <input type="text" aria-describedby="input-text-zip-code" class="form-control" name="input-text-zip-code" id="input-text-zip-code" placeholder="Digite...">
+                    <small class="form-text text-muted">Ex: 00000-000</small>
+                </div>
+
+                <div class="col-5 px-2">
+                    <label for="input-text-state">Estado</label>
+                    <input type="text" aria-describedby="input-text-state" class="form-control" name="input-text-state" id="input-text-state" placeholder="Digite...">
+                </div>
+
+                <div class="col-5 p-0">
+                    <label for="input-text-city">Cidade</label>
+                    <input type="text" aria-describedby="input-text-city" class="form-control" name="input-text-city" id="input-text-city" placeholder="Digite...">
+                </div>
+            </div>
+
+            <div class="d-flex form-group m-0 mt-3">	
+                <div class="col-4 p-0">
+                    <label for="input-text-name">Nome completo</label>
+                    <input type="text" aria-describedby="input-text-name" class="form-control" name="input-text-name" id="input-text-name" placeholder="Digite...">
+                </div>
+
+                <div class="col-4 px-2">
+                    <label for="input-text-email">E-mail</label>
+                    <input type="text" aria-describedby="input-text-email" class="form-control" name="input-text-email" id="input-text-email" placeholder="Digite...">
+                    <small class="form-text text-muted">Ex: nome@proparking.com.br</small>
+                </div>
+
+                <div class="col-1 p-0">
+                    <label for="input-text-telephone-ddd">DDD</label>
+                    <input type="text" aria-describedby="input-text-telephone-ddd" class="form-control" name="input-text-telephone-ddd" id="input-text-telephone-ddd">
+                    <small class="form-text text-muted">Ex: 00</small>
+                </div>
+
+                <div class="col-3 pr-0 pl-2">
+                    <label for="input-text-telephone-number">Telefone</label>
+                    <input type="text" aria-describedby="input-text-telephone-number" class="form-control" name="input-text-telephone-number" id="input-text-telephone-number" placeholder="Digite...">
+                    <small class="form-text text-muted">Ex: 00000-0000</small>
+                </div>
+            </div>
+
+            <div class="d-flex form-group m-0 mt-3">	
+                <div class="col-12 p-0">
+                    <label for="input-text-description">Breve descrição</label>
+                    <textarea type="text" aria-describedby="input-text-description" class="form-control" name="input-text-description" id="input-text-description" placeholder="Digite..." rows="3"></textarea>
+                    <small class="form-text text-muted">Não obrigatório</small>
+                </div>
+            </div>
+
+            <div class="d-flex form-group m-0 mt-4 justify-content-end">	
+                <button type="submit" class="btn btn-primary" id='button-submit-send-form' disabled="true">Enviar formulário</button>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer-area section-gap">
+        <div class="container">
+            <div class="footer-bottom row align-items-center">
+                <p class="footer-text m-0 col-lg-6 col-md-12">
+                    Copyright &copy;2019 Todos os direitos reservados para a
+                    PRO Parking Devs. Por
+                    <a href="https://colorlib.com" target="_blank">Equipe PRO Parking</a>
+                </p>
+                <div class="col-lg-6 col-md-6 social-link">
+                    <div class="download-button d-flex flex-row justify-content-end">
+                        <div class="buttons gray flex-row d-flex">
+                            <i class="fa fa-apple" aria-hidden="true"></i>
+                            <div class="desc">
+                                <a href="#">
+                                    <p>
+                                        <span>Disponível</span> <br />
+                                        na App Store
+                                    </p>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="buttons gray flex-row d-flex">
+                            <i class="fa fa-android" aria-hidden="true"></i>
+                            <div class="desc">
+                                <a href="#">
+                                    <p>
+                                        <span>Disponível</span> <br />
+                                        na Play Store
+                                    </p>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/vendor/jquery-2.2.4.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="js/tilt.jquery.min.js"></script>
+    <script src="js/vendor/bootstrap.min.js"></script>
+    <script type="text/javascript"
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBhOdIF3Y9382fqJYt5I_sswSrEw5eihAA"></script>
+    <script src="js/easing.min.js"></script>
+    <script src="js/hoverIntent.js"></script>
+    <script src="js/superfish.min.js"></script>
+    <script src="js/jquery.ajaxchimp.min.js"></script>
+    <script src="js/jquery.magnific-popup.min.js"></script>
+    <script src="js/owl.carousel.min.js"></script>
+    <script src="js/owl-carousel-thumb.min.js"></script>
+    <script src="js/hexagons.min.js"></script>
+    <script src="js/jquery.nice-select.min.js"></script>
+    <script src="js/waypoints.min.js"></script>
+    <script src="js/mail-script.js"></script>
+    <script src="js/main.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="toastr/toastr.js"></script>
+    
+    <script>
+        toastr.options = {
+            "closeButton": true,
+            "debug": false,
+            "newestOnTop": false,
+            "progressBar": true,
+            "positionClass": "toast-bottom-right",
+            "preventDuplicates": true,
+            "onclick": null,
+            "showDuration": "10000",
+            "hideDuration": "1000",
+            "timeOut": "5000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        }
+
+        const createParking=async(zip_code, state, city, name, email, ddd, number, description)=>{
+            const result=await axios.post('http://localhost:3030/create-contact-form', {
+                    name,
+                    email,
+                    description,
+                    telephone:{
+                        ddd,
+                        number
+                    },
+                    address:{
+                        zip_code,
+                        state,
+                        city
+                    }
+            },{
+                headers: {
+                        authenticateToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVkOWNhNjM3MjBmOGM3MzY5NDFkMDY5MCIsIm5hbWUiOiJyYXVsIGdlcm1hbm8iLCJwYXJraW5nIjoiNWQ5Y2E1ZGUyMGY4YzczNjk0MWQwNjhlIiwiaWF0IjoxNTcxOTkzNDU3LCJleHAiOjE1NzI1OTgyNTd9.uCu0wCSqxxoT7h0_MCt3ljEez_Qe905LzUt9-eeSJN8"
+                }
+            })
+
+            $('#input-text-zip-code').val('')
+            $('#input-text-state').val('')
+            $('#input-text-city').val('')
+            $('#input-text-name').val('')
+            $('#input-text-email').val('')
+            $('#input-text-telephone-ddd').val('')
+            $('#input-text-telephone-number').val('')
+            $('#input-text-description').val('')
+
+            $("#button-submit-send-form").prop('disabled', true)
+
+            toastr.info('Em breve, nós entraremos em contato. Obrigado.', `Olá, ${name}`,)
+
+            console.log(result);
+        }
+
+        $('#input-text-zip-code').on('click', ()=>{
+            navigator.geolocation.getCurrentPosition((pos)=>{
+                const lat = pos.coords.latitude;
+                const lon = pos.coords.longitude;
+                const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`;
+                
+                $.get(url, (resp)=>{
+                    const zip_code = resp.address.postcode;
+                    const cidade = resp.address.town;
+                    const estado = resp.address.state;
+
+                    $("#input-text-zip-code").val(zip_code);
+                    $("#input-text-city").val(cidade);
+                    $("#input-text-state").val(estado);
+                });
+            });
+        })
+
+        $('#input-text-zip-code, #input-text-state, #input-text-city, #input-text-name, #input-text-email, #input-text-telephone-ddd, #input-text-telephone-number').on('input', ()=>{
+            const zip_code=$('#input-text-zip-code').val()
+            const state=$('#input-text-state').val()
+            const city=$('#input-text-city').val()
+            const name=$('#input-text-name').val()
+            const email=$('#input-text-email').val()
+            const ddd=$('#input-text-telephone-ddd').val()
+            const number=$('#input-text-telephone-number').val()
+
+            if (zip_code.length!==0 && state.length!==0 && city.length!==0 && name.length!==0 && email.length!==0 && ddd.length!==0 && number.length!==0) {
+                $("#button-submit-send-form").prop('disabled', false)
+            }else{
+                $("#button-submit-send-form").prop('disabled', true)
+            }
+        })
+
+        $('#button-submit-send-form').on('click', ()=>{
+            const zip_code=$('#input-text-zip-code').val()
+            const state=$('#input-text-state').val()
+            const city=$('#input-text-city').val()
+            const name=$('#input-text-name').val()
+            const email=$('#input-text-email').val()
+            const ddd=$('#input-text-telephone-ddd').val()
+            const number=$('#input-text-telephone-number').val()
+            const description=$('#input-text-description').val()
+
+            const newDdd=Number(ddd)
+
+            createParking(zip_code, state, city, name, email, newDdd, number, description)
+        })
+
+    </script>
+</body>
+
+</html>

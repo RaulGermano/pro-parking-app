@@ -8,13 +8,13 @@ class LastParked extends Component {
 		const { props } = this;
 		return (
 			<View style={styles.container}>
-				<Text numberOfLines={1} style={styles.textName}>
+				<Text numberOfLines={1} style={[styles.textName, {textTransform: 'uppercase'}]}>
 					{props.name}
 				</Text>
 				<View style={styles.containerLastParked}>
-					<Text style={styles.textPayValue}>R$ {props.payValue}</Text>
+					<Text style={styles.textPayValue}>R$ {props.payValue.toFixed(2).replace('.', ',')}</Text>
 
-					<Text style={styles.textHours}>{props.hours} horas</Text>
+					<Text style={styles.textHours}>{props.hours.toFixed(2).replace('.', ',')} horas</Text>
 				</View>
 			</View>
 		);
@@ -29,7 +29,6 @@ const styles = StyleSheet.create({
 		borderWidth: 1,
 		borderColor: '#1115',
 		borderRadius: 10,
-		// elevation: 5,
 		shadowColor: '#333',
 		shadowOffset: {
 			width: 0,
