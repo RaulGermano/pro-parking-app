@@ -64,12 +64,15 @@ const {
     SelectClientReservations,
     SelectSpecificReservationId,
     SelectTodayCountReservations,
+    selectReservationsByFinished,
     SelectTodayTicketReservations,
     SelectCheckInPendingReservation,
     CreateReservationUndefinedClient,
     SelectVehicleClientReservations,
     SelectCheckOutPendingReservation,
-    SelectCheckInPendingReservationList
+    SelectCheckInPendingReservationList,
+    SelectClientVehicleReservationsByPlate,
+    selectSpecificReservationByVehicleNotAvailable,
 } = require("../controllers/reservation");
 
 const {
@@ -77,7 +80,8 @@ const {
     CreateClientVehicle,
     SelectClientVehicles,
     SelectClientsCounter,
-    SelectClientVehicleByPlate
+    SelectClientVehicleByPlate,
+    selectAvailableClientVehicles
 } = require("../controllers/clientVehicle");
 
 const {
@@ -121,19 +125,13 @@ routes.post(
 
 //////////////////////// client vehicle
 
-routes.post(
-    "/create-client-vehicle",
-    authenticateMiddleware,
-    CreateClientVehicle
-);
+routes.post("/create-client-vehicle", CreateClientVehicle);
 
 routes.get("/select-clients-list", authenticateMiddleware, SelectClientsList);
 
-routes.get(
-    "/select-client-vehicles",
-    //   authenticateMiddleware,
-    SelectClientVehicles
-);
+routes.get("/select-available-client-vehicles-list", selectAvailableClientVehicles);
+
+routes.get("/select-client-vehicles", SelectClientVehicles);
 
 routes.get(
     "/select-clients-counter",
@@ -148,10 +146,7 @@ routes.get(
     SelectParkings
 );
 
-routes.get(
-    "/select-specific-client-vehicle-by-plate",
-    SelectClientVehicleByPlate
-);
+routes.get("/select-specific-client-vehicle-by-plate", SelectClientVehicleByPlate);
 
 routes.get("/select-all-parkings", authenticateMiddleware, SelectAllParkings);
 
@@ -167,11 +162,7 @@ routes.get(
     SelectSpecificExcludedParkingsCounter
 );
 
-routes.get(
-    "/select-specific-parkings",
-    //   authenticateMiddleware,
-    SelectSpecificParkings
-);
+routes.get("/select-specific-parkings", SelectSpecificParkings);
 
 routes.put(
     "/update-parking-telephone",
@@ -215,11 +206,7 @@ routes.get(
 
 routes.post("/auth-administrator-user", AuthenticateAdministrator);
 
-routes.post(
-    "/create-administrator-user",
-    // authenticateMiddleware,
-    CreateAdministratorUser
-);
+routes.post("/create-administrator-user", CreateAdministratorUser);
 
 routes.post(
     "/send-email-administrator-user-update-password",
@@ -299,11 +286,7 @@ routes.get(
     SelectAvailableParkingSpaces
 );
 
-routes.get(
-    "/select-specific-parking-space",
-    //   authenticateMiddleware,
-    SelectSpecificParkingSpace
-);
+routes.get("/select-specific-parking-space", SelectSpecificParkingSpace);
 
 routes.get(
     "/select-total-parking-spaces",
@@ -327,11 +310,7 @@ routes.put("/update-parking-space", authenticateMiddleware, UpdateParkingSpace);
 
 //////////////////////// parking qualification
 
-routes.post(
-    "/create-parking-qualification",
-    // authenticateMiddleware,
-    CreateParkingQualification
-);
+routes.post("/create-parking-qualification", CreateParkingQualification);
 
 routes.get(
     "/select-specific-parking-qualification-average",
@@ -340,6 +319,10 @@ routes.get(
 );
 
 //////////////////////// reservation
+
+routes.get("/select-reservations-by-finished", selectReservationsByFinished);
+
+routes.get("/select-specific-reservation-by-vehicle-not-available", selectSpecificReservationByVehicleNotAvailable);
 
 routes.get(
     "/select-checkin-pending-reservation",
@@ -354,6 +337,11 @@ routes.get(
 );
 
 routes.get(
+    "/select-client-vehicle-reservations-by-plate-list",
+    SelectClientVehicleReservationsByPlate
+);
+
+routes.get(
     "/select-checkout-pending-reservation",
     authenticateMiddleware,
     SelectCheckOutPendingReservation
@@ -365,11 +353,7 @@ routes.get(
     SelectVehicleClientReservations
 );
 
-routes.get(
-    "/select-client-reservations",
-    authenticateMiddleware,
-    SelectClientReservations
-);
+routes.get("/select-client-reservations", SelectClientReservations);
 
 routes.get(
     "/select-today-count-reservations",

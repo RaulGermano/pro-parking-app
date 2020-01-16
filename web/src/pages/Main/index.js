@@ -140,14 +140,16 @@ export default function Main({ match, history }) {
 						parkingSpace: item.parking.space.name,
 						checkIn: item.period
 							? item.period.check_in
-								? moment(item.period.check_in.moment).format(
-										'DD/MM/YYYY'
-								  )
+								? `${moment(item.period.check_in.moment).format(
+                                    'DD/MM/YYYY'
+                                )} às ${moment(item.period.check_in.moment).format('HH:mm')}h`
 								: null
 							: null
 					};
 				}
-			);
+            );
+            
+            /////////////////////////////////////////////////////////////////////////////////////
 
 			const PendingReservationItens = PendingReservationList.data.result.map(
 				item => {
@@ -161,7 +163,9 @@ export default function Main({ match, history }) {
 						vehiclePlate: item.client.vehicle.plate,
 						clientName: item.client.name ? item.client.name : '- -',
 						parkingSpace: item.parking.space.name,
-						moment: moment(item.createdAt).format('DD/MM/YYYY')
+                        moment: `${moment(item.createdAt).format(
+							'DD/MM/YYYY'
+						)} às ${moment(item.createdAt).format('HH:mm')}h`
 					};
 				}
 			);

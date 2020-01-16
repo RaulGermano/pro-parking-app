@@ -9,7 +9,7 @@ class ParkingTime extends Component {
 
 		return (
 			<Animatable.View style={styles.container}>
-				<Text style={styles.textTime}>{props.time}h</Text>
+				<Text style={styles.textTime}>{props.time}</Text>
 			</Animatable.View>
 		);
 	}

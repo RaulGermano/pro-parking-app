@@ -20,9 +20,14 @@ class CompleteHeader extends Component {
 							name={'ios-arrow-back'}
 						/>
 					</TouchableOpacity>
-					<Text numberOfLines={1} style={styles.textTitle}>
-						{props.title}
-					</Text>
+                    <View>
+                        <Text numberOfLines={1} style={styles.textTitle}>
+                            {props.title}
+                        </Text>
+                        <Text numberOfLines={1} style={styles.textSubTitle}>
+                            {props.subTitle}
+                        </Text>
+                    </View>
 				</Animatable.View>
 
 				<Animatable.View animation='fadeInRight' duration={400}>
@@ -80,5 +85,10 @@ const styles = StyleSheet.create({
 		fontSize: 25,
 		color: '#111',
 		fontWeight: '700'
-	}
+    },
+    textSubTitle:{
+        fontSize: 15,
+		color: '#777',
+		fontWeight: '700'
+    }
 });

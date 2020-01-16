@@ -5,11 +5,9 @@ import SmallButton from '../../components/Button/AbsoluteSmall';
 
 class ConfirmationModal extends Component {
 	state = {
+        idToExclude: null,
 		isModalVisible: false,
-		message: '',
-		onConfirmPress: () => {
-			console.warn(123);
-		}
+		message: ''
 	};
 
 	onSwipeComplete = () => {
@@ -31,10 +29,14 @@ class ConfirmationModal extends Component {
 	};
 
 	handleIdItem = id => {
-		this.setState({
-			onConfirmPress: console.warn(123456)
-		});
-	};
+        this.setState({
+            idToExclude: id
+        })
+    };
+    
+    teste(param){
+        console.log(param)
+    }
 
 	render() {
 		const { state, props } = this;
@@ -75,7 +77,7 @@ class ConfirmationModal extends Component {
 
 							<View>
 								<TouchableOpacity
-									onPress={state.onConfirmPress}
+									onPress={()=>this.teste(this.state.idToExclude)}
 								>
 									<Text style={styles.textConfirm}>
 										Confirmar

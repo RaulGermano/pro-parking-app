@@ -1,20 +1,75 @@
 import React, { Component } from 'react';
 import { Text, StyleSheet, View, ScrollView, Image } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 import PaymentMethodsItem from '../components/PaymentMethodsItem';
 import UserImage from '../../img/user-image/image-1.png';
 import TitlePage from '../components/TitlePage';
 import UserInformationItemList from '../components/UserInformationItemList';
 import ButtonAbsoluteRadio from '../components/Button/AbsoluteRadio';
 import AddPaymentMethod from '../components/AddPaymentMethod';
+import EditUser from '../components/Modal/EditUser';
+import Api from "../services/Api";
+import Loader from "../components/Modal/Loader";
 
 class Search extends Component {
-	goingToEditProfile = () => {
-		this.props.navigation.navigate('');
-	};
+    state={
+        modalLoaderVisible: false,
+        userInformations: {
+            name: '',
+            email: '',
+            cpf: '',
+            telephone: {
+                ddd: '',
+                number: ''
+            }
+        }
+    }
 
+    async componentDidMount(){
+        const userToken = await AsyncStorage.getItem('userId');
+
+        const userInformations=JSON.parse(userToken)
+
+        const clientInformations=await Api.get(`/select-client-informations/?client_id=${userInformations._id}`)
+
+        console.log('cliente: ', clientInformations.data[0]);
+
+        this.setState({
+            userInformations: clientInformations.data[0]
+        })
+
+        this.setState({
+            modalLoaderVisible: false
+        });
+    }
+
+    componentWillMount(){
+        this.setState({
+            modalLoaderVisible: true
+        });
+    }
+
+	openEditUserModal = () => {
+		this.refs.editUser.toggleModal();
+    };
+
+    titleCase(str) {
+        var splitStr = str.toLowerCase().split(' ');
+
+        for (var i = 0; i < splitStr.length; i++) {
+            splitStr[i] = splitStr[i].charAt(0).toUpperCase() + splitStr[i].substring(1);     
+        }
+
+        return splitStr.join(' '); 
+    }
+    
 	render() {
+        const { state } = this
+
 		return (
 			<ScrollView showsVerticalScrollIndicator={false}>
+                <Loader isModalVisible={state.modalLoaderVisible} cover={true} />
+
 				<View style={styles.container}>
 					<View style={styles.containerUserData}>
 						<View style={styles.containerUserImage}>
@@ -42,9 +97,10 @@ class Search extends Component {
 
 					<View style={styles.containerInformationBlock}>
 						<TitlePage titleText='Minhas informações' />
+
 						<ButtonAbsoluteRadio
 							position={{ top: 15, right: 20 }}
-							onPress={() => console.log('Alterar informações')}
+							onPress={this.openEditUserModal}
 							iconSize={27.5}
 							bgColor='#3769cc'
 							textColor='#fff'
@@ -53,59 +109,31 @@ class Search extends Component {
 
 						<UserInformationItemList
 							title='Nome'
-							information='Raul Vitor Chiozini Germano'
+							information={this.titleCase(state.userInformations.name)}
 						/>
 
 						<UserInformationItemList
 							title='Telefone'
-							information='(17) 99184-8128'
+							information={
+                                `(${state.userInformations.telephone.ddd}) ${state.userInformations.telephone.number}`
+                            }
 						/>
 
 						<UserInformationItemList
-							title='Sexo'
-							information='Masculino'
+							title='E-Mail'
+							information={state.userInformations.email}
 						/>
 
 						<UserInformationItemList
-							title='Nascimento'
-							information='27/01/1999 - 20 anos'
+							title='CPF'
+							information={
+                                `${state.userInformations.cpf.substring(0, 3)}......-..`}
 						/>
 					</View>
 				</View>
 
-				{/* <View style={styles.containerCreditCardsBlock}>
-					<TitlePage titleText='Formas de pagamento' />
+                <EditUser ref={'editUser'} userId={state.userInformations._id} />
 
-					<PaymentMethodsItem
-						onPress={() =>
-							console.log('gerenciar cartão de crédito')
-						}
-						creditCardFlag={1}
-						creditCardNumber={1256}
-					/>
-
-					<PaymentMethodsItem
-						onPress={() =>
-							console.log('gerenciar cartão de crédito')
-						}
-						creditCardFlag={2}
-						creditCardNumber={1256}
-					/>
-
-					<PaymentMethodsItem
-						onPress={() =>
-							console.log('gerenciar cartão de crédito')
-						}
-						creditCardFlag={3}
-						creditCardNumber={1256}
-					/>
-
-					<AddPaymentMethod
-						onPress={() =>
-							console.log('gerenciar cartão de crédito')
-						}
-					/>
-				</View> */}
 			</ScrollView>
 		);
 	}

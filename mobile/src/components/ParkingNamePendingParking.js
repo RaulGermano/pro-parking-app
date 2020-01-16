@@ -5,7 +5,9 @@ import * as Animatable from 'react-native-animatable';
 
 class ParkingNamePendingParking extends Component {
 	render() {
-		const { props } = this;
+        const { props } = this;
+        
+        console.log(props)
 
 		return (
 			<Animatable.View style={styles.container}>

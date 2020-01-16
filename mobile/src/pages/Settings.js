@@ -17,16 +17,17 @@ class Search extends Component {
 					<TitlePage titleText='Configurações' />
 
 					<View style={{ marginHorizontal: 20 }}>
-						<SettingsListItem
+						{/* <SettingsListItem
 							icon='ios-card'
 							settingsTitle='Formas de pagamento'
 							color='#777'
 							fontWeight='400'
 							touchable={true}
 							onPress={() => console.warn(123)}
-						/>
+						/> */}
 
 						<SettingsListItem
+                            status={0}
 							icon='ios-copy'
 							settingsTitle='Termos de condições'
 							color='#777'
@@ -36,6 +37,7 @@ class Search extends Component {
 						/>
 
 						<SettingsListItem
+                            status={0}
 							icon='ios-call'
 							settingsTitle='Entrar em contato'
 							color='#777'
@@ -45,6 +47,7 @@ class Search extends Component {
 						/>
 
 						<SettingsListItem
+                            status={0}
 							icon='md-information-circle'
 							settingsTitle='Sobre o PRO Parking'
 							color='#777'
@@ -54,6 +57,7 @@ class Search extends Component {
 						/>
 
 						<SettingsListItem
+                            status={0}
 							icon='ios-help-circle'
 							settingsTitle='Relatar um problema'
 							color='#777'
@@ -62,21 +66,23 @@ class Search extends Component {
 							onPress={() => console.warn(123)}
 						/>
 
+						<SettingsListItem
+                            status={0}
+							icon='ios-pricetags'
+							settingsTitle='Anuncie suas vagas'
+                            // color='#1f88d9'
+							color='#777'
+							fontWeight='500'
+							touchable={true}
+							onPress={() => console.warn(123)}
+						/>
+                        
 						<AppVersion
 							icon='ios-apps'
 							settingsTitle='Versão do aplicativo'
 							version='0.0.10 - alpha'
 							color='#777'
 							fontWeight='400'
-						/>
-
-						<SettingsListItem
-							icon='ios-pricetags'
-							settingsTitle='Anuncie suas vagas'
-							color='#1f88d9'
-							fontWeight='500'
-							touchable={true}
-							onPress={() => console.warn(123)}
 						/>
 
 						<SettingsListItem

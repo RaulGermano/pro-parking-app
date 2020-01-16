@@ -142,7 +142,7 @@ class Search extends Component {
                                             Atenção!
                                         </Text>
                                     </View>
-                                    <Text style={{fontSize: 20}}>Há reservas em andamento</Text>
+                                    <Text style={{fontSize: 15}}>Há reservas em andamento</Text>
                                 </View>
                             ):(
                                 <View />

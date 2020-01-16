@@ -414,7 +414,65 @@ module.exports = {
 				error: error
 			});
 		}
-	}
+    },
+    
+    async SelectClientVehicleReservationsByPlate(req, res) {
+		try {
+			const { client_id, vehicle_id } = req.query;
+
+			const reservations = await Reservation.find({
+                'client._id': client_id,
+                'client.vehicle._id': vehicle_id,
+			});
+
+			return res.json({
+				result: reservations
+			});
+		} catch (error) {
+			return res.status(400).json({
+				error: error
+			});
+		}
+    },
+    
+    async selectSpecificReservationByVehicleNotAvailable(req, res){
+        try {
+			const { client_id, vehicle_id } = req.query;
+
+			const reservations = await Reservation.find({
+                'client._id': client_id,
+                'client.vehicle._id': vehicle_id,
+                finished: false
+			});
+
+			return res.json({
+				result: reservations
+			});
+		} catch (error) {
+			return res.status(400).json({
+				error: error
+			});
+		}
+    },
+
+    async selectReservationsByFinished(req, res){
+        try {
+			const { client_id, finished } = req.query;
+
+			const reservations = await Reservation.find({
+                'client._id': client_id,
+                finished
+			});
+
+			return res.json({
+				result: reservations
+			});
+		} catch (error) {
+			return res.status(400).json({
+				error: error
+			});
+		}
+    }
 
 	///////////////////////////////////////////////  updates
 

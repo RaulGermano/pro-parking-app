@@ -89,10 +89,12 @@ const styles = StyleSheet.create({
 	},
 	textCarPlate: {
 		fontWeight: '500',
-		fontSize: 17
+        fontSize: 17,
+        textTransform: 'uppercase'
 	},
 	textCarName: {
 		fontWeight: '300',
-		fontSize: 11
+        fontSize: 11,
+        textTransform: 'uppercase'
 	}
 });

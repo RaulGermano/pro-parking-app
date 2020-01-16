@@ -7,7 +7,7 @@ class SettingsListItem extends Component {
 		const { props } = this;
 
 		return (
-			<TouchableOpacity onPress={props.onPress}>
+			<TouchableOpacity onPress={props.onPress} style={props.status==0?{opacity: .4}:{opacity: 1}}>
 				<View style={styles.container}>
 					<View style={styles.containerIconText}>
 						<Icon
