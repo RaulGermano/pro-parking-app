@@ -3,6 +3,7 @@ import { Text, StyleSheet, View, TextInput, Dimensions } from 'react-native';
 import PrimaryButton from '../components/Button/Primary';
 import SecondaryButton from '../components/Button/Secondary';
 import * as Animatable from 'react-native-animatable';
+import Loader from "../components/Modal/Loader";
 
 const { width } = Dimensions.get('window');
 
@@ -12,8 +13,13 @@ class Signup extends Component {
 	};
 
 	state = {
+        isModalVisible: false,
 		login: '',
-		password: '',
+        password: '',
+        password: '',
+        confirmPassword: '',
+        telephoneDdd: '',
+        telephoneNumber: '',
 		email: ''
 	};
 
@@ -49,10 +55,22 @@ class Signup extends Component {
 
 	backPage = () => {
 		this.props.navigation.navigate('Login');
-	};
+    };
+    
+    componentDidMount(){
+        this.setState({
+            modalLoaderVisible: false
+        });
+    }
+
+    componentWillMount(){
+        this.setState({
+            modalLoaderVisible: true
+        });
+    }
 
 	render() {
-		const { state } = this;
+        const { state } = this;
 
 		return (
 			<Animatable.View
@@ -60,30 +78,40 @@ class Signup extends Component {
 				animation='fadeInUp'
 				duration={300}
 			>
+                <Loader isModalVisible={state.modalLoaderVisible} cover={true} />
+
 				<View>
 					<Text>Login</Text>
 					<TextInput
 						style={styles.TextInput}
 						value={state.login}
 						onChangeText={login => this.handleLogin(login)}
-						autoFocus={true}
-						returnKeyType={'next'}
 						onSubmitEditing={() => {
 							this.TextInputPassword.focus();
 						}}
 					/>
 
-					<Text>Senha</Text>
-					<TextInput
-						style={styles.TextInput}
-						value={state.password}
-						onChangeText={password => this.handlePassword(password)}
-						secureTextEntry={true}
-						autoCorrect={false}
-						ref={input => {
-							this.TextInputPassword = input;
-						}}
-					/>
+                    <View style={{ flexDirection: 'row', marginTop: 20 }}>
+                        <View style={styles.containerConfirmCarPlate}>
+                            <Text>Senha</Text>
+                            <TextInput
+                                style={styles.TextInputDouble}
+                                value={state.email}
+                                secureTextEntry={true}
+                                onChangeText={email => this.handleEMail(email)}
+                            />
+                        </View>
+
+                        <View style={styles.containerPassword}>
+                            <Text>Confirmar senha</Text>
+                            <TextInput
+                                style={styles.TextInputDouble}
+                                value={state.email}
+                                secureTextEntry={true}
+                                onChangeText={email => this.handleEMail(email)}
+                            />
+                        </View>
+                    </View>
 
 					<Text>E-Mail</Text>
 					<TextInput
@@ -91,10 +119,27 @@ class Signup extends Component {
 						value={state.email}
 						keyboardType='email-address'
 						onChangeText={email => this.handleEMail(email)}
-						ref={input => {
-							this.TextInputEMail = input;
-						}}
 					/>
+
+                    <View style={{ flexDirection: 'row',  marginTop: 20 }}>
+                        <View style={styles.containerConfirmCarPlate}>
+                            <Text>DDD</Text>
+                            <TextInput
+                                style={styles.TextInputDouble}
+                                value={state.email}
+                                onChangeText={email => this.handleEMail(email)}
+                            />
+                        </View>
+
+                        <View style={styles.containerTelephone}>
+                            <Text>Telefone</Text>
+                            <TextInput
+                                style={styles.TextInputDouble}
+                                value={state.email}
+                                onChangeText={email => this.handleEMail(email)}
+                            />
+                        </View>
+                    </View>
 				</View>
 
 				<View style={styles.options}>
@@ -129,7 +174,8 @@ const styles = StyleSheet.create({
 	options: {
 		flexDirection: 'row',
 		justifyContent: 'space-between',
-		marginHorizontal: 20
+        marginHorizontal: 20,
+        marginTop: 30
 	},
 	TextInput: {
 		height: 45,
@@ -138,5 +184,26 @@ const styles = StyleSheet.create({
 		borderRadius: 7,
 		padding: 10,
 		marginBottom: 20
-	}
+    },
+    TextInputDouble: {
+        height: 45,
+		backgroundColor: '#eaeaea',
+		width: '100%',
+		borderRadius: 7,
+        padding: 10,
+        marginBottom: 20
+    },
+    containerTelephone: {
+		flex: 2
+    },
+    containerPassword: {
+		flex: 1
+	},
+	containerConfirmCarPlate: {
+        flex: 1,
+        marginRight: 10
+    },
+    TextInputPlateAndConfirm: {
+		marginBottom: 20
+	},
 });

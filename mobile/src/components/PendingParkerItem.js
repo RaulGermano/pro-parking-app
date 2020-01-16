@@ -31,7 +31,7 @@ class PendingParkedItem extends Component {
 							color='#777'
 							style={styles.iconStyles}
 						/>
-						<Text style={styles.textPrimary}>XTR-124</Text>
+                        <Text style={styles.textPrimary}>{this.props.vehicleName}</Text>
 						<Text style={styles.textSeparator}>-</Text>
 						<Text style={styles.textValuePerHour}>
 							{this.props.parkerName}

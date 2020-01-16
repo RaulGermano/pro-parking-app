@@ -328,7 +328,7 @@ function NewParkingUserModal(props) {
 									variant='secondary'
 									className='btn btn-sm btn-block font-weight-bold mt-2 gb-gray-light-2 parking-lot-not-reserved shadow-sm col-3 mr-2'
 								>
-									Comum
+									Padrão
 								</ToggleButton>
 								<ToggleButton
 									value={1}

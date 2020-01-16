@@ -121,7 +121,44 @@ module.exports = {
 				});
 			}
 		);
-	}
+    },
+
+    async selectAvailableClientVehicles(req, res) {
+        try{
+            const { client_id, available } = req.query;
+
+			const availableValue = available == 'true' ? true : false;
+
+			const specificParkingSpace = await Client.aggregate([
+				{
+					$match: {
+						_id: Types.ObjectId(client_id)
+					}
+				},
+				{
+					$unwind: '$vehicle'
+				},
+				{
+					$match: {
+						'vehicle.available': availableValue
+					}
+				},
+				{
+					$project: {
+						vehicle: 1
+					}
+				}
+			]);
+
+			return res.json({
+				result: specificParkingSpace
+			});
+        } catch (error) {
+			return res.status(400).json({
+				error
+			});
+		}
+    }
 
 	///////////////////////////////////////////////  updates
 

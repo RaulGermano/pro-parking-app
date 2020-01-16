@@ -197,7 +197,7 @@ export default function Main(props) {
 		return cell === 1 ? (
 			<span className='fw-600'>Administrador</span>
 		) : (
-			<span>Comum</span>
+			<span>Padrão</span>
 		);
 	}
 

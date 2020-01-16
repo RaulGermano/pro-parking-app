@@ -7,36 +7,49 @@ import ButtonAbsoluteRadio from '../components/Button/AbsoluteRadio';
 import TitlePage from '../components/TitlePage';
 import AddCar from '../components/Modal/AddCar';
 import ConfirmationModal from '../components/Modal/Confirmation';
+import Loader from "../components/Modal/Loader";
+import Api from "../services/Api";
 
 class Search extends Component {
 	state = {
-		car: [
-			{ id: 0, plate: 'CDR-5685', name: 'DEL REY', status: true },
-			{ id: 1, plate: 'ASD-4567', name: 'FOX', status: true },
-			{
-				id: 2,
-				plate: 'VRF-6847',
-				name: 'CARRO DO RAUL',
-				status: false,
-				moment: '12:45'
-			},
-			{ id: 3, plate: 'RED-8946', name: 'SAVEIRO', status: true },
-			{ id: 4, plate: 'KOL-9843', name: 'UNO MILE', status: true },
-			{
-				id: 5,
-				plate: 'VYT-9684',
-				name: 'CROSS FOX',
-				status: false,
-				moment: '02:45'
-			},
-			{ id: 6, plate: 'OIF-2956', name: 'FOX', status: true },
-			{ id: 7, plate: 'GVY-9485', name: 'GOL 2005', status: true },
-			{ id: 8, plate: 'OPB-6518', name: 'CIVIC CINZA', status: true }
-		]
-	};
+        vehicle: [],
+        availableClientVehicles: [],
+        notAvailableClientVehicles: [],
+        userInformationsObject: {}
+    };
+    
+    componentWillMount(){
+        this.setState({
+            modalLoaderVisible: true
+        });
+    }
 
-	componentDidMount() {
-		this.verifyLog();
+	async componentDidMount() {
+        this.verifyLog();
+
+        const userToken = await AsyncStorage.getItem('userId');
+
+        const userInformations=JSON.parse(userToken)
+
+        const clientVehiclesAvailable=await Api.get(`select-available-client-vehicles-list/?client_id=${userInformations._id}&available=${true}`)
+        
+        const clientVehiclesNotAvailable=await Api.get(`select-available-client-vehicles-list/?client_id=${userInformations._id}&available=${false}`)
+
+        this.setState({
+            userInformationsObject: userInformations
+        })
+
+        this.setState({
+            availableClientVehicles: clientVehiclesAvailable.data.result
+        })
+    
+        this.setState({
+            notAvailableClientVehicles: clientVehiclesNotAvailable.data.result
+        })
+
+        this.setState({
+            modalLoaderVisible: false
+        });
 	}
 
 	openAddCarModal = () => {
@@ -54,20 +67,20 @@ class Search extends Component {
 	};
 
 	goingToCarInformation = item => {
-		const { id, plate, name } = item;
+		const { _id, plate, name } = item;
 
 		this.props.navigation.navigate('CarInformation', {
 			carInformation: {
-				id: id,
+				id: _id,
 				plate: plate,
 				name: name
 			}
 		});
-	};
+    };
 
 	openConfirmationExcludeCarModal = carInformation => {
-		const message = `Deseja realmente remover o veículo: ${carInformation.name}?`,
-			id = carInformation.id;
+		const message = `Deseja realmente remover o veículo: "${carInformation.name}"?`,
+			id = carInformation._id;
 
 		this.refs.modalCarConfirmExclude.handleIdItem(id);
 		this.refs.modalCarConfirmExclude.toggleModal();
@@ -79,29 +92,43 @@ class Search extends Component {
 
 		return (
 			<View style={styles.container}>
+                <Loader isModalVisible={state.modalLoaderVisible} cover={true} />
+
 				<ScrollView showsVerticalScrollIndicator={false}>
 					<SafeAreaView>
 						<View style={styles.containerElement}>
 							<TitlePage titleText='Carros cadastrados' />
-							<PendingCarItemList
-								carPlate='SDA-9102'
-								carName='FOX'
-								time='05:56'
-								parkingName='Raul Estacionamentos'
-							/>
+                            {state.notAvailableClientVehicles.map(item => {
+                                return (
+                                    <PendingCarItemList
+                                        key={item.vehicle._id}
+                                        carPlate={`${item.vehicle.plate.slice(0, 3).toUpperCase()}-${item.vehicle.plate.slice(3)}`}
+                                        carName={item.vehicle.name.toUpperCase()}
+                                        reserve={item}
+                                        onPress={() =>
+											this.goingToCarInformation(item.vehicle)
+										}
+                                        onPressSmallClose={() =>
+											this.openConfirmationExcludeCarModal(
+												item.vehicle
+											)
+										}
+                                    />
+                                )
+                            })}
 
-							{state.car.map(item => {
+                            {state.availableClientVehicles.map(item => {
 								return (
 									<CarItemList
-										key={item.id}
+										key={item.vehicle._id}
+										carPlate={`${item.vehicle.plate.slice(0, 3).toUpperCase()}-${item.vehicle.plate.slice(3)}`}
+										carName={item.vehicle.name.toUpperCase()}
 										onPress={() =>
-											this.goingToCarInformation(item)
+											this.goingToCarInformation(item.vehicle)
 										}
-										carPlate={item.plate}
-										carName={item.name}
 										onPressSmallClose={() =>
 											this.openConfirmationExcludeCarModal(
-												item
+												item.vehicle
 											)
 										}
 									/>

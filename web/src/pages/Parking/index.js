@@ -95,7 +95,7 @@ export default function Settings(props) {
 				setParkingName(name);
 				setParkingCnpj(cnpj);
 				setParkingCreatedAt(created_at);
-				setParkingQualification(qualification.average);
+				setParkingQualification(4);
 				setParkingTelphoneDdd(ddd);
 				setParkingTelphoneNumber(number);
 				setParkingCoordinates({ lat, lng });

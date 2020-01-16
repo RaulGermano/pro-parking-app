@@ -100,7 +100,7 @@ function InformationsParked(props) {
 									</div>
 								) : (
 									<div className='text-center fw-700 py-1 bg-pro-parking-secondary br-left-7-5px dangerStatus'>
-										Cliente
+										Outros
 									</div>
 								)}
 							</Col>

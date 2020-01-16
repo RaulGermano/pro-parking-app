@@ -7,37 +7,66 @@ import {
 	TouchableHighlight,
 	Image
 } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 import ImageCarParked from '../../img/car-icon/car-free/car-parked.png';
 import ParkingTime from '../components/ParkingTime';
 import ParkingNamePendingParking from '../components/ParkingNamePendingParking';
+import Api from "../services/Api";
+import moment from 'moment-timezone';
 
 const { width } = Dimensions.get('screen');
 
 class CarItemList extends Component {
+    state={
+        time: '',
+        parkingName: ''
+    }
+
+    async componentDidMount (){
+        const userToken = await AsyncStorage.getItem('userId');
+
+        const userInformations=JSON.parse(userToken)
+
+        const clientVehiclesAvailable = await Api.get(`/select-specific-reservation-by-vehicle-not-available/?client_id=${userInformations._id}&vehicle_id=${this.props.reserve.vehicle._id}`)
+
+        const reserveInformations = clientVehiclesAvailable.data.result[0];
+        
+        const time = `${moment(reserveInformations.createdAt).format('DD/MM/YYYY')} às ${moment(reserveInformations.createdAt).format('HH:mm')}h`
+
+        const parkingName = reserveInformations.parking.name.toUpperCase()
+
+        this.setState({
+            time, 
+            parkingName
+        })
+    }
+
 	render() {
-		const { props } = this;
+        const { props, state } = this;
 
 		return (
-			<View style={styles.container}>
-				<View style={styles.containerImage}>
-					<Image style={styles.image} source={ImageCarParked} />
-				</View>
-				<View style={styles.containerCarDetails}>
-					<Text numberOfLines={1} style={styles.textCarPlate}>
-						{props.carPlate}
-					</Text>
+            <TouchableHighlight underlayColor='#fff' onPress={props.onPress}>
+                <View style={styles.container}>
+                    <View style={styles.containerImage}>
+                        <Image style={styles.image} source={ImageCarParked} />
+                    </View>
+                    <View style={styles.containerCarDetails}>
+                        <Text numberOfLines={1} style={styles.textCarPlate}>
+                            {props.carPlate}
+                        </Text>
 
-					<Text numberOfLines={1} style={styles.textCarName}>
-						{props.carName}
-					</Text>
-				</View>
-				<View>
-					<ParkingTime time={props.time} />
-					<ParkingNamePendingParking
-						parkingName={props.parkingName}
-					/>
-				</View>
-			</View>
+                        <Text numberOfLines={1} style={styles.textCarName}>
+                            {props.carName}
+                        </Text>
+                    </View>
+                    <View>
+                        <ParkingTime time={state.time} />
+                        <ParkingNamePendingParking
+                            parkingName={state.parkingName}
+                        />
+                    </View>
+                </View>
+            </TouchableHighlight>
 		);
 	}
 }

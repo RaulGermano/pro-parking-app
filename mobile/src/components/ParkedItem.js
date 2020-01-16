@@ -29,7 +29,7 @@ class ParkedItem extends Component {
 						</Text>
 						<Text style={styles.textSeparator}>-</Text>
 						<Text style={styles.textValuePerHour}>
-							R${this.props.valuePerHour}
+							R${this.props.valuePerHour} por hora
 						</Text>
 					</View>
 
