@@ -14,3 +14,5 @@ Uma forma fácil de estacionar o veículo em um estacionamento.
 O software agiliza a procura por estacionamentos através de integrações com APIs de geolocalização e possibilita que o motorista encontre uma vaga com as características desejadas, tais como: valor, se a mesma, possui cobertura ou não, se possui suporte à acessibilidade, como cadeirantes, entre outros.
 
 Basta ter acesso à um smartphone e a internet para utilizar o aplicvativo. Assim que uma vaga for reservada pelo usuário, o mesmo poderá se direcionar até o estacionamento e estacionar o veículo pois a vaga estará disponível para ele.
+
+![Alt text](relative/mobile/img/car-icon/car-free/car-free.png?raw=true "Title")
