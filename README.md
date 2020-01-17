@@ -33,8 +33,9 @@ Para mais informações: raul.germano@icloud.com
 ![Alt text](PRO-Parking-images/8.jpeg?raw=true)
 
 ## <br/>
-### User home, search and vehicles pages:
+### User home, search, vehicles and parking historic pages:
 ![Alt text](PRO-Parking-images/29.jpeg?raw=true)
 ![Alt text](PRO-Parking-images/30.jpeg?raw=true)
 ![Alt text](PRO-Parking-images/28.jpeg?raw=true)
+![Alt text](PRO-Parking-images/31.jpeg?raw=true)
 
